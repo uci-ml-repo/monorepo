@@ -1,0 +1,14 @@
+node_modules/
+.svelte-kit/
+build/
+dist/
+
+*.html
+
+public/
+static/
+
+package-lock.json
+desktop.ini
+.DS_Store
+.env

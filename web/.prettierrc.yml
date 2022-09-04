@@ -1,0 +1,11 @@
+# standard tab with
+tabWidth: 2
+
+# they look prettier than double quotes
+singleQuote: true
+
+# I don't like extra characters causing bloat
+semi: false
+
+# reasonable length for a line of code
+printWidth: 95

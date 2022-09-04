@@ -1,0 +1,354 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model attributes {
+  ID               Int              @id @default(autoincrement()) @db.UnsignedInt
+  datasetID        Int              @db.UnsignedInt
+  name             String           @db.VarChar(90)
+  role             String?          @db.VarChar(45)
+  type             String           @db.VarChar(45)
+  description      String?          @db.Text
+  units            String?          @db.VarChar(45)
+  missingValues    Boolean?
+  donated_datasets donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "attributes_ibfk_1")
+
+  @@index([datasetID], map: "datasetID")
+}
+
+model columns {
+  ID      Int     @id @default(autoincrement()) @db.UnsignedInt
+  tableID Int     @db.UnsignedInt
+  name    String  @db.VarChar(25)
+  tables  tables  @relation(fields: [tableID], references: [ID], onUpdate: Restrict, map: "columns_ibfk_1")
+  edits   edits[]
+
+  @@index([tableID], map: "tableID")
+}
+
+model creators {
+  ID               Int                @id @default(autoincrement()) @db.UnsignedInt
+  email            String?            @db.VarChar(45)
+  firstName        String             @db.VarChar(45)
+  lastName         String             @db.VarChar(45)
+  institution      String?            @db.Text
+  address          String?            @db.Text
+  dataset_creators dataset_creators[]
+}
+
+model dataset_creators {
+  datasetCreatorsID Int              @id @default(autoincrement()) @db.UnsignedInt
+  datasetID         Int              @db.UnsignedInt
+  creatorID         Int              @db.UnsignedInt
+  donated_datasets  donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "dataset_creators_ibfk_1")
+  creators          creators         @relation(fields: [creatorID], references: [ID], onUpdate: Restrict, map: "dataset_creators_ibfk_2")
+
+  @@index([creatorID], map: "creatorID")
+  @@index([datasetID], map: "datasetID")
+}
+
+model dataset_keywords {
+  datasetKeywordsID Int              @id @default(autoincrement()) @db.UnsignedInt
+  datasetID         Int              @db.UnsignedInt
+  keywordsID        Int              @db.UnsignedInt
+  donated_datasets  donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "dataset_keywords_ibfk_1")
+  keywords          keywords         @relation(fields: [keywordsID], references: [ID], onUpdate: Restrict, map: "dataset_keywords_ibfk_2")
+
+  @@index([datasetID], map: "datasetID")
+  @@index([keywordsID], map: "keywordsID")
+}
+
+model dataset_notes {
+  datasetID        Int              @id @db.UnsignedInt
+  notes            String?          @db.Text
+  donated_datasets donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "dataset_notes_ibfk_1")
+}
+
+model dataset_papers {
+  datasetPapersID                                                Int                 @id @default(autoincrement()) @db.UnsignedInt
+  type                                                           dataset_papers_type
+  datasetID                                                      Int                 @db.UnsignedInt
+  paperID                                                        Int                 @db.UnsignedInt
+  nativePaperID                                                  Int?                @db.UnsignedInt
+  foreignPaperID                                                 Int?                @db.UnsignedInt
+  donated_datasets_dataset_papers_datasetIDTodonated_datasets    donated_datasets    @relation("dataset_papers_datasetIDTodonated_datasets", fields: [datasetID], references: [ID], onUpdate: Restrict, map: "dataset_papers_ibfk_1")
+  native_papers                                                  native_papers?      @relation(fields: [nativePaperID], references: [ID], onDelete: Restrict, onUpdate: Restrict, map: "dataset_papers_ibfk_2")
+  foreign_papers                                                 foreign_papers?     @relation(fields: [foreignPaperID], references: [ID], onDelete: Restrict, onUpdate: Restrict, map: "dataset_papers_ibfk_3")
+  donated_datasets_dataset_papersTodonated_datasets_introPaperID donated_datasets[]  @relation("dataset_papersTodonated_datasets_introPaperID")
+
+  @@index([datasetID], map: "datasetID")
+  @@index([foreignPaperID], map: "foreignPaperID")
+  @@index([nativePaperID], map: "nativePaperID")
+}
+
+model datasets {
+  ID               Int       @id @default(autoincrement()) @db.UnsignedInt
+  Name             String    @default("") @db.VarChar(90)
+  Abstract         String    @db.VarChar(2000)
+  Types            String?   @db.VarChar(100)
+  Task             String?   @db.VarChar(45)
+  AttributeTypes   String?   @db.VarChar(45)
+  NumInstances     Int?      @db.UnsignedInt
+  NumAttributes    Int?      @db.UnsignedInt
+  DateDonated      DateTime? @db.Date
+  MissingValues    Boolean?
+  URLFolder        String?   @db.VarChar(200)
+  URLReadme        String?   @db.VarChar(200)
+  HighestAccuracy  Int?      @db.UnsignedInt
+  RelevantInfo     String?   @db.Text
+  Source           String?   @db.Text
+  Acknowledgements String?   @db.Text
+  Area             String?   @db.VarChar(45)
+  RelevantPapers   String?   @db.Text
+  AttributeInfo    String?   @db.Text
+  FormatType       String?   @db.Text
+  NumHits          Int       @default(0) @db.UnsignedInt
+}
+
+model descriptive_questions {
+  datasetID                Int              @id @default(autoincrement()) @db.UnsignedInt
+  purpose                  String?          @db.Text
+  funding                  String?          @db.Text
+  represent                String?          @db.Text
+  dataSplits               String?          @db.Text
+  sensitiveInfo            String?          @db.Text
+  preprocessingDescription String?          @db.Text
+  softwareAvailable        String?          @db.Text
+  used                     String?          @db.Text
+  otherInfo                String?          @db.Text
+  datasetCitation          String?          @db.Text
+  donated_datasets         donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "descriptive_questions_ibfk_1")
+}
+
+model donated_datasets {
+  ID                                                           Int                    @id @default(autoincrement()) @db.UnsignedInt
+  userID                                                       Int                    @db.UnsignedInt
+  introPaperID                                                 Int?                   @db.UnsignedInt
+  Name                                                         String                 @db.VarChar(90)
+  Abstract                                                     String                 @db.VarChar(2000)
+  Area                                                         String?                @db.VarChar(200)
+  Task                                                         String?                @db.VarChar(200)
+  Types                                                        String?                @db.VarChar(200)
+  DOI                                                          String?                @db.VarChar(50)
+  DateDonated                                                  DateTime?              @db.Date
+  isTabular                                                    Boolean?
+  URLFolder                                                    String?                @db.VarChar(200)
+  URLReadMe                                                    String?                @db.VarChar(200)
+  URLLink                                                      String?                @db.VarChar(200)
+  Graphics                                                     String?                @db.VarChar(200)
+  Status                                                       String?                @default("PENDING") @db.VarChar(45)
+  NumHits                                                      Int                    @default(0) @db.UnsignedInt
+  NumInstances                                                 Int                    @default(0) @db.UnsignedInt
+  NumAttributes                                                Int?                   @default(0)
+  AttributeTypes                                               String?                @db.VarChar(255)
+  slug                                                         String?                @db.VarChar(120)
+  users                                                        users                  @relation(fields: [userID], references: [ID], onUpdate: Restrict, map: "donated_datasets_ibfk_1")
+  dataset_papers_dataset_papersTodonated_datasets_introPaperID dataset_papers?        @relation("dataset_papersTodonated_datasets_introPaperID", fields: [introPaperID], references: [datasetPapersID], onDelete: Restrict, onUpdate: Restrict, map: "donated_datasets_ibfk_2")
+  attributes                                                   attributes[]
+  dataset_creators                                             dataset_creators[]
+  dataset_keywords                                             dataset_keywords[]
+  dataset_notes                                                dataset_notes?
+  dataset_papers_dataset_papers_datasetIDTodonated_datasets    dataset_papers[]       @relation("dataset_papers_datasetIDTodonated_datasets")
+  descriptive_questions                                        descriptive_questions?
+  edits                                                        edits[]
+  evals                                                        evals[]
+  graphics                                                     graphics?
+  slugs                                                        slugs?
+  tabular                                                      tabular?
+
+  @@index([introPaperID], map: "introPaperID")
+  @@index([userID], map: "userID")
+}
+
+model edit_actions {
+  ID     Int     @id @unique(map: "ID_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  action String  @db.VarChar(25)
+  edits  edits[]
+}
+
+model edits {
+  ID               Int              @id @unique(map: "ID_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  datasetID        Int              @db.UnsignedInt
+  recordID         Int?             @db.UnsignedInt
+  userID           Int              @db.UnsignedInt
+  name             String?          @db.VarChar(120)
+  user             String?          @db.VarChar(120)
+  tableID          Int              @db.UnsignedInt
+  columnID         Int?             @db.UnsignedInt
+  actionID         Int              @db.UnsignedInt
+  data             Json
+  oldData          String?          @db.Text
+  status           edits_status     @default(SUBMITTED)
+  submittedAt      DateTime         @default(now()) @db.Timestamp(0)
+  reviewedAt       DateTime?        @db.Timestamp(0)
+  rationale        String?          @db.Text
+  donated_datasets donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "edits_ibfk_1")
+  columns          columns?         @relation(fields: [columnID], references: [ID], onDelete: Restrict, onUpdate: Restrict, map: "edits_ibfk_2")
+  edit_actions     edit_actions     @relation(fields: [actionID], references: [ID], onUpdate: Restrict, map: "edits_ibfk_3")
+  tables           tables           @relation(fields: [tableID], references: [ID], onUpdate: Restrict, map: "edits_ibfk_4")
+  users            users            @relation(fields: [userID], references: [ID], onUpdate: Restrict, map: "edits_ibfk_5")
+
+  @@index([actionID], map: "actionID")
+  @@index([columnID], map: "columnID")
+  @@index([datasetID], map: "datasetID")
+  @@index([tableID], map: "tableID")
+  @@index([userID], map: "userID")
+}
+
+model evals {
+  ID               Int              @id @unique(map: "ID_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  datasetID        Int              @db.UnsignedInt
+  modelID          Int              @db.UnsignedInt
+  metricID         Int              @db.UnsignedInt
+  metric           Float?
+  lowerBound       Float?
+  upperBound       Float?
+  donated_datasets donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "evals_ibfk_1")
+  metrics          metrics          @relation(fields: [metricID], references: [ID], onUpdate: Restrict, map: "evals_ibfk_2")
+  models           models           @relation(fields: [modelID], references: [ID], onUpdate: Restrict, map: "evals_ibfk_3")
+
+  @@index([datasetID], map: "datasetID")
+  @@index([metricID], map: "metricID")
+  @@index([modelID], map: "modelID")
+}
+
+model foreign_papers {
+  ID             Int              @unique(map: "ID") @db.UnsignedInt
+  type           String           @db.VarChar(45)
+  title          String           @db.VarChar(200)
+  authors        String           @db.Text
+  venue          String?          @db.Text
+  year           String?          @db.Text
+  journal        String?          @db.Text
+  DOI            String?          @db.VarChar(50)
+  URL            String?          @db.Text
+  retrievedAt    DateTime         @default(now()) @db.Timestamp(0)
+  dataset_papers dataset_papers[]
+
+  @@id([ID, type])
+}
+
+model graphics {
+  datasetID        Int              @id @db.UnsignedInt
+  filename         String           @default("") @db.VarChar(45)
+  frontpage        Boolean          @default(false)
+  donated_datasets donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "graphics_ibfk_1")
+}
+
+model hits {
+  ID      Int    @id @default(0) @db.UnsignedInt
+  NumHits Int    @default(0) @db.UnsignedInt
+  Name    String @default("") @db.VarChar(90)
+}
+
+model keywords {
+  ID               Int                @id @default(autoincrement()) @db.UnsignedInt
+  keyword          String             @unique(map: "keyword") @db.VarChar(45)
+  status           String             @default("PENDING") @db.VarChar(45)
+  dataset_keywords dataset_keywords[]
+}
+
+model metrics {
+  ID    Int     @id @unique(map: "ID_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  name  String  @db.Text
+  code  String  @db.Text
+  task  String  @db.Text
+  args  String? @db.Text
+  evals evals[]
+}
+
+model models {
+  ID    Int     @id @unique(map: "ID_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  name  String  @db.Text
+  code  String  @db.Text
+  task  String  @db.Text
+  args  String? @db.Text
+  evals evals[]
+}
+
+model native_papers {
+  ID             Int              @id @unique(map: "ID") @default(autoincrement()) @db.UnsignedInt
+  type           String           @db.VarChar(45)
+  title          String           @db.VarChar(200)
+  authors        String           @db.Text
+  venue          String           @db.Text
+  year           String           @db.Text
+  journal        String?          @db.Text
+  DOI            String?          @db.VarChar(50)
+  URL            String?          @db.Text
+  dataset_papers dataset_papers[]
+}
+
+model news {
+  ID   Int       @id @db.UnsignedInt
+  Date DateTime? @db.Date
+  News String    @db.Text
+}
+
+model papers {
+  ID      Int     @id @default(autoincrement()) @db.UnsignedInt
+  DOI     String? @db.VarChar(50)
+  authors String? @db.Text
+  venue   String? @db.Text
+  year    String? @db.Text
+  journal String? @db.Text
+  URL     String? @db.Text
+  title   String  @db.Text
+}
+
+model slugs {
+  datasetID        Int              @id @db.UnsignedInt
+  slug             String?          @db.VarChar(120)
+  donated_datasets donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "slugs_ibfk_1")
+}
+
+model tables {
+  ID      Int       @id @unique(map: "ID_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  name    String    @db.VarChar(25)
+  columns columns[]
+  edits   edits[]
+}
+
+model tabular {
+  datasetID        Int              @id @db.UnsignedInt
+  missingValues    String?          @db.Text
+  numAttributes    Int?
+  donated_datasets donated_datasets @relation(fields: [datasetID], references: [ID], onUpdate: Restrict, map: "tabular_ibfk_1")
+}
+
+model users {
+  ID                      Int                @id @default(autoincrement()) @db.UnsignedInt
+  user                    String             @unique(map: "user_UNIQUE") @db.VarChar(45)
+  pass                    String?            @db.Text
+  role                    String?            @db.Text
+  accessToken             String?            @db.Text
+  firstName               String             @db.VarChar(45)
+  lastName                String             @db.VarChar(45)
+  institution             String?            @db.Text
+  address                 String?            @db.Text
+  resetPasswordExpiration String?            @db.VarChar(15)
+  resetPasswordToken      String?            @db.VarChar(100)
+  google                  String?            @db.VarChar(45)
+  github                  String?            @db.VarChar(45)
+  status                  String?            @default("ACTIVE") @db.VarChar(45)
+  deletedAt               DateTime?          @db.Timestamp(0)
+  donated_datasets        donated_datasets[]
+  edits                   edits[]
+}
+
+enum dataset_papers_type {
+  NATIVE
+  SEMANTIC_SCHOLAR
+}
+
+enum edits_status {
+  SUBMITTED
+  ACCEPTED
+  REJECTED
+  FAILED
+}

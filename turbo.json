@@ -1,0 +1,13 @@
+{
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "dependsOn": ["format"]
+    },
+    "format": {
+      "dependsOn": ["^format"]
+    }
+  }
+}

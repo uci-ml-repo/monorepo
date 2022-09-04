@@ -1,0 +1,33 @@
+# use the TypeScript parser to process TypeScript files
+parser: '@typescript-eslint/parser'
+
+
+extends:
+  # use default recommended from TypeScript-Eslint
+  - plugin:@typescript-eslint/recommended
+
+  # don't fix anything that prettier will be editing
+  - prettier
+
+
+plugins:
+  # enable ESLint parsing for Svelte files
+  - svelte3
+
+  # enable ESLint parsing for TypeScript files
+  - '@typescript-eslint/'
+
+
+overrides:
+  # use a different processor when reading Svelte files
+  - files: '*.svelte'
+    processor: svelte3/svelte3
+
+# same as
+# overrides: [ { files: "*.svelte", processor: "svelte3/svelte3"} ]
+
+
+# Svelte files will include TypeScript
+settings:
+  svelte3/typescript: true
+

@@ -1,0 +1,20 @@
+# dev stuff
+node_modules/
+dist/
+
+# private
+.env
+
+# OS file explorer configs
+.DS_Store
+desktop.ini
+
+# ignore static files from datasets, just need images for development
+*.rar
+*.zip
+*.csv
+*.xlsx
+*.PDF
+
+# keep .gitkeep files and their folders
+!.gitkeep

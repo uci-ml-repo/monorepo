@@ -1,0 +1,11 @@
+# dev environment 
+node_modules/
+.svelte-kit/
+build/
+
+# private
+.env
+
+# OS file system configs
+.DS_Store
+desktop.ini
