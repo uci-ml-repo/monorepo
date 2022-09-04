@@ -13,7 +13,7 @@
     "format": "prettier --write .",
     "lint": "eslint --fix ."
   },
-   "devDependencies": {
+  "devDependencies": {
     "@sveltejs/adapter-node": "^1.0.0-next.88",
     "@sveltejs/kit": "^1.0.0-next.463",
     "@types/jspreadsheet-ce": "^4.7.3",

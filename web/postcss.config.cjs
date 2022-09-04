@@ -4,6 +4,6 @@ module.exports = {
     require('tailwindcss'),
 
     // add prefixed properties like -webkit to the css classes so they work across browsers
-    require('autoprefixer')
+    require('autoprefixer'),
   ],
 }
