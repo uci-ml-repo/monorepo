@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noEmit": true,
+    "baseUrl": "..",
+    "paths": {
+      "$lib/*": ["server/src/lib/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
