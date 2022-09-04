@@ -1,0 +1,22 @@
+/* Initialize TailwindCSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Apply DaisyUI theme/TailwindCSS classes to the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded-full;
+}
+
+
+/* Apply DaisyUI theme/TailwindCSS classes to the scrollbar track */
+::-webkit-scrollbar {
+  @apply h-4 w-2 bg-secondary-content;
+}
+
+
+/* Apply DaisyUI theme/TailwindCSS classes to the scrollbar corner */
+::-webkit-scrollbar-corner {
+  @apply bg-accent
+}
