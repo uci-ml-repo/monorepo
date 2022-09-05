@@ -4,15 +4,15 @@ import cors from 'cors'
 
 import * as trpcExpress from '@trpc/server/adapters/express'
 
-// reads and initializes all variables in .env files
 import 'dotenv/config'
 
-import appRouter from './routers'
+import router from './routers'
 import createContext from './context'
 
 // express setup
 //////////////////////////////////////////
 const app = express()
+
 app.use(bodyParser.json({ limit: '1GB' }))
 app.use(cors())
 
@@ -21,7 +21,7 @@ app.use(cors())
 app.use(
   '/trpc',
   trpcExpress.createExpressMiddleware({
-    router: appRouter,
+    router,
     createContext,
   })
 )
@@ -38,6 +38,6 @@ const basePath = 'trpc'
 
 // start the standalone server; not needed if just running Sveltekit website
 //////////////////////////////////////////
-app.listen(8080, () => {
+app.listen(port, () => {
   console.log(`🚀 Server ready at http://${host}:${port}/${basePath}`)
 })

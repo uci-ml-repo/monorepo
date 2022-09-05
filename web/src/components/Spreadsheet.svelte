@@ -4,7 +4,6 @@
 
   // a spreadsheet can accept a 2D array of values and mutate it during spreadsheet operations
   // the parent component should bind to this value to receive updated spreadsheet data
-
   export let value: CellValue[][] = [
     ['Mazda', 2001, 2000],
     ['Pegeout', 2010, 5000],
@@ -12,7 +11,16 @@
     ['Honda CRV', 2010, 6000],
   ]
 
-  // define default configuration of a spreadsheet (can be overriden with the "options" prop)
+  // bind the JSpreadsheet DOM node to this variable
+  // it will have jspreadsheet/jexcel properties that house the spreadsheet functions
+  interface HTMLJspreadsheetElement extends HTMLDivElement {
+    jspreadsheet: JSpreadsheetElement
+    jexcel: JSpreadsheetElement
+  }
+
+  let node: HTMLJspreadsheetElement
+
+  // default configuration of a spreadsheet (can be overriden with the "options" prop)
   //////////////////////////////////////////
 
   export let options: Options = {}
@@ -46,13 +54,10 @@
   // spreadsheet initialization
   //////////////////////////////////////////
 
-  // bind the JSpreadsheet DOM node to this variable
-  // it will have jspreadsheet/jexcel properties that house the spreadsheet functions
-  let node: { jspreadsheet: JSpreadsheetElement; jexcel: JSpreadsheetElement }
-
   const initializeSpreadsheet = async () => {
     const div = document.getElementById('spreadsheet') as HTMLDivElement
 
+    // don't import this at the top level because it has side effects that should only run in the browser
     const { default: jspreadsheet } = await import('jspreadsheet-ce')
 
     jspreadsheet(div, {
@@ -74,5 +79,5 @@
 </script>
 
 <!-- use a custom HTML tag name to bamboozle TypeScript;
-otherwise it will infer that it's an HTMLDivElement -->
+otherwise it will infer that it's an HTMLDivElement that isn't a HTMLJspreadsheetElement -->
 <spreadsheet id="spreadsheet" bind:this={node} />
