@@ -7,6 +7,6 @@ module.exports = {
     require('autoprefixer'),
 
     // minify the css as much as possible
-    require('cssnano')
+    require('cssnano'),
   ],
 }

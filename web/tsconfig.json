@@ -8,6 +8,9 @@
     // define paths starting from the root of this monorepo
     "baseUrl": "..",
 
+    // allow importing the default export from jspreadsheet during onMount
+    "allowSyntheticDefaultImports": true,
+
     // path aliases for TypeScript
     "paths": {
       // server project

@@ -2,7 +2,9 @@
 title: About
 description: Information about the UCI ML Repository
 ---
+
 # About
+
 The UCI Machine Learning Repository is a collection of databases, domain theories,
 and data generators that are used by the machine learning community for the
 empirical analysis of machine learning algorithms.
@@ -16,7 +18,6 @@ The current version of the web site was designed in 2007 by Arthur Asuncion and
 David Newman, and this project is in collaboration with
 [Rexa.info](http://rexa.info/) at the University of Massachusetts Amherst.
 Funding support from the National Science Foundation is gratefully acknowledged.
-
 
 Many people deserve thanks for making the repository a success.
 Foremost among them are the donors and creators of the databases and data generators.

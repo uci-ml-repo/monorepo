@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title>Privacy</title>
+  <title>Privacy - UC Irvine Machine Learning Repository</title>
 </svelte:head>
 
 <Privacy />
