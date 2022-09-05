@@ -6,5 +6,7 @@ import * as trpc from '@trpc/client'
 export default (loadFetch?: LoadEvent['fetch']) =>
   trpc.createTRPCClient<Router>({
     url: '/trpc',
+
+    // if this runs on the server, then a special fetch function is used instead of the default
     ...(loadFetch && { fetch: loadFetch as typeof fetch }),
   })

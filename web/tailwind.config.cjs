@@ -8,12 +8,13 @@ module.exports = {
     // which themes should be enabled/modified from the default selection
     // set with the "data-theme" property in any html-tag, e.g. in app.html
     themes: [
+      // some fun default themes
       'cupcake',
       'synthwave',
       'luxury',
       'valentine',
       {
-        // custom UCI theme
+        // main, custom UCI theme
         uci: {
           primary: '#0064A4',
           secondary: '#FFD200',
@@ -30,5 +31,11 @@ module.exports = {
   },
 
   // plugins to extend base tailwind classes
-  plugins: [require('daisyui'), require('@tailwindcss/line-clamp')],
+  plugins: [
+    // enable DaisyUI, a component library for TailwindCSS
+    require('daisyui'),
+
+    // enable some extra utility classes for line clamping
+    require('@tailwindcss/line-clamp')
+],
 }
