@@ -14,13 +14,9 @@ The current version of the web site was designed in 2007 by Arthur Asuncion and 
 and this project is in collaboration with Rexa.info at the University of Massachusetts Amherst.
 Funding support from the National Science Foundation is gratefully acknowledged.
 
+
 Many people deserve thanks for making the repository a success.
 Foremost among them are the donors and creators of the databases and data generators.
 Special thanks should also go to the past librarians of the repository: David Aha,
 Patrick Murphy, Christopher Merz, Eamonn Keogh, Cathy Blake, Seth Hettich, and David Newman.
 
-<style>
-	p {
-		@apply bg-accent;
-	}
-</style>

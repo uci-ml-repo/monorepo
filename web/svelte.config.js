@@ -15,12 +15,7 @@ export default {
   extensions: ['.svelte', '.svx', '.md'],
 
   preprocess: [
-    // specify enabled packages for preprocessing
-    sveltePreprocess({
-      postcss: true,
-      stylus: true,
-      typescript: true,
-    }),
+    sveltePreprocess(),
 
     // use MDsveX preprocessor for .md (Markdown) and .svx files
     mdsvex({
