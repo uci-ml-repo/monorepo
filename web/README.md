@@ -34,11 +34,13 @@ _miscellaneous_
 
 ## File/Directory Overview (coming soon...)
 
-.
-├── package.json
-├── postcss.config.cjs
-├── src
-├── svelte.config.js
-├── tailwind.config.cjs
-├── tsconfig.json
-└── vite.config.ts
+<pre>
+	.
+	├── package.json
+	├── postcss.config.cjs
+	├── src
+	├── svelte.config.js
+	├── tailwind.config.cjs
+	├── tsconfig.json
+	└── vite.config.ts
+</pre>
