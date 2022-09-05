@@ -36,6 +36,9 @@ module.exports = {
     require('daisyui'),
 
     // enable some extra utility classes for line clamping
-    require('@tailwindcss/line-clamp')
-],
+    require('@tailwindcss/line-clamp'),
+
+    // Typography styling, useful for Markdown
+    require('@tailwindcss/typography'),
+  ],
 }

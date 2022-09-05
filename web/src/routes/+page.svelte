@@ -1,12 +1,4 @@
-<script lang="ts">
-  import { useQuery } from '@sveltestack/svelte-query'
-  import trpc from '$lib/trpc'
-
-  import About from '$markdown/About.svx'
-
-  // query for a welcome message from the tRPC server
-  const messageQuery = useQuery('/', async () => await trpc(fetch).query('test'))
-</script>
-
-<About />
-<p class="bg-primary btn btn-accent">{$messageQuery.data}</p>
+<h1 class="text-3xl text-primary text-center">
+  Welcome to the UC Irvine Machine Learning Repository
+</h1>
+<a href="/privacy" class="btn">View our privacy policy here!</a>
