@@ -1,15 +1,10 @@
 # UCI ML Repository Monorepo
-Here, you can find projects for...
-
-- [Website --> Sveltekit full-stack website](https://github.com/uci-ml-repo/monorepo/tree/main/web)
-- [Server --> NodeJS/Express, tRPC standalone server](https://github.com/uci-ml-repo/monorepo/tree/main/server)
-- [Nginx --> website deployment w/reverse-proxy](https://github.com/uci-ml-repo/monorepo/tree/main/nginx)
-- [Database --> MySQL database deployment and management ](https://github.com/uci-ml-repo/monorepo/tree/main/db)
-
-and some mutual technologies used by multiple projects...
-
-- [Docker --> controlled deployment for apps](https://www.docker.com/)
-- [Turborepo --> BLAZINGLY FAST build tool and monorepo management](https://turborepo.org/)
-- [Nginx --> web server/reverse-proxy for access to the apps by the public](https://www.nginx.com/)
-- [Husky --> run commands when committing, pushing, etc. to GitHub](https://typicode.github.io/husky/#/)
-- [Prisma --> database ORM](https://github.com/uci-ml-repo/monorepo/prisma)
+<pre>
+.
+├── <a href='https://typicode.github.io/husky/#/'>.husky --> install location for Husky: run commands on Github hooks</a>
+├── <a href='https://github.com/uci-ml-repo/monorepo/prisma'>prisma --> folder for Prisma: database ORM</a>
+├── <a href='https://turborepo.org/'>turbo.json --> config for Turborepo: BLAZINGLY FAST build tool/monorepo management</a>
+│
+├── <a href='https://github.com/uci-ml-repo/monorepo/tree/main/web'>web --> Sveltekit full-stack website</a>
+└── <a href='https://github.com/uci-ml-repo/monorepo/tree/main/server'>server --> standalone NodeJS/Express+tRPC server</a>
+</pre>
