@@ -33,6 +33,7 @@ _miscellaneous_
 - [ESLint --> code quality, static checking](https://eslint.org/)
 
 ## File/Directory Overview (coming soon...)
+
 .
 ├── package.json
 ├── postcss.config.cjs
