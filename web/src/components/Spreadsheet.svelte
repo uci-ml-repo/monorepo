@@ -20,7 +20,7 @@
 
   let node: HTMLJspreadsheetElement
 
-  // default configuration of a spreadsheet (can be overriden with the "options" prop)
+  // default configuration of a spreadsheet (can be overridden with the "options" prop)
   //////////////////////////////////////////
 
   export let options: Options = {}
