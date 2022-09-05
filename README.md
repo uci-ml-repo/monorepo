@@ -1,10 +1,10 @@
 # UCI ML Repository Monorepo
 Here, you can find projects for...
 
-- [Website --> Sveltekit full-stack website](https://github.com/uci-ml-repo/monorepo/web)
-- [Server --> NodeJS/Express, tRPC standalone server](https://github.com/uci-ml-repo/monorepo/server)
-- [Nginx --> website deployment w/reverse-proxy](https://github.com/uci-ml-repo/monorepo/nginx)
-- [Database --> MySQL database deployment and management ](https://github.com/uci-ml-repo/monorepo/db)
+- [Website --> Sveltekit full-stack website](https://github.com/uci-ml-repo/monorepo/tree/main/web)
+- [Server --> NodeJS/Express, tRPC standalone server](https://github.com/uci-ml-repo/monorepo/tree/main/server)
+- [Nginx --> website deployment w/reverse-proxy](https://github.com/uci-ml-repo/monorepo/tree/main/nginx)
+- [Database --> MySQL database deployment and management ](https://github.com/uci-ml-repo/monorepo/tree/main/db)
 
 and some mutual technologies used by multiple projects...
 *miscellaneous*
