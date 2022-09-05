@@ -1,18 +1,16 @@
 import * as trpc from '@trpc/server'
 import type { Context } from '../context'
 
-const appRouter = trpc
-  .router<Context>()
-  .query('/', {
-    async resolve() {
-      return `Welcome to the UCI ML Repository's tRPC API. Read more about tRPC here: https://trpc.io/`
-    },
-  })
-  .query('test', {
-    async resolve() {
-      return `Welcome to the UCI ML Repository's tRPC API. Read more about tRPC here: https://trpc.io/`
-    },
-  })
+// setup tRPC router: merge other routers, add middleware and endpoints, etc.
+//////////////////////////////////////////
+const appRouter = trpc.router<Context>().query('/', {
+  async resolve() {
+    return `Welcome to the UCI ML Repository's tRPC API. Read more about tRPC here: https://trpc.io/`
+  },
+})
 
+// the type export is used by the client to check API calls
 export type Router = typeof appRouter
+
+// export the router to be used in the context of a server, e.g. Sveltekit or Express
 export default appRouter

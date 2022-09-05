@@ -4,6 +4,7 @@
 
   // a spreadsheet can accept a 2D array of values and mutate it during spreadsheet operations
   // the parent component should bind to this value to receive updated spreadsheet data
+
   export let value: CellValue[][] = [
     ['Mazda', 2001, 2000],
     ['Pegeout', 2010, 5000],

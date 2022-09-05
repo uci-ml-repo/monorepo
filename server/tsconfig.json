@@ -2,14 +2,25 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "strict": true,
+
+    // allow importing default exports from other modules
     "esModuleInterop": true,
+
+    // module configuration for ts-node
     "target": "esnext",
     "module": "nodenext",
     "moduleResolution": "node",
-    "skipLibCheck": true,
+
+    // try to be strongly typed
     "noImplicitAny": true,
+
+    // don't compile the TypeScript files, just check them; let esbuild build it
     "noEmit": true,
+
+    // define paths from the monorepo root
     "baseUrl": "..",
+
+    // path aliases for this project
     "paths": {
       "$lib/*": ["server/src/lib/*"]
     }
