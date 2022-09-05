@@ -1,8 +1,3 @@
----
-title: Privacy Notice
-description: This privacy notice explains what information we collect through your use of the UCI Machine Learning Repository and how we use that information. By using the UCI Machine Learning Repository, you acknowledge and accept that these are the privacy practices governing the UCI Machine Learning Repository.
----
-
 # Privacy Notice
 
 This privacy notice explains what information we collect through your use of
