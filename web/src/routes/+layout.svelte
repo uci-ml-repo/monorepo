@@ -9,6 +9,10 @@
 
 <!-- provide the Svelte-Query client to the application -->
 <QueryClientProvider client={queryClient}>
+  <!-- temporary navbar -->
+  <a href="/" class="btn">Home</a>
+  <a href="/about" class="btn">About</a>
+  <a href="/privacy" class="btn">Privacy</a>
   <!-- Insert page content from routes here -->
   <slot />
 </QueryClientProvider>
