@@ -10,10 +10,20 @@
 
     // path aliases for TypeScript
     "paths": {
+      // server project
       "server": ["server"],
+
+      // Svelte components
       "$components/*": ["web/src/components/*"],
+
+      // Markdown for static pages
+      "$markdown/*": ["web/src/markdown/*"],
+
+      // needed for Sveltekit; used for utilities
       "$lib": ["web/src/lib", "src/lib"],
       "$lib/*": ["web/src/lib/*", "src/lib/*"]
     }
-  }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
