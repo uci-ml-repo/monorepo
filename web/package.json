@@ -44,6 +44,7 @@
     "@tailwindcss/typography": "^0.5.7",
     "@trpc/client": "^9.27.2",
     "@trpc/server": "^9.27.2",
+    "chart.js": "^3.9.1",
     "daisyui": "^2.24.0",
     "felte": "^1.2.3",
     "jspreadsheet-ce": "^4.11.1",

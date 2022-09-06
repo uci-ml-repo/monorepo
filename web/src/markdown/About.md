@@ -1,8 +1,3 @@
----
-title: About
-description: Information about the UCI ML Repository
----
-
 # About
 
 The UCI Machine Learning Repository is a collection of databases, domain theories,
