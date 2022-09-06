@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Spreadsheet from '$components/Spreadsheet.svelte'
+  import Spreadsheet from '$components/Spreadsheet/Spreadsheet.svelte'
   import Chart from '$components/Chart.svelte'
 </script>
 

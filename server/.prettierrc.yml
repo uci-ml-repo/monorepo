@@ -1,5 +1,11 @@
+# standard tab width
 tabWidth: 2
+
+# reasonable line width 
 printWidth: 95
+
+# less messy
 semi: false
+
+# looks prettier than double quotes
 singleQuote: true
-trailingComma: es5
