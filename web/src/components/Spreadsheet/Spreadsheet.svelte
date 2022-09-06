@@ -1,4 +1,6 @@
 <script lang="ts">
+  import './jexcel.css'
+  import './jsuites.css'
   import { onMount } from 'svelte'
   import type { CellValue, Options, JSpreadsheetElement } from 'jspreadsheet-ce'
 
