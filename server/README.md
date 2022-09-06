@@ -30,7 +30,13 @@ _miscellaneous_
 .
 ├── node_modules
 ├── package.json
-├── README.md
+│
+│
 ├── src
-└── tsconfig.json
+│   ├── <a href="https://trpc.io/docs/v9/context">context.ts --> setup context for all routers</a>
+│   ├── index.ts --> main entrypoint for standalone Express server
+│   └── routers --> all individual routers, or "controllers" for requests
+│
+│
+└── <a href="https://www.typescriptlang.org/docs/handbook/tsconfig-json.html">tsconfig.json</a>
 </pre>

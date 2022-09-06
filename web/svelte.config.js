@@ -15,6 +15,7 @@ export default {
   extensions: ['.svelte', '.svx', '.md'],
 
   preprocess: [
+    // enable default preprocessing, e.g. TypeScript, Stylus, TailwindCSS/PostCSS, etc.
     sveltePreprocess(),
 
     // use MDsveX preprocessor for .md (Markdown) and .svx files

@@ -1,12 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
-  // places where tailwind classes might be used
+  // places where TailwindCSS classes might be used
   content: ['./src/**/*.{svelte,js,ts,html}'],
 
   daisyui: {
     // which themes should be enabled/modified from the default selection
-    // set with the "data-theme" property in any html-tag, e.g. in app.html
+    // set with the "data-theme" property in any HTML tag, e.g. in app.html
     themes: [
       // some fun default themes
       'cupcake',
@@ -30,7 +30,7 @@ module.exports = {
     ],
   },
 
-  // plugins to extend base tailwind classes
+  // plugins to extend base TailwindCSS classes
   plugins: [
     // enable DaisyUI, a component library for TailwindCSS
     require('daisyui'),

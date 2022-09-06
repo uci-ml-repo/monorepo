@@ -1,6 +1,11 @@
+# use the TypeScript parser
 parser: '@typescript-eslint/parser'
+
+# adopt base configuration from TypeScript-ESLint and Prettier
 extends:
   - plugin:@typescript-eslint/recommended
   - prettier
+
+# enable the TypeScript-ESLint plugin
 plugins:
   - '@typescript-eslint'

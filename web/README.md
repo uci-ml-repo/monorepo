@@ -35,12 +35,25 @@ _miscellaneous_
 ## File/Directory Overview (coming soon...)
 
 <pre>
-	.
-	├── package.json
-	├── postcss.config.cjs
-	├── src
-	├── svelte.config.js
-	├── tailwind.config.cjs
-	├── tsconfig.json
-	└── vite.config.ts
+.
+├── build --> default output directory for "vite build"
+│
+│
+├── <a href="https://kit.svelte.dev/docs/project-structure#project-files">src</a>
+│   ├── app.css --> sets up TailwindCSS and global styles
+│   ├── app.html --> default "template" for Sveltekit config
+│   ├── components --> isolated Svelte components
+│   ├── global.d.ts --> global TypeScript definitions
+│   ├── <a href="https://kit.svelte.dev/docs/hooks">hooks.ts --> functions that can intercept server requests</a>
+│   ├── <a href="https://kit.svelte.dev/docs/modules#$lib">lib --> utilities, actions, programmatic functionality, etc.</a>
+│   ├── markdown --> static content
+│   └── routes --> file based routing
+│
+│
+├── package.json
+├── <a href="https://github.com/postcss/postcss">postcss.config.cjs --> config for PostCSS, needed to compiled TailwindCSS</a>
+├── <a href="https://kit.svelte.dev/docs/configuration">svelte.config.js --> config for Sveltekit</a>
+├── <a href="https://tailwindcss.com/docs/configuration">tailwind.config.cjs --> config for TailwindCSS and DaisyUI</a>
+├── <a href="https://www.typescriptlang.org/docs/handbook/tsconfig-json.html">tsconfig.json --> TypeScript configuration</a>
+└── <a href="https://vitejs.dev/config/">vite.config.ts --> config for Vite, module bundler for Sveltekit</a>
 </pre>
