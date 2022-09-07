@@ -12,6 +12,7 @@
     "setup": "npm i && husky install && npx prisma generate",
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
+    "format": "turbo run format",
     "lint": "turbo run lint"
   },
   "lint-staged": {

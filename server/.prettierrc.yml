@@ -1,7 +1,7 @@
 # standard tab width
 tabWidth: 2
 
-# reasonable line width 
+# reasonable line width
 printWidth: 95
 
 # less messy
