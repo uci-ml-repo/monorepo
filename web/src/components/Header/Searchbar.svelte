@@ -66,6 +66,7 @@
     <!-- expose the item prop for the slot that renders each item -->
     <Autocomplete options={autocompleteOptions} isOpen={open} searchValue={search}>
       <!-- use the "above" named slot to add in the two radio buttons that control search type -->
+      <!-- if this radio button is selected, show dataset names -->
       <div class="p-2 flex justify-evenly flex-wrap" slot="above">
         <div class="form-control">
           <label class="label cursor-pointer flex gap-3">
@@ -79,6 +80,8 @@
             />
           </label>
         </div>
+
+        <!-- if this radio button is selected, show keyword names -->
         <div class="form-control">
           <label class="label cursor-pointer flex gap-3">
             <span class="label-text">Keyword</span>
@@ -91,8 +94,9 @@
             />
           </label>
         </div>
+
+        <div class="divider m-0" />
       </div>
-      <div class="divider m-0" />
 
       <!-- use the list item slot to render each item forwarded from the virtual list -->
       <a slot="list-item" href="/" let:item on:click={() => (search = item)}>

@@ -4,7 +4,7 @@
 
 <!-- navlinks will disappear on smaller screens -->
 <ul tabindex="0" class="menu menu-horizontal text-primary hidden md:flex">
-  <li class=""><a href="/">Datasets</a></li>
+  <li><a href="/datasets">Datasets</a></li>
 
   <!-- show all options for lg screens -->
   <li class="dropdown dropdown-hover">
