@@ -15,6 +15,17 @@ class KeywordsService extends BaseDatabaseService {
     })
     return keywords.map((k) => k.keyword)
   }
+
+  async getDatasetKeywords(input: number) {
+    return await this.prisma.dataset_keywords.findMany({
+      where: {
+        datasetID: input,
+      },
+      include: {
+        keywords: true,
+      },
+    })
+  }
 }
 
 export default KeywordsService
