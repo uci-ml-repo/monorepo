@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import DescriptiveService from './descriptive'
 import DonatedDatasetsService from './donated_datasets'
 import KeywordsService from './keywords'
 
@@ -7,5 +8,6 @@ export default async (prisma: PrismaClient) => {
   return {
     keywords: new KeywordsService(prisma),
     donated_datasets: new DonatedDatasetsService(prisma),
+    descriptive: new DescriptiveService(prisma),
   }
 }
