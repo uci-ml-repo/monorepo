@@ -23,7 +23,6 @@ _miscellaneous_
 - [Prettier --> code formatting](https://prettier.io/)
 - [ESLint --> code quality, static checking](https://eslint.org/)
 
-
 ## File/Directory Overview (coming soon...)
 
 <pre>
