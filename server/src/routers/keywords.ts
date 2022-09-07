@@ -1,22 +1,25 @@
 import * as trpc from '@trpc/server'
 import type { Context } from '../context'
 import { z } from 'zod'
-import { createExpressMiddleware } from '@trpc/server/adapters/express'
 
-// setup tRPC router: merge other routers, add middleware and endpoints, etc.
-//////////////////////////////////////////
 const keywordsRouter = trpc
   .router<Context>()
-  .query('getKeywords', {
+
+  // return an array of approved keyword names
+  ////////////////////////////////////////////
+  .query('getNames', {
     async resolve({ ctx: { database_services } }) {
       return database_services.keywords.getNames()
     },
   })
+
+  // given a dataset ID, return an array of the corresponding keywords
+  ////////////////////////////////////////////
   .query('getDatasetKeywords', {
     input: z.number(),
     async resolve({ input, ctx: { database_services } }) {
       return database_services.keywords.getDatasetKeywords(input)
     },
   })
-// export the router to be used in the context of a server, e.g. Sveltekit or Express
+
 export default keywordsRouter

@@ -9,16 +9,20 @@ import keywordsRouter from './keywords'
 //////////////////////////////////////////
 const appRouter = trpc
   .router<Context>()
+
+  // test endpoint
+  ////////////////////////////////////////////
   .query('/', {
     async resolve() {
       return `Welcome to the UCI ML Repository's tRPC API. Read more about tRPC here: https://trpc.io/`
     },
   })
-  
-  //merge all other routers
+
+  // merge all other routers and scope them to their respective routes
+  ////////////////////////////////////////////
   .merge('donated_datasets.', donatedDatasetsRouter)
-  .merge('keywords_router.', keywordsRouter)
-  .merge('descriptive_router.', descriptiveRouter)
+  .merge('keywords.', keywordsRouter)
+  .merge('descriptive.', descriptiveRouter)
 
 // the type export is used by the client to check API calls
 export type Router = typeof appRouter
