@@ -1,6 +1,8 @@
 <script lang="ts">
   import './jexcel.css'
   import './jsuites.css'
+  import default_config from './default_config'
+
   import { onMount } from 'svelte'
   import type { CellValue, Options, JSpreadsheetElement } from 'jspreadsheet-ce'
 
@@ -27,32 +29,6 @@
 
   export let options: Options = {}
 
-  let columns: Options['columns'] = [
-    { title: 'Names', width: 120 },
-    {
-      title: 'Role',
-      type: 'dropdown',
-      source: ['ID', 'Target', 'Other', 'Feature'],
-      width: 120,
-    },
-    {
-      title: 'Variable Type',
-      type: 'dropdown',
-      width: 240,
-      source: ['Numerical - Continuous', 'Numerical - Discrete', 'Categorical', 'Date'],
-    },
-    { title: 'Units', width: 70 },
-    { title: 'Description', width: 140 },
-    {
-      title: 'Missing Values',
-      type: 'dropdown',
-      width: 140,
-      source: ['No', 'Yes'],
-    },
-  ]
-
-  const minDimensions: Options['minDimensions'] = [6, 10]
-
   // spreadsheet initialization
   //////////////////////////////////////////
 
@@ -64,14 +40,15 @@
 
     jspreadsheet(div, {
       data: value,
-      columns,
-      minDimensions,
       onchange: () => {
         // whenver the spreadsheet changes, update the value with the new data
         value = node.jspreadsheet.getData()
       },
 
-      // prioritize options from props
+      // load default configuration first
+      ...default_config,
+
+      // and then prioritize options from props
       ...options,
     })
   }
