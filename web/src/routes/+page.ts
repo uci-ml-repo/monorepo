@@ -23,8 +23,14 @@ export const load: Load = async ({ fetch }) => {
       })
   )
 
+  const count = await queryClient.fetchQuery(
+    'popularDatasets',
+    async () => await trpcClient(fetch).query('donated_datasets.getCount')
+  )
+
   return {
     newDatasets,
     popularDatasets,
+    count,
   }
 }

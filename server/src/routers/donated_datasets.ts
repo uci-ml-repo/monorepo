@@ -2,15 +2,19 @@ import * as trpc from '@trpc/server'
 import type { Context } from '../context'
 import { z } from 'zod'
 
-// setup tRPC router: merge other routers, add middleware and endpoints, etc.
-//////////////////////////////////////////
 const donatedDatasetsRouter = trpc
   .router<Context>()
+
+  // return an array of approved dataset names
+  ////////////////////////////////////////////
   .query('getNames', {
     async resolve({ ctx: { database_services } }) {
       return await database_services.donated_datasets.getNames()
     },
   })
+
+  // return an array of dataset objects matching any input parameters
+  ////////////////////////////////////////////
   .query('getDatasets', {
     input: z
       .object({
@@ -26,5 +30,12 @@ const donatedDatasetsRouter = trpc
     },
   })
 
-// export the router to be used in the context of a server, e.g. Sveltekit or Express
+  // return the number of approved datasets
+  ////////////////////////////////////////////
+  .query('getCount', {
+    async resolve({ ctx: { database_services } }) {
+      return await database_services.donated_datasets.getCount()
+    },
+  })
+
 export default donatedDatasetsRouter

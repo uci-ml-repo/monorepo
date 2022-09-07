@@ -1,11 +1,14 @@
 import { PrismaClient, descriptive_questions } from '@prisma/client'
 import BaseDatabaseService from './base_database_service'
 
+// temporary solution for retrieving the questions
+////////////////////////////////////////////
 interface DescriptivePrompt {
   question: string // the question to display on the UI for this property
   default: string // default value of the field
   value: keyof descriptive_questions // property of descriptive question from database
 }
+
 const descriptive_prompts: DescriptivePrompt[] = [
   {
     question: 'For what purpose was the dataset created?',
@@ -55,6 +58,8 @@ class DescriptiveService extends BaseDatabaseService {
     super(prisma)
   }
 
+  // given a dataset ID, return an object of descriptive questions
+  ////////////////////////////////////////////
   async getDescriptive(input: number) {
     const dataset = await this.prisma.donated_datasets.findFirst({
       where: { ID: input },
@@ -65,6 +70,8 @@ class DescriptiveService extends BaseDatabaseService {
     return dataset?.descriptive_questions
   }
 
+  // given a dataset ID, return an array of question/answer tuples
+  ////////////////////////////////////////////
   async getDescriptiveQA(input: number) {
     const dataset = await this.prisma.donated_datasets.findFirst({
       where: { ID: input },

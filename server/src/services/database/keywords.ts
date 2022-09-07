@@ -6,6 +6,8 @@ class KeywordsService extends BaseDatabaseService {
     super(prisma)
   }
 
+  // return an array of accepted keyword names
+  ////////////////////////////////////////////
   async getNames() {
     const keywords = await this.prisma.keywords.findMany({
       where: {
@@ -16,6 +18,8 @@ class KeywordsService extends BaseDatabaseService {
     return keywords.map((k) => k.keyword)
   }
 
+  // given a datasetID, return the keywords associated with the dataset
+  ////////////////////////////////////////////
   async getDatasetKeywords(input: number) {
     return await this.prisma.dataset_keywords.findMany({
       where: {

@@ -25,7 +25,7 @@ class DonatedDatasetsService extends BaseDatabaseService {
     return dataset_names.map((d) => d.Name)
   }
 
-  // get multiple datasets, e.g. to feature on the home page, params:
+  // get multiple datasets, e.g. to feature on the home page
   // order, e.g. by DateDonated, NumHits, etc.
   // limit: how many to get
   // sort: ascending or descending
@@ -34,7 +34,6 @@ class DonatedDatasetsService extends BaseDatabaseService {
     const { order, sort, limit } = args
 
     const sortBy = sort ?? 'desc'
-
     const orderBy = order ? { [order]: sortBy } : {}
 
     return await this.prisma.donated_datasets.findMany({
@@ -43,6 +42,16 @@ class DonatedDatasetsService extends BaseDatabaseService {
       },
       orderBy,
       take: limit,
+    })
+  }
+
+  // count the number of approved datasets, e.g. for the home page Hero content
+  //////////////////////////////////////////
+  async getCount() {
+    return await this.prisma.donated_datasets.count({
+      where: {
+        Status: 'APPROVED',
+      },
     })
   }
 }
