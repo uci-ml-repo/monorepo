@@ -1,11 +1,20 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import BaseDatabaseService from './base_database_service'
 
+interface getDatasetsProps {
+  // the controller can request a sort by any valid key
+  order?: keyof Prisma.donated_datasetsOrderByWithRelationInput
+  limit?: number
+  sort?: Prisma.SortOrder
+}
+
 class DonatedDatasetsService extends BaseDatabaseService {
   constructor(prisma: PrismaClient) {
     super(prisma)
   }
 
+  // get the names of datasets, e.g. for the searchbar autocomplete
+  //////////////////////////////////////////
   async getNames() {
     const dataset_names = await this.prisma.donated_datasets.groupBy({
       by: ['Name'],
@@ -16,23 +25,24 @@ class DonatedDatasetsService extends BaseDatabaseService {
     return dataset_names.map((d) => d.Name)
   }
 
-  async selectDatasets(
-    query: Prisma.donated_datasetsFindManyArgs['where'],
-    limit: Prisma.donated_datasetsFindManyArgs['take'],
-    filter:
-      | Prisma.donated_datasetsFindManyArgs['orderBy']
-      | Record<string, Record<string, unknown>>
-  ) {
+  // get multiple datasets, e.g. to feature on the home page, params:
+  // order, e.g. by DateDonated, NumHits, etc.
+  // limit: how many to get
+  // sort: ascending or descending
+  //////////////////////////////////////////
+  async getDatasets(args: getDatasetsProps = {}) {
+    const { order, sort, limit } = args
+
+    const sortBy = sort ?? 'desc'
+
+    const orderBy = order ? { [order]: sortBy } : {}
+
     return await this.prisma.donated_datasets.findMany({
       where: {
         Status: 'APPROVED',
-        ...query,
       },
-      orderBy: {
-        NumHits: 'desc',
-      },
+      orderBy,
       take: limit,
-      ...filter,
     })
   }
 }

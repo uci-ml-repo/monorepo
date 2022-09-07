@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="uci"> <!-- set the site-wide DaisyUI theme here -->
-  <meta charset="UTF-8" />
+  <head>
+    <meta charset="UTF-8" />
+    
+    <meta name="description" content="View datasets from the machine learning community all over the world!" />
+    
+    <!-- ensure website scales properly on different sized displays -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- add icon to tab -->
+    <link rel="icon" href="/favicon.ico">
+    
+    <title>UC Irvine Machine Learning Repository</title>
+    
+    <!-- Insert headers from Sveltekit here -->
+    %sveltekit.head%
+  </head>
 
-  <meta name="description" content="View datasets from the machine learning community all over the world!" />
-
-  <!-- ensure website scales properly on different sized displays -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- add icon to tab -->
-  <link rel="icon" href="/favicon.ico">
-
-  <title>UC Irvine Machine Learning Repository</title>
-
-	<!-- Insert headers from Sveltekit here -->
-  %sveltekit.head%
-
-	<!-- Insert content from Sveltekit here -->
-	%sveltekit.body%
+	<body>
+    <!-- Insert content from Sveltekit here -->
+    <div id='svelte-is-based'>
+      %sveltekit.body%
+    </div>
+	</body>
 </html>
