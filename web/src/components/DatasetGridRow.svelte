@@ -5,6 +5,8 @@
   import ColumnsIcon from '$components/Icons/Columns.svelte'
   import RowsIcon from '$components/Icons/Rows.svelte'
 
+  import Collapse from './Collapse.svelte'
+
   // subset of a dataset object needed to initialize this component
   interface Dataset {
     ID: number
@@ -16,9 +18,28 @@
     Task: string | null
     NumInstances: number
     NumAttributes: number | null
+
+    Area: string | null
+    Types: string | null
+    AttributeTypes: string | null
+    DateDonated: Date | string | null
+    NumHits: number
   }
 
   export let dataset: Dataset
+
+  // toggle, mostly indicating if this grid is being used on the home page (false)
+  // or on its own display/listing page (true)
+  export let extraInfo = false
+
+  let collapseOpen = false
+
+  const toggleCollapse = () => {
+    // only toggle collapse if grid should display additional info
+    if (extraInfo) {
+      collapseOpen = !collapseOpen
+    }
+  }
 
   // image src for the dataset avatar
   $: src =
@@ -27,51 +48,60 @@
       : '/ml/datasets/default/SmallLarge.jpg'
 </script>
 
-<a href="/dataset/{dataset.slug}/{dataset.ID}" class="hover:bg-base-200 p-2 rounded-lg">
-  <div class="flex flex-col">
-    <h1 class="text-primary text-center text-xl hover:underline">
-      {dataset.Name}
-    </h1>
-
-    <!-- two avatars are actually on the screen; they are hidden/visible at different media queries -->
-
-    <!-- Avatar that will appear under the title when screen is small -->
-    <!-- in a flex container with the name to account for long names/overflowing -->
-    <div class="sm:hidden avatar col-span-1 w-full my-2 self-center justify-center">
-      <div class="mask mask-squircle w-12 h-12 flex align-center">
-        <img {src} alt="dataset-graphic-small-screen" />
-      </div>
-    </div>
-  </div>
-
+<div class="hover:bg-base-200 p-2 rounded-lg" on:click={toggleCollapse}>
+  <!-- two different avatars are actually on the page; they are hidden/visible at different media queries -->
   <!-- Avatar that will appear to the left of the row when screen is larger -->
-  <div class="grid grid-cols-12">
+  <div class="grid grid-cols-12 items-center">
     <div class="hidden sm:flex avatar col-span-1 self-center justify-self-center">
       <div class="mask mask-squircle w-12 h-12 flex align-center">
         <img {src} alt="dataset-graphic-large-screen" />
       </div>
     </div>
 
-    <!-- abstract and preview icons to the right of the avatar, flex column -->
+    <!-- abstract will show up always if there isn't extra info present -->
     <div class="col-span-11 gap-5 ml-4">
-      <!-- abstract-->
-      <h2 class="my-4 line-clamp-4 break-word overflow-x-hidden">
+      <div class="flex flex-col">
+        <h1 class="text-primary font-bold break-word underline">
+          <a href="/dataset/{dataset.ID}/{dataset.slug}" class="btn btn-ghost">
+            {dataset.Name}
+          </a>
+        </h1>
+
+        <!-- Avatar that will appear under the title when screen is small -->
+        <!-- in a flex container with the name to account for long names/overflowing -->
+        <div class="sm:hidden avatar col-span-1 w-full my-2 self-center justify-center">
+          <div class="mask mask-squircle w-12 h-12 flex align-center">
+            <img {src} alt="dataset-graphic-small-screen" />
+          </div>
+        </div>
+      </div>
+      <h2 class="my-4 line-clamp-3 break-word overflow-x-hidden" class:md:hidden={extraInfo}>
         {dataset.Abstract}
       </h2>
 
-      <!-- preview icons, each take up equal space in a 12 column grid -->
-      <div class="hidden md:grid grid-cols-12 gap-4">
-        <div class="col-span-4 flex gap-2">
+      <!-- preview icons, each take up equal space in a 9 or 12 column grid -->
+      <!-- show 3 icons on home page when there's no extra info; 4 icons on dataset listing page -->
+      <div class="hidden md:grid {extraInfo ? 'grid-cols-12' : 'grid-cols-9'} gap-4">
+        <div class="col-span-3 flex gap-2">
           <ClipboardIcon />
           {dataset.Task}
         </div>
-        <div class="col-span-4 flex gap-2">
+
+        <!-- show Types if there is additional info at the bottom -->
+        {#if extraInfo}
+          <div class="col-span-3 flex gap-2">
+            <ClipboardIcon />
+            {dataset.Types}
+          </div>
+        {/if}
+
+        <div class="col-span-3 flex gap-2">
           <ColumnsIcon />
           {dataset?.NumInstances
             ? AbbrevNum.format(dataset.NumInstances) + '  Instances'
             : 'N/A'}
         </div>
-        <div class="col-span-4 flex gap-2">
+        <div class="col-span-3 flex gap-2">
           <RowsIcon />
           {dataset?.NumAttributes
             ? AbbrevNum.format(dataset.NumAttributes) + '  Attributes'
@@ -80,5 +110,40 @@
       </div>
     </div>
   </div>
-</a>
-<div class="divider my-0" />
+</div>
+
+<!-- collapsible content that can appear on the dataset listing page -->
+<div>
+  <Collapse bind:collapseOpen completeClose duration={100}>
+    <div class="overflow-x-auto">
+      <table class="table w-full">
+        <!-- head -->
+        <thead>
+          <tr>
+            <!-- override default daisyUI sticky positioning of left column -->
+            <th class="bg-secondary" style="position: relative">Subject Area</th>
+            <th class="bg-secondary">Attribute Type</th>
+            <th class="bg-secondary">Date Donated</th>
+            <th class="bg-secondary"># Views</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- additional information in a table -->
+          <tr>
+            <td>{dataset.Area ?? 'N/A'}</td>
+            <td>{dataset.AttributeTypes ?? 'N/A'}</td>
+            <td
+              >{dataset.DateDonated
+                ? new Date(dataset.DateDonated).toLocaleDateString('en-US')
+                : 'N/A'}</td
+            >
+            <td>{AbbrevNum.format(dataset.NumInstances || 0)}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="my-4 break-word overflow-x-hidden">
+        {dataset.Abstract}
+      </p>
+    </div>
+  </Collapse>
+</div>

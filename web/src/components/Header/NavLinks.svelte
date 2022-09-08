@@ -4,14 +4,14 @@
 
 <!-- navlinks will disappear on smaller screens -->
 <ul tabindex="0" class="menu menu-horizontal text-primary hidden md:flex">
-  <li class=""><a href="/">Datasets</a></li>
+  <li><a href="/datasets">Datasets</a></li>
 
   <!-- show all options for lg screens -->
   <li class="dropdown dropdown-hover">
     <a href="/">
       <a href="/" class="hidden lg:block"> Donate a Dataset </a>
       <a href="/" class="lg:hidden"> Contribute a Dataset </a>
-      <CaretIcon class="rotate-90 block lg:hidden" />
+      <CaretIcon class="block lg:hidden" />
     </a>
 
     <!-- show a dropdown for screens smaller than lg -->

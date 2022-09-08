@@ -26,7 +26,7 @@
           Here, you can donate and find datasets used by millions of people all around the world!
         </p>
         <div class="flex justify-center gap-5 flex-wrap">
-          <a href="/" class="btn btn-primary">View Datasets</a>
+          <a href="/datasets" class="btn btn-primary">View Datasets</a>
           <a href="/" class="btn btn-secondary">Contribute a Dataset</a>
         </div>
       </div>
@@ -39,6 +39,7 @@
       <h1 class="text-center text-2xl text-primary font-bold">Popular Datasets</h1>
       {#each data.popularDatasets || [] as dataset}
         <DatasetGridRow {dataset} />
+        <div class="divider my-0" />
       {/each}
     </div>
 
@@ -46,6 +47,7 @@
       <h1 class="text-center text-2xl text-primary font-bold">New Datasets</h1>
       {#each data.newDatasets || [] as dataset}
         <DatasetGridRow {dataset} />
+        <div class="divider my-0" />
       {/each}
     </div>
   </div>

@@ -5,12 +5,12 @@
 
 /* Apply DaisyUI theme/TailwindCSS classes to the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary rounded-full;
+  @apply bg-secondary rounded-full;
 }
 
 /* Apply DaisyUI theme/TailwindCSS classes to the scrollbar track */
 ::-webkit-scrollbar {
-  @apply h-3 w-3 bg-secondary;
+  @apply h-3 w-3 bg-primary;
 }
 
 /* Apply DaisyUI theme/TailwindCSS classes to the scrollbar corner */
