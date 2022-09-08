@@ -25,7 +25,7 @@
   <!-- main title in the center -->
   <div class="flex-1 flex items-center justify-between w-full px-4">
     <slot name="title" />
-    <Caret open={contentOpen} />
+    <Caret class="text-primary" open={contentOpen} />
   </div>
 
   <!-- optional icon to the right of the title, bind to the open to control its visiblity -->

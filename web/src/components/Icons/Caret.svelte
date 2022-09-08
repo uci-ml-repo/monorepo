@@ -7,7 +7,7 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 320 512"
-  class={`fill-current ${extra_classes} h-5 transition-all text-primary`}
+  class="fill-current {extra_classes} h-5 transition-all text-primary}"
   class:-rotate-180={open}
 >
   <path
