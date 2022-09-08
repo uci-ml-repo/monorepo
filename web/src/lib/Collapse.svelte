@@ -23,7 +23,7 @@
   <h1>Subject Area</h1>
   <slot name="collapse-title" />
 </div>
-<div use:collapse={{ open: iconOpen }} class="overflow-hidden w-96 h-0">
+<div use:collapse={{ open: iconOpen }} class="overflow-hidden w-4/6 h-0">
   Amet corrupti perspiciatis dicta atque repellendus error Delectus rerum necessitatibus
   similique minima impedit blanditiis. Perspiciatis facere officia velit vitae beatae
   Recusandae nostrum fugit quia ad ea! Provident molestias debitis repellat eius pariatur,

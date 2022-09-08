@@ -10,8 +10,15 @@ interface CollapseParams {
 
 // prior to using, if the component starts off closed, manually set the
 // style (height or width) to the closed size; after collapse mounts, then it will control the inline style e.g.
-// let isOpen = false
-// <div use:collapse={{open: isOpen}} style='width: 0' />
+// ```svelte
+// <script>
+//  let isOpen = false;
+// </script>
+//
+// <div use:collapse={{open: isOpen}} style='width: 0'>
+//  {content here}
+// </div>
+// ```
 ////////////////////////////////////////////
 
 export default function collapse(node: HTMLElement, params: CollapseParams): ActionReturn {
@@ -86,9 +93,14 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
     // whenever a parameter changes, e.g. open, this function is run with all the new parameters
     // and sets the dimensions, parameters are defined when initializing use:collapse, e.g.
     // ```svelte
-    // let isOpen = false
-    // let isHorizontal = true
-    // <div use:collapse={{ open: isOpen, horizontal: isHorizontal }} />
+    // <script>
+    //  let isOpen = false;
+    //  let isHorizontal = true;
+    // </script>
+    //
+    // <div use:collapse={{ open: isOpen, horizontal: isHorizontal }}>
+    //  {content here}
+    //  </div>
     // ```
     // will update if isOpen changes or isHorizontal changes
     update: (params: CollapseParams) => {
