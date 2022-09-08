@@ -1,13 +1,16 @@
 <script lang="ts">
   let extra_classes = ''
+  export let open = false
   export { extra_classes as class }
 </script>
 
 <svg
-  class={`fill-current ${extra_classes}`}
   xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  ><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg
+  viewBox="0 0 320 512"
+  class={`fill-current ${extra_classes} h-5 transition-all text-primary`}
+  class:-rotate-180={open}
+>
+  <path
+    d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"
+  /></svg
 >

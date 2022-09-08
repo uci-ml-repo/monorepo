@@ -1,13 +1,17 @@
 <script lang="ts">
+  import type { TransitionConfig } from 'svelte/transition'
+  import Caret from './Icons/Caret.svelte'
+
   // parent component can bind to the collapse open and control the state
   export let collapseOpen = false
-
-  import type { TransitionConfig } from 'svelte/transition'
 
   // collapse will attempt to infer the closed size, but can close all the way
   export let completeClose = false
 
-  export let duration = 300
+  // can display a caret
+  export let withCaret = false
+
+  export let duration = 250
 
   // bind the base height to the closed state
   let baseHeight = 0
@@ -44,7 +48,19 @@
       },
     }
   }
+
+  const toggleClose = () => {
+    collapseOpen = !collapseOpen
+  }
 </script>
+
+<!-- a parent component, e.g. a list button, can be passed as the toggle trigger -->
+{#if $$slots.parent}
+  <div class="flex justify-between btn btn-ghost w-full" on:click|preventDefault={toggleClose}>
+    <slot name="parent" />
+    <Caret open={collapseOpen} />
+  </div>
+{/if}
 
 {#if collapseContentOpen}
   <div

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import DatasetFilterSidebar from '$components/DatasetFilterSidebar/index.svelte'
+
   import type { InferQueryOutput } from '$lib/trpc'
   import DatasetGridRow from '$components/DatasetGridRow.svelte'
 
@@ -14,8 +16,8 @@
 </svelte:head>
 
 <div class="flex">
-  <div class="hidden lg:flex w-[20%]">
-    <h1 class="text-4xl text-primary font-bold">Sidebar</h1>
+  <div class="hidden lg:flex w-96">
+    <DatasetFilterSidebar />
   </div>
   <div class="flex flex-col col-span-1 gap-3 p-4">
     <h1 class="text-4xl text-primary font-bold">Browse Datasets</h1>
