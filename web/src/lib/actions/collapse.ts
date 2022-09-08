@@ -12,11 +12,12 @@ interface CollapseParams {
 // style (height or width) to the closed size; after collapse mounts, then it will control the inline style e.g.
 // ```svelte
 // <script>
+//  import { collapse } from '$lib/actions'
 //  let isOpen = false;
 // </script>
 //
 // <div use:collapse={{open: isOpen}} style='width: 0'>
-//  {content here}
+//  <!-- content here -->
 // </div>
 // ```
 ////////////////////////////////////////////
@@ -94,12 +95,13 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
     // and sets the dimensions, parameters are defined when initializing use:collapse, e.g.
     // ```svelte
     // <script>
+    //  import { collapse } from '$lib/actions'
     //  let isOpen = false;
     //  let isHorizontal = true;
     // </script>
     //
     // <div use:collapse={{ open: isOpen, horizontal: isHorizontal }}>
-    //  {content here}
+    //  <!-- content here -->
     //  </div>
     // ```
     // will update if isOpen changes or isHorizontal changes
