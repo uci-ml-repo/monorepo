@@ -8,19 +8,20 @@ interface CollapseParams {
   horizontal?: boolean
 }
 
-// prior to using, if the component starts off closed, manually set the
-// style (height or width) to the closed size; after collapse mounts, then it will control the inline style e.g.
-// ```svelte
-// <script>
-//  import { collapse } from '$lib/actions'
-//  let isOpen = false;
-// </script>
-//
-// <div use:collapse={{open: isOpen}} style='width: 0'>
-//  <!-- content here -->
-// </div>
-// ```
-////////////////////////////////////////////
+/*
+ * prior to using, if the component starts off closed, manually set the
+ * style (height or width) to the closed size; after collapse mounts, then it will control the inline style e.g.
+ * ```svelte
+ * <script>
+ *  import { collapse } from '$lib/actions'
+ *  let isOpen = false;
+ * </script>
+
+ * <div use:collapse={{open: isOpen}} style='width: 0'>
+ *  <!-- content here -->
+ * </div>
+```
+*/
 
 export default function collapse(node: HTMLElement, params: CollapseParams): ActionReturn {
   // height to transition to when collapse closes
@@ -42,10 +43,11 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
   // overflow should be hidden for transitions to work
   node.style.overflow = 'hidden'
 
-  // utility functions to improve readability
-  // dependeing on orientation and open state, set the width or height to
-  // one of the pre-computed values above, as well as the display if necessary (e.g. for line clamp)
-  ////////////////////////////////////////////
+  /*
+   * utility functions to improve readability
+   * depending on orientation and open state, set the width or height to
+   * one of the pre-computed values above, as well as the display if necessary (e.g. for line clamp)
+   */
   const setHorizontal = (open: boolean) => {
     if (open) {
       node.style.width = scrollWidth + 'px'
@@ -74,6 +76,11 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
     }
   }
 
+  // crude function to calculate the duration of a transition
+  const getAutoDuration = (params: CollapseParams) => {
+    return Math.log(params.horizontal ? node.scrollWidth : node.scrollHeight) + 200
+  }
+
   // if orientation is vertical, set most of the line clamp properties
   // the element will successfully implement ellipsis + line clamp when display is set to -webkit-box
   if (!params.horizontal) {
@@ -87,24 +94,25 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
 
   // add transition CSS to the component after the correct starting dimensions are set
   // if the starting dimension is wrong, then wait until it's finished changing to set a transition
-  const duration = params.duration ?? 500
+  const duration = params.duration ?? getAutoDuration(params)
   setTimeout(() => (node.style.transition = `all ${duration}ms`))
 
   return {
-    // whenever a parameter changes, e.g. open, this function is run with all the new parameters
-    // and sets the dimensions, parameters are defined when initializing use:collapse, e.g.
-    // ```svelte
-    // <script>
-    //  import { collapse } from '$lib/actions'
-    //  let isOpen = false;
-    //  let isHorizontal = true;
-    // </script>
-    //
-    // <div use:collapse={{ open: isOpen, horizontal: isHorizontal }}>
-    //  <!-- content here -->
-    //  </div>
-    // ```
-    // will update if isOpen changes or isHorizontal changes
+    /* whenever a parameter changes, e.g. open, this function is run with all the new parameters
+     * and sets the dimensions, parameters are defined when initializing use:collapse, e.g.
+     * ```svelte
+     * <script>
+     *  import { collapse } from '$lib/actions'
+     *  let isOpen = false;
+     *  let isHorizontal = true;
+     * </script>
+     *
+     * <div use:collapse={{ open: isOpen, horizontal: isHorizontal }}>
+     *  <!-- content here -->
+     *  </div>
+     * ```
+     * will update if isOpen changes or isHorizontal changes
+     */
     update: (params: CollapseParams) => {
       setDimensions(params)
     },
