@@ -8,6 +8,15 @@ interface getDatasetsProps {
   sort?: Prisma.SortOrder
 }
 
+interface searchDatasetProps {
+  attribute_type?: string
+  type?: string
+  num_attributes?: string
+  num_instances?: string
+  subject_area?: string[]
+  task?: string
+}
+
 class DonatedDatasetsService extends BaseDatabaseService {
   constructor(prisma: PrismaClient) {
     super(prisma)
@@ -51,6 +60,33 @@ class DonatedDatasetsService extends BaseDatabaseService {
     return await this.prisma.donated_datasets.count({
       where: {
         Status: 'APPROVED',
+      },
+    })
+  }
+
+  async searchDatasets(args: searchDatasetProps = {}) {
+    return await this.prisma.donated_datasets.findMany({
+      where: {
+        Status: 'APPROVED',
+        // ...(args.attribute_type ? {AttributeTypes: {contains: args.attribute_type}} : {}),
+        ...(args.attribute_type == 'Categorical'
+          ? { AttributeTypes: 'Categorical' }
+          : args.attribute_type == 'Numerical'
+          ? { OR: [{ AttributeTypes: 'Integer' }, { AttributeTypes: 'Real' }] }
+          : args.attribute_type == 'Mixed'
+          ? {
+              OR: [
+                { AttributeTypes: 'Integer' },
+                { AttributeTypes: 'Real' },
+                { AttributeTypes: 'Categorical' },
+              ],
+            }
+          : {}),
+
+        // ...(args.type ? {Types: {contains: args.type}} : {}),
+        // ...(args.num_attributes ? {NumAttributes: args.num_attributes} : {}),
+        // ...(args.num_instances ? {NumInstances: args.num_instances} : {}),
+        // ...(args.subject_area ? {Area: {search: args.subject_area.join(' | ')}}: {}),
       },
     })
   }

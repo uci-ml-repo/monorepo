@@ -38,4 +38,20 @@ const donatedDatasetsRouter = trpc
     },
   })
 
+  .query('searchDatasets', {
+    async resolve({ input, ctx: { database_services } }) {
+      const fakeInput = {
+        attribute_type: 'Mixed',
+        type: 'Tabular',
+        num_attributes: '10',
+        num_instances: '10',
+        subject_area: ['Computer Science', 'Law'],
+        task: 'Classification',
+      }
+      const result = await database_services.donated_datasets.searchDatasets(fakeInput)
+      console.log(result)
+      return result
+    },
+  })
+
 export default donatedDatasetsRouter
