@@ -9,8 +9,11 @@ interface CollapseParams {
 }
 
 // prior to using, if the component starts off closed, manually set the
-// style (height or width) to the closed size; after collapse mounts, then it will control the inline style
+// style (height or width) to the closed size; after collapse mounts, then it will control the inline style e.g.
+// let isOpen = false
+// <div use:collapse={{open: isOpen}} style='width: 0' />
 ////////////////////////////////////////////
+
 export default function collapse(node: HTMLElement, params: CollapseParams): ActionReturn {
   // height to transition to when collapse closes
   // e.g. line height = 24px and line clamp = 2 means that it will be 48px when closed
@@ -28,10 +31,12 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
   const baseWidth = 0
   const scrollWidth = node.scrollWidth
 
-  // should set this in the parent component if it starts off closed
+  // overflow should be hidden for transitions to work
   node.style.overflow = 'hidden'
 
   // utility functions to improve readability
+  // dependeing on orientation and open state, set the width or height to
+  // one of the pre-computed values above, as well as the display if necessary (e.g. for line clamp)
   ////////////////////////////////////////////
   const setHorizontal = (open: boolean) => {
     if (open) {
@@ -73,12 +78,19 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
   setDimensions(params)
 
   // add transition CSS to the component after the correct starting dimensions are set
-  const duration = params.duration ?? 500
-
   // if the starting dimension is wrong, then wait until it's finished changing to set a transition
+  const duration = params.duration ?? 500
   setTimeout(() => (node.style.transition = `all ${duration}ms`))
 
   return {
+    // whenever a parameter changes, e.g. open, this function is run with all the new parameters
+    // and sets the dimensions, parameters are defined when initializing use:collapse, e.g.
+    // ```svelte
+    // let isOpen = false
+    // let isHorizontal = true
+    // <div use:collapse={{ open: isOpen, horizontal: isHorizontal }} />
+    // ```
+    // will update if isOpen changes or isHorizontal changes
     update: (params: CollapseParams) => {
       setDimensions(params)
     },
