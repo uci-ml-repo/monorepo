@@ -3,34 +3,23 @@ import trpcClient from '$lib/trpc'
 import type { Load } from '@sveltejs/kit'
 
 export const load: Load = async ({ fetch }) => {
-  const newDatasets = await queryClient.fetchQuery(
-    'newDatasets',
-    async () =>
-      await trpcClient(fetch).query('donated_datasets.getDatasets', {
-        order: 'DateDonated',
-        limit: 6,
-        sort: 'desc',
-      })
-  )
-
-  const popularDatasets = await queryClient.fetchQuery(
-    'popularDatasets',
+  const datasets = await queryClient.fetchQuery(
+    'datasets',
     async () =>
       await trpcClient(fetch).query('donated_datasets.getDatasets', {
         order: 'NumHits',
-        limit: 6,
+        limit: 20,
         sort: 'desc',
       })
   )
 
   const count = await queryClient.fetchQuery(
-    'popularDatasets',
+    'datasetCount',
     async () => await trpcClient(fetch).query('donated_datasets.getCount')
   )
 
   return {
-    newDatasets,
-    popularDatasets,
+    datasets,
     count,
   }
 }

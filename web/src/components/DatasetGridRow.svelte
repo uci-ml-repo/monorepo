@@ -34,6 +34,10 @@
 
   let collapseOpen = false
 
+  export let showAll = false
+
+  $: collapseOpen = showAll
+
   const toggleCollapse = () => {
     // only toggle collapse if grid should display additional info
     if (extraInfo) {
