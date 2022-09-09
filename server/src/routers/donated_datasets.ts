@@ -38,7 +38,6 @@ const donatedDatasetsRouter = trpc
     },
   })
 
-
   .query('searchDatasets', {
     async resolve({ input, ctx: { database_services } }) {
       const fakeInput = {
@@ -52,6 +51,8 @@ const donatedDatasetsRouter = trpc
       const result = await database_services.donated_datasets.searchDatasets(fakeInput)
       console.log(result)
       return result
+    },
+  })
 
   // given an ID, return the dataset
   ////////////////////////////////////////////
@@ -59,7 +60,6 @@ const donatedDatasetsRouter = trpc
     input: z.number(),
     async resolve({ input, ctx: { database_services } }) {
       return await database_services.donated_datasets.getById(input)
-
     },
   })
 
