@@ -38,4 +38,13 @@ const donatedDatasetsRouter = trpc
     },
   })
 
+  // given an ID, return the dataset
+  ////////////////////////////////////////////
+  .query('getById', {
+    input: z.number(),
+    async resolve({ input, ctx: { database_services } }) {
+      return await database_services.donated_datasets.getById(input)
+    },
+  })
+
 export default donatedDatasetsRouter

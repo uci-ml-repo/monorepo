@@ -15,7 +15,11 @@
   <Header>
     <!-- add the body of the page and the footer to the default slot -->
     <div>
-      <slot />
+      <!-- the main content should take up at least 1 vertical screen to push the footer to the bottom -->
+      <div class="min-h-screen">
+        <slot />
+      </div>
+      <!-- footer is below main content-->
       <Footer />
     </div>
   </Header>

@@ -7,6 +7,8 @@
 
   import Collapse from './Collapse.svelte'
 
+  import Accordion from '$components/Accordion.svelte'
+
   // subset of a dataset object needed to initialize this component
   interface Dataset {
     ID: number
@@ -32,18 +34,7 @@
   // or on its own display/listing page (true)
   export let extraInfo = false
 
-  let collapseOpen = false
-
   export let showAll = false
-
-  $: collapseOpen = showAll
-
-  const toggleCollapse = () => {
-    // only toggle collapse if grid should display additional info
-    if (extraInfo) {
-      collapseOpen = !collapseOpen
-    }
-  }
 
   // image src for the dataset avatar
   $: src =
@@ -52,73 +43,75 @@
       : '/ml/datasets/default/SmallLarge.jpg'
 </script>
 
-<div class="hover:bg-base-200 p-2 rounded-lg" on:click={toggleCollapse}>
-  <!-- two different avatars are actually on the page; they are hidden/visible at different media queries -->
-  <!-- Avatar that will appear to the left of the row when screen is larger -->
-  <div class="grid grid-cols-12 items-center">
-    <div class="hidden sm:flex avatar col-span-1 self-center justify-self-center">
-      <div class="mask mask-squircle w-12 h-12 flex align-center">
-        <img {src} alt="dataset-graphic-large-screen" />
+<Accordion open={showAll}>
+  <!-- title slot of the accordion is any content that's displayed when closed -->
+  <div slot="title" class="hover:bg-base-200 p-2 rounded-lg">
+    <!-- two different avatars are actually on the page; they are hidden/visible at different media queries -->
+    <!-- Avatar that will appear to the left of the row when screen is larger -->
+    <div class="grid grid-cols-12 items-center">
+      <div class="hidden sm:flex avatar col-span-1 self-center justify-self-center">
+        <div class="mask mask-squircle w-12 h-12 flex align-center">
+          <img {src} alt="dataset-graphic-large-screen" />
+        </div>
       </div>
-    </div>
 
-    <!-- abstract will show up always if there isn't extra info present -->
-    <div class="col-span-11 gap-5 ml-4">
-      <div class="flex flex-col">
-        <h1 class="text-primary font-bold break-word underline">
-          <a href="/dataset/{dataset.ID}/{dataset.slug}" class="btn btn-ghost">
-            {dataset.Name}
-          </a>
-        </h1>
+      <!-- abstract will show up always if there isn't extra info present -->
+      <div class="col-span-11 gap-5 ml-4">
+        <div class="flex flex-col">
+          <h1 class="text-primary break-word underline">
+            <a href="/dataset/{dataset.ID}/{dataset.slug}" class="btn btn-ghost text-xl -ml-4">
+              {dataset.Name}
+            </a>
+          </h1>
 
-        <!-- Avatar that will appear under the title when screen is small -->
-        <!-- in a flex container with the name to account for long names/overflowing -->
-        <div class="sm:hidden avatar col-span-1 w-full my-2 self-center justify-center">
-          <div class="mask mask-squircle w-12 h-12 flex align-center">
-            <img {src} alt="dataset-graphic-small-screen" />
+          <!-- Avatar that will appear under the title when screen is small -->
+          <!-- in a flex container with the name to account for long names/overflowing -->
+          <div class="sm:hidden avatar col-span-1 w-full my-2 self-center justify-center">
+            <div class="mask mask-squircle w-12 h-12 flex align-center">
+              <img {src} alt="dataset-graphic-small-screen" />
+            </div>
           </div>
         </div>
-      </div>
-      <h2 class="my-4 line-clamp-3 break-word overflow-x-hidden" class:md:hidden={extraInfo}>
-        {dataset.Abstract}
-      </h2>
+        <h2 class="my-4 line-clamp-3 break-word overflow-x-hidden" class:md:hidden={extraInfo}>
+          {dataset.Abstract}
+        </h2>
 
-      <!-- preview icons, each take up equal space in a 9 or 12 column grid -->
-      <!-- show 3 icons on home page when there's no extra info; 4 icons on dataset listing page -->
-      <div class="hidden md:grid {extraInfo ? 'grid-cols-12' : 'grid-cols-9'} gap-4">
-        <div class="col-span-3 flex gap-2">
-          <ClipboardIcon />
-          {dataset.Task}
-        </div>
-
-        <!-- show Types if there is additional info at the bottom -->
-        {#if extraInfo}
+        <!-- preview icons, each take up equal space in a 9 or 12 column grid -->
+        <!-- show 3 icons on home page when there's no extra info; 4 icons on dataset listing page -->
+        <div class="hidden md:grid {extraInfo ? 'grid-cols-12' : 'grid-cols-9'} gap-4 my-2">
           <div class="col-span-3 flex gap-2">
             <ClipboardIcon />
-            {dataset.Types}
+            {dataset.Task}
           </div>
-        {/if}
 
-        <div class="col-span-3 flex gap-2">
-          <ColumnsIcon />
-          {dataset?.NumInstances
-            ? AbbrevNum.format(dataset.NumInstances) + '  Instances'
-            : 'N/A'}
-        </div>
-        <div class="col-span-3 flex gap-2">
-          <RowsIcon />
-          {dataset?.NumAttributes
-            ? AbbrevNum.format(dataset.NumAttributes) + '  Attributes'
-            : 'N/A'}
+          <!-- show Types if there is additional info at the bottom -->
+          {#if extraInfo}
+            <div class="col-span-3 flex gap-2">
+              <ClipboardIcon />
+              {dataset.Types}
+            </div>
+          {/if}
+
+          <div class="col-span-3 flex gap-2">
+            <ColumnsIcon />
+            {dataset?.NumInstances
+              ? AbbrevNum.format(dataset.NumInstances) + '  Instances'
+              : 'N/A'}
+          </div>
+          <div class="col-span-3 flex gap-2">
+            <RowsIcon />
+            {dataset?.NumAttributes
+              ? AbbrevNum.format(dataset.NumAttributes) + '  Attributes'
+              : 'N/A'}
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- collapsible content that can appear on the dataset listing page -->
-<div>
-  <Collapse bind:collapseOpen completeClose duration={100}>
+  <!-- conent slot of the accordion is content that's displayed only when open -->
+  <!-- collapsible content that can appear on the dataset listing page -->
+  <div slot="content">
     <div class="overflow-x-auto">
       <table class="table w-full">
         <!-- head -->
@@ -149,5 +142,5 @@
         {dataset.Abstract}
       </p>
     </div>
-  </Collapse>
-</div>
+  </div>
+</Accordion>

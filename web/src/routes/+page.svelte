@@ -35,7 +35,7 @@
 
   <!-- featured dataset grid display -->
   <div class="grid grid-cols-1 xl:grid-cols-2 w-full">
-    <div class="flex flex-col col-span-1 gap-3 p-4">
+    <div class="flex flex-col col-span-1 gap-1 p-4">
       <h1 class="text-center text-2xl text-primary font-bold">Popular Datasets</h1>
       {#each data.popularDatasets || [] as dataset}
         <DatasetGridRow {dataset} />
@@ -43,7 +43,7 @@
       {/each}
     </div>
 
-    <div class="flex flex-col col-span-1 gap-3 p-4">
+    <div class="flex flex-col col-span-1 gap-1 p-4">
       <h1 class="text-center text-2xl text-primary font-bold">New Datasets</h1>
       {#each data.newDatasets || [] as dataset}
         <DatasetGridRow {dataset} />

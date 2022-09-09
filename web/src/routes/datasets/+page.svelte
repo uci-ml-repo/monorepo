@@ -47,7 +47,7 @@
   <div class="hidden lg:block w-96">
     <DatasetFilterSidebar />
   </div>
-  <div class="flex flex-col col-span-1 gap-3 p-4 w-full">
+  <div class="flex flex-col col-span-1 gap-1 p-4 w-full">
     <!-- filters will appear as dropdown button under the header if screen is small-->
     <div class="flex flex-col gap-5">
       <!-- title -->
