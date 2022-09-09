@@ -1,6 +1,13 @@
 <script lang="ts">
   import type { InferQueryOutput } from '$lib/trpc'
   import DatasetGridRow from '$components/DatasetGridRow.svelte'
+  import { useQuery } from '@sveltestack/svelte-query'
+  import trpc from '$lib/trpc'
+
+  const nameResult = useQuery(
+    'donated_datasets.searchDatasets',
+    async () => await trpc(fetch).query('donated_datasets.searchDatasets')
+  )
 
   export let data: {
     newDatasets: InferQueryOutput<'donated_datasets.getDatasets'>
@@ -14,6 +21,7 @@
 </svelte:head>
 
 <main class="px-4 max-w-screen-2xl mx-auto flex flex-col gap-6">
+  {JSON.stringify($nameResult.data)}
   <!-- hero section / welcome banner -->
   <div class="hero mx-auto">
     <div class="hero-content text-center">
