@@ -7,10 +7,20 @@
   import { queryClient } from '$lib/query'
 
   import Header from '$components/Header/index.svelte'
+  import Footer from '$components/Footer.svelte'
 </script>
 
 <QueryClientProvider client={queryClient}>
+  <!-- the header wraps around the entire app because of the drawer -->
   <Header>
-    <slot />
+    <!-- add the body of the page and the footer to the default slot -->
+    <div>
+      <!-- the main content should take up at least 1 vertical screen to push the footer to the bottom -->
+      <div class="min-h-screen">
+        <slot />
+      </div>
+      <!-- footer is below main content-->
+      <Footer />
+    </div>
   </Header>
 </QueryClientProvider>

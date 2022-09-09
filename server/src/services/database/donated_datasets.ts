@@ -54,6 +54,16 @@ class DonatedDatasetsService extends BaseDatabaseService {
     })
   }
 
+  // given a datasetID, find the corresponding dataset
+  ////////////////////////////////////////////
+  async getById(ID: number) {
+    return await this.prisma.donated_datasets.findFirst({
+      where: {
+        ID,
+      },
+    })
+  }
+
   // count the number of approved datasets, e.g. for the home page Hero content
   //////////////////////////////////////////
   async getCount() {

@@ -1,5 +1,12 @@
 <script lang="ts">
   import { createForm } from 'felte'
+  import { z } from 'zod'
+  import X from '$components/Icons/X.svelte'
+  import Check from '$components/Icons/Check.svelte'
+  import { collapse } from '$lib/actions'
+
+  import Dropdown from '$components/DropdownButton.svelte'
+
   import {
     CharacteristicOptions,
     SubjectAreaOptions,
@@ -9,114 +16,153 @@
     AttributeTypeOptions,
   } from './Options'
 
-  import Collapse from '$components/Collapse.svelte'
+  // Schema for form validation/submission, not really necessary for this form
+  //////////////////////////////////////////
+  const FilterSchema = z.object({
+    Types: z.string().optional(),
+    Area: z.string().array().optional(),
+    Task: z.string().optional(),
+    NumAttributes: z.string().optional(),
+    NumInstances: z.string().optional(),
+    AttributeTypes: z.string().optional(),
+  })
 
-  const { form } = createForm({
-    onSubmit(data) {
+  type FilterFormData = z.TypeOf<typeof FilterSchema>
+
+  // form initialization
+  //////////////////////////////////////////
+  const { form, data, setData, reset } = createForm<FilterFormData>({
+    onSubmit: (data) => {
       console.log(data)
     },
   })
+
+  // map object to UI fields
+  //////////////////////////////////////////
+  interface FieldOption {
+    label: string
+    value: string
+  }
+
+  interface Field {
+    field: keyof FilterFormData
+    label: string
+    type: 'radio' | 'checkbox'
+    options: FieldOption[]
+    default?: string | string[] | undefined
+  }
+
+  const FormFields: Field[] = [
+    {
+      field: 'Types',
+      label: 'Characteristics',
+      type: 'radio',
+      options: CharacteristicOptions,
+    },
+    {
+      field: 'Area',
+      label: 'Subject Area',
+      type: 'checkbox',
+      options: SubjectAreaOptions,
+      default: [],
+    },
+    {
+      field: 'Task',
+      label: 'Associated Tasks',
+      type: 'radio',
+      options: TaskOptions,
+    },
+    {
+      field: 'NumAttributes',
+      label: '# Attributes',
+      type: 'radio',
+      options: NumAttributeOptions,
+    },
+    {
+      field: 'NumInstances',
+      label: '# Instances',
+      type: 'radio',
+      options: NumInstanceOptions,
+    },
+    {
+      field: 'AttributeTypes',
+      label: 'Attribute Types',
+      type: 'radio',
+      options: AttributeTypeOptions,
+    },
+  ]
+
+  // indicate whether the submit/cancel buttons should show up
+  // used by the collapse to transition them in/out
+  $: formDataChanged = Object.values($data).some((k) => Boolean(k?.length))
 </script>
 
-<form use:form class="w-full p-4">
-  <button type="submit" class="btn btn-accent block ml-auto">Submit</button>
+<form use:form class="w-full p-4 max-h-[85vh] overflow-y-auto flex flex-col gap-2">
+  <!-- header for filter options, uses collapse to animate buttons -->
+  <div class="flex justify-end px-4">
+    <span class="text-primary text-2xl">Options</span>
 
-  <div class="flex flex-col">
-    <Collapse completeClose>
-      <span slot="parent">Characteristics</span>
-      <div class="px-2">
-        {#each CharacteristicOptions as option}
-          <label class="label cursor-pointer">
-            <span class="label-text">{option.label}</span>
-            <input
-              type="radio"
-              name="characteristic"
-              class="radio radio-primary"
-              value={option.value}
-            />
-          </label>
-        {/each}
+    <!-- flex a wrapper around collapse to position the button group -->
+    <div class="flex justify-end w-full">
+      <!-- submit and cancel buttons -->
+      <!-- flex the inner wrapper to space the buttons and use collapse-->
+      <div
+        class="flex w-0 gap-4 overflow-hidden"
+        use:collapse={{ open: formDataChanged, horizontal: true }}
+      >
+        <button type="submit" class="btn btn-success btn-outline btn-sm btn-circle">
+          <Check />
+        </button>
+        <button
+          type="button"
+          class="btn btn-error btn-sm btn-outline btn-circle"
+          on:click|preventDefault={reset}
+        >
+          <X />
+        </button>
       </div>
-    </Collapse>
+    </div>
+  </div>
 
-    <div class="divider my-0" />
-
-    <Collapse completeClose>
-      <span slot="parent">Subject Area</span>
-      {#each SubjectAreaOptions as option}
-        <label class="label cursor-pointer">
-          <span class="label-text">{option.label}</span>
+  <!-- form fields, map each object in the array to its own field; flex-column to space everything -->
+  <div class="flex flex-col">
+    {#each FormFields as Field}
+      <!-- checkbox to clear the field -->
+      <Dropdown startIconOpen={Boolean($data?.[Field.field]?.length)}>
+        <label for="characteristic-dropdown" slot="start-icon">
           <input
+            aria-label="{Field.field}-dropdown"
             type="checkbox"
-            name="subject_area"
             class="checkbox checkbox-primary"
-            value={option.value}
+            checked={Boolean($data?.[Field.field]?.length)}
+            on:click|preventDefault|stopPropagation={() => setData(Field.field, Field.default)}
           />
         </label>
-      {/each}
-    </Collapse>
 
-    <div class="divider my-0" />
+        <!-- title of field -->
+        <span slot="title">{Field.label}</span>
 
-    <Collapse completeClose>
-      <span slot="parent">Associated Tasks</span>
-      {#each TaskOptions as option}
-        <label class="label cursor-pointer">
-          <span class="label-text">{option.label}</span>
-          <input type="radio" name="task" class="radio radio-primary" value={option.value} />
-        </label>
-      {/each}
-    </Collapse>
+        <!-- the radio/checkbox fields, grouped by the name = Field.field attribute -->
+        <div slot="content">
+          {#each Field.options as option}
+            <label class="label cursor-pointer">
+              <span class="label-text">{option.label}</span>
+              <input
+                type={Field.type}
+                name={Field.field}
+                class={Field.type === 'checkbox'
+                  ? 'checkbox checkbox-primary'
+                  : 'radio radio-primary'}
+                checked={$data?.[Field.field]?.includes(option.value)}
+                value={option.value}
+              />
+            </label>
+          {/each}
+        </div>
+      </Dropdown>
 
-    <div class="divider my-0" />
-
-    <Collapse completeClose>
-      <span slot="parent"># Attributes</span>
-      {#each NumAttributeOptions as option}
-        <label class="label cursor-pointer">
-          <span class="label-text">{option.label}</span>
-          <input
-            type="radio"
-            name="num_attributes"
-            class="radio radio-primary"
-            value={option.value}
-          />
-        </label>
-      {/each}
-    </Collapse>
-
-    <div class="divider my-0" />
-
-    <Collapse completeClose>
-      <span slot="parent"># Instances</span>
-      {#each NumInstanceOptions as option}
-        <label class="label cursor-pointer">
-          <span class="label-text">{option.label}</span>
-          <input
-            type="radio"
-            name="num_instances"
-            class="radio radio-primary"
-            value={option.value}
-          />
-        </label>
-      {/each}
-    </Collapse>
-
-    <div class="divider my-0" />
-
-    <Collapse completeClose>
-      <span slot="parent">Attribute Types</span>
-      {#each AttributeTypeOptions as option}
-        <label class="label cursor-pointer">
-          <span class="label-text">{option.label}</span>
-          <input
-            type="radio"
-            name="attribute_type"
-            class="radio radio-primary"
-            value={option.value}
-          />
-        </label>
-      {/each}
-    </Collapse>
+      <!-- divider after each field -->
+      <div class="divider my-0" />
+    {/each}
   </div>
 </form>
