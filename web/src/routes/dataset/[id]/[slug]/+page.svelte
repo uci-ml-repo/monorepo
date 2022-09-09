@@ -2,9 +2,11 @@
   import type { PageData } from './$types'
   export let data: PageData
 
+  import Accordion from '$components/Accordion.svelte'
+
   import Header from '$components/DatasetDetails/Header.svelte'
   import Descriptive from '$components/DatasetDetails/Descriptive.svelte'
-  import Accordion from '$components/Accordion.svelte'
+  import Evals from '$components/DatasetDetails/Evals.svelte'
 
   const { ID } = data
 </script>
@@ -30,7 +32,9 @@
     <!-- evals accordion -->
     <Accordion open>
       <span slot="title" class="text-2xl text-primary">Baseline Evals</span>
-      <div slot="content" class="h-96 bg-red-200" />
+      <div slot="content">
+        <Evals {ID} />
+      </div>
     </Accordion>
 
     <!-- features accordion -->

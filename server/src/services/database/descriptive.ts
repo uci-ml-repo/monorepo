@@ -73,7 +73,6 @@ class DescriptiveService extends BaseDatabaseService {
   // given a dataset ID, return an array of question/answer tuples
   ////////////////////////////////////////////
   async getDescriptiveQA(input: number) {
-    console.log('start')
     const dataset = await this.prisma.donated_datasets.findFirst({
       where: { ID: input },
       select: {
@@ -109,8 +108,6 @@ class DescriptiveService extends BaseDatabaseService {
       })
       .concat(tabularMissing) // append the info for missing values
 
-    console.log('end')
-    console.log('--------------------')
     return qa_array
   }
 }

@@ -5,8 +5,6 @@
   import ColumnsIcon from '$components/Icons/Columns.svelte'
   import RowsIcon from '$components/Icons/Rows.svelte'
 
-  import Accordion from '$components/Accordion.svelte'
-
   // subset of a dataset object needed to initialize this component
   interface Dataset {
     ID: number
@@ -46,6 +44,8 @@
   const toggleOpen = () => {
     open = !open
   }
+
+  $: open = showAll
 </script>
 
 <div class="flex flex-col gap-2">
@@ -119,37 +119,39 @@
   </div>
 
   <!-- conent slot of the accordion is content that's displayed only when open -->
-  <!-- collapsible content that can appear on the dataset listing page -->
-  <div use:collapse={{ open, baseHeight: 0 }} class="overflow-hidden h-0 px-4">
-    <div class="overflow-x-auto">
-      <table class="table w-full">
-        <!-- head -->
-        <thead>
-          <tr>
-            <!-- override default daisyUI sticky positioning of left column -->
-            <th class="bg-secondary" style="position: relative">Subject Area</th>
-            <th class="bg-secondary">Attribute Type</th>
-            <th class="bg-secondary">Date Donated</th>
-            <th class="bg-secondary"># Views</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- additional information in a table -->
-          <tr>
-            <td>{dataset.Area ?? 'N/A'}</td>
-            <td>{dataset.AttributeTypes ?? 'N/A'}</td>
-            <td
-              >{dataset.DateDonated
-                ? new Date(dataset.DateDonated).toLocaleDateString('en-US')
-                : 'N/A'}</td
-            >
-            <td>{AbbrevNum.format(dataset.NumInstances || 0)}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="my-4 break-word overflow-x-hidden">
-        {dataset.Abstract}
-      </p>
+  <!-- extra info, e.g. collapsible content only appears on the dataset listing page -->
+  {#if extraInfo}
+    <div use:collapse={{ open, baseHeight: 0 }} class="overflow-hidden h-0 px-4">
+      <div class="overflow-x-auto">
+        <table class="table w-full">
+          <!-- head -->
+          <thead>
+            <tr>
+              <!-- override default daisyUI sticky positioning of left column -->
+              <th class="bg-secondary" style="position: relative">Subject Area</th>
+              <th class="bg-secondary">Attribute Type</th>
+              <th class="bg-secondary">Date Donated</th>
+              <th class="bg-secondary"># Views</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- additional information in a table -->
+            <tr>
+              <td>{dataset.Area ?? 'N/A'}</td>
+              <td>{dataset.AttributeTypes ?? 'N/A'}</td>
+              <td
+                >{dataset.DateDonated
+                  ? new Date(dataset.DateDonated).toLocaleDateString('en-US')
+                  : 'N/A'}</td
+              >
+              <td>{AbbrevNum.format(dataset.NumInstances || 0)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="my-4 break-word overflow-x-hidden">
+          {dataset.Abstract}
+        </p>
+      </div>
     </div>
-  </div>
+  {/if}
 </div>
