@@ -35,7 +35,7 @@
 </script>
 
 <div class="dropdown">
-  <label for="" tabindex="0" class="btn btn-sm btn-primary flex gap-2">
+  <label for="" tabindex="0" class="btn btn-sm btn-primary flex gap-2 flex-wrap h-fit">
     <!-- label for the sort button-->
     <div class="flex items-center gap-2">
       <SortIcon />
