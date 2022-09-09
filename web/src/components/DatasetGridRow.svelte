@@ -5,8 +5,6 @@
   import ColumnsIcon from '$components/Icons/Columns.svelte'
   import RowsIcon from '$components/Icons/Rows.svelte'
 
-  import Collapse from './Collapse.svelte'
-
   import Accordion from '$components/Accordion.svelte'
 
   // subset of a dataset object needed to initialize this component
@@ -41,11 +39,18 @@
     dataset?.Graphics != null
       ? '/ml/datasets/' + dataset.ID + '/Graphics/SmallLarge.jpg'
       : '/ml/datasets/default/SmallLarge.jpg'
+
+  import { collapse } from '$lib/actions'
+  export let open = false
+
+  const toggleOpen = () => {
+    open = !open
+  }
 </script>
 
-<Accordion open={showAll}>
+<div class="flex flex-col gap-2">
   <!-- title slot of the accordion is any content that's displayed when closed -->
-  <div slot="title" class="hover:bg-base-200 p-2 rounded-lg">
+  <div class="hover:bg-base-200 p-2 rounded-lg" on:click={toggleOpen}>
     <!-- two different avatars are actually on the page; they are hidden/visible at different media queries -->
     <!-- Avatar that will appear to the left of the row when screen is larger -->
     <div class="grid grid-cols-12 items-center">
@@ -59,7 +64,11 @@
       <div class="col-span-11 gap-5 ml-4">
         <div class="flex flex-col">
           <h1 class="text-primary break-word underline">
-            <a href="/dataset/{dataset.ID}/{dataset.slug}" class="btn btn-ghost text-xl -ml-4">
+            <a
+              href="/dataset/{dataset.ID}/{dataset.slug}"
+              class="btn btn-ghost text-xl -ml-4"
+              on:click|stopPropagation
+            >
               {dataset.Name}
             </a>
           </h1>
@@ -111,7 +120,7 @@
 
   <!-- conent slot of the accordion is content that's displayed only when open -->
   <!-- collapsible content that can appear on the dataset listing page -->
-  <div slot="content">
+  <div use:collapse={{ open, baseHeight: 0 }} class="overflow-hidden h-0 px-4">
     <div class="overflow-x-auto">
       <table class="table w-full">
         <!-- head -->
@@ -143,4 +152,4 @@
       </p>
     </div>
   </div>
-</Accordion>
+</div>

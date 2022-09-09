@@ -6,7 +6,7 @@ import type { inferProcedureInput, inferProcedureOutput } from '@trpc/server'
 // create a new tRPC client
 export default (loadFetch?: LoadEvent['fetch']) =>
   trpc.createTRPCClient<Router>({
-    url: '/trpc',
+    url: `${import.meta.env.DEV ? 'http://localhost:5173' : 'http://localhost:4173'}/trpc`,
 
     // if this runs on the server, then a special fetch function is used instead of the default
     ...(loadFetch && { fetch: loadFetch as typeof fetch }),
