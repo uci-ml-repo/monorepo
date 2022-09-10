@@ -38,18 +38,17 @@ const donatedDatasetsRouter = trpc
     },
   })
 
-  .query('searchDatasets', {
+  .mutation('searchDatasets', {
+    input: z.object({
+      Types: z.string().optional(),
+      Area: z.string().array().optional(),
+      Task: z.string().optional(),
+      NumAttributes: z.string().optional(),
+      NumInstances: z.string().optional(),
+      AttributeTypes: z.string().optional(),
+    }),
     async resolve({ input, ctx: { database_services } }) {
-      const fakeInput = {
-        attribute_type: 'Mixed',
-        type: 'Tabular',
-        num_attributes: '10',
-        num_instances: '10',
-        subject_area: ['Computer Science', 'Law'],
-        task: 'Classification',
-      }
-      const result = await database_services.donated_datasets.searchDatasets(fakeInput)
-      console.log(result)
+      const result = await database_services.donated_datasets.searchDatasets(input)
       return result
     },
   })

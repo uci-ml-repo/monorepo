@@ -4,7 +4,6 @@
   import X from '$components/Icons/X.svelte'
   import Check from '$components/Icons/Check.svelte'
   import { collapse } from '$lib/actions'
-
   import Dropdown from '$components/DropdownButton.svelte'
 
   import {
@@ -15,6 +14,9 @@
     NumInstanceOptions,
     AttributeTypeOptions,
   } from './Options'
+
+  import { useMutation, useQuery } from '@sveltestack/svelte-query'
+  import trpc from '$lib/trpc'
 
   // Schema for form validation/submission, not really necessary for this form
   //////////////////////////////////////////
@@ -29,14 +31,21 @@
 
   type FilterFormData = z.TypeOf<typeof FilterSchema>
 
+  const filterMutation = useMutation(
+    'donated_datasets.searchDatasets',
+    async (data: FilterFormData) =>
+      await trpc(fetch).mutation('donated_datasets.searchDatasets', data)
+  )
   // form initialization
   //////////////////////////////////////////
   const { form, data, setData, reset } = createForm<FilterFormData>({
     onSubmit: (data) => {
       console.log(data)
+      $filterMutation.mutate(data)
     },
   })
 
+  $: console.log($filterMutation.data)
   // map object to UI fields
   //////////////////////////////////////////
   interface FieldOption {

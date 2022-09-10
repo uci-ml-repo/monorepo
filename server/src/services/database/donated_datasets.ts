@@ -9,12 +9,12 @@ interface getDatasetsProps {
 }
 
 interface searchDatasetProps {
-  attribute_type?: string
-  type?: string
-  num_attributes?: string
-  num_instances?: string
-  subject_area?: string[]
-  task?: string
+  Types?: string
+  Area?: string[]
+  Task?: string
+  NumAttributes?: string
+  NumInstances?: string
+  AttributeTypes?: string
 }
 
 class DonatedDatasetsService extends BaseDatabaseService {
@@ -82,11 +82,11 @@ class DonatedDatasetsService extends BaseDatabaseService {
       where: {
         Status: 'APPROVED',
         //Attribute Types
-        ...(args.attribute_type == 'Categorical'
+        ...(args.AttributeTypes == 'Categorical'
           ? { AttributeTypes: 'Categorical' }
-          : args.attribute_type == 'Numerical'
+          : args.AttributeTypes == 'Numerical'
           ? { OR: [{ AttributeTypes: 'Integer' }, { AttributeTypes: 'Real' }] }
-          : args.attribute_type == 'Mixed'
+          : args.AttributeTypes == 'Mixed'
           ? {
               OR: [
                 { AttributeTypes: 'Integer' },
@@ -96,29 +96,29 @@ class DonatedDatasetsService extends BaseDatabaseService {
             }
           : {}),
         //Characteristics
-        ...(args.type ? { Types: { contains: args.type } } : {}),
+        ...(args.Types ? { Types: { contains: args.Types } } : {}),
         // Num Attributes
-        ...(args.num_attributes == '0-10'
+        ...(args.NumAttributes == '0-10'
           ? { NumAttributes: { lte: 10 } }
-          : args.num_attributes == '10-100'
+          : args.NumAttributes == '10-100'
           ? { AND: [{ NumAttributes: { gte: 10 } }, { NumAttributes: { lte: 100 } }] }
-          : args.num_attributes == '100-inf'
+          : args.NumAttributes == '100-inf'
           ? { NumAttributes: { gte: 100 } }
           : {}),
         //Num Instances
-        ...(args.num_instances == '0-100'
+        ...(args.NumInstances == '0-100'
           ? { NumInstances: { lte: 100 } }
-          : args.num_instances == '100-1000'
+          : args.NumInstances == '100-1000'
           ? { AND: [{ NumInstances: { gte: 100 } }, { NumInstances: { lte: 1000 } }] }
-          : args.num_instances == '1000-inf'
+          : args.NumInstances == '1000-inf'
           ? { NumInstances: { gte: 1000 } }
           : {}),
         //Associated Tasks
 
         //If the task is other, then only select everything that's either not (Classification or
         //Regression or Clustering) or is null,
-        ...(args.task
-          ? args.task == 'Other'
+        ...(args.Task
+          ? args.Task == 'Other'
             ? {
                 OR: [
                   {
@@ -133,12 +133,53 @@ class DonatedDatasetsService extends BaseDatabaseService {
                   { Task: null },
                 ],
               }
-            : args.task != 'Other'
-            ? { Task: { contains: args.task } }
+            : args.Task != 'Other'
+            ? { Task: { contains: args.Task } }
             : {}
           : {}),
         //Subject Area
-        //...(args.subject_area ? { Area: { search: args.subject_area.join(' ') } } : {}),
+        ...(args.Area
+          ? args.Area.length > 0
+            ? {
+                OR: args.Area.map((area) => {
+                  if (area == 'Business') {
+                    return {
+                      OR: [
+                        { Area: { contains: 'Business' } },
+                        { Area: { contains: 'Financial' } },
+                      ],
+                    }
+                  }
+                  if (area == 'Other') {
+                    return {
+                      OR: [
+                        {
+                          NOT: {
+                            OR: [
+                              { Area: { contains: 'Life' } },
+                              { Area: { contains: 'Physical' } },
+                              { Area: { contains: 'Life' } },
+                              { Area: { contains: 'Computer' } },
+                              { Area: { contains: 'Engineering' } },
+                              { Area: { contains: 'Social' } },
+                              { Area: { contains: 'Financial' } },
+                              { Area: { contains: 'Business' } },
+                              { Area: { contains: 'Game' } },
+                              { Area: { contains: 'Law' } },
+                            ],
+                          },
+                        },
+                        { Area: null },
+                      ],
+                    }
+                  }
+                  return {
+                    OR: [{ Area: { contains: area } }, { Area: { in: area.split(' ') } }],
+                  }
+                }),
+              }
+            : {}
+          : {}),
       },
     })
   }
