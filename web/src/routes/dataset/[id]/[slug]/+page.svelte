@@ -4,6 +4,8 @@
 
   import Accordion from '$components/Accordion.svelte'
 
+  import PencilIcon from '$components/Icons/Pencil.svelte'
+
   import Header from '$components/DatasetDetails/Header.svelte'
   import Descriptive from '$components/DatasetDetails/Descriptive.svelte'
   import Evals from '$components/DatasetDetails/Evals.svelte'
@@ -25,41 +27,51 @@
   <div class="col-span-12 md:col-span-8 flex flex-col gap-8">
     <Header {ID} />
 
-    <!-- descriptive questions accordion -->
+    <!-- Descriptive Information accordion -->
     <Accordion open>
-      <span slot="title" class="text-2xl text-primary">Descriptive</span>
+      <div slot="title" class="flex gap-4 items-center">
+        <h1 class="text-2xl text-primary">Information</h1>
+        <button class="btn btn-ghost btn-circle btn-sm fill-accent">
+          <PencilIcon />
+        </button>
+      </div>
       <div slot="content">
         <Descriptive {ID} />
       </div>
     </Accordion>
 
-    <!-- features accordion -->
+    <!-- Features accordion -->
     <Accordion open>
-      <span slot="title" class="text-2xl text-primary">Features</span>
+      <div slot="title" class="flex gap-4 items-center">
+        <h1 class="text-2xl text-primary">Features</h1>
+        <button class="btn btn-ghost btn-circle btn-sm fill-accent">
+          <PencilIcon />
+        </button>
+      </div>
       <div slot="content">
         <Features {ID} />
       </div>
     </Accordion>
 
-    <!-- evals accordion -->
+    <!-- Baseline Evals accordion -->
     <Accordion open>
-      <span slot="title" class="text-2xl text-primary">Baseline Evals</span>
+      <h1 slot="title" class="text-2xl text-primary">Baseline Evals</h1>
       <div slot="content">
         <Evals {ID} />
       </div>
     </Accordion>
 
-    <!-- features accordion -->
+    <!-- Papers Cited In accordion -->
     <Accordion open>
-      <span slot="title" class="text-2xl text-primary">Papers Citing this Dataset</span>
+      <h1 slot="title" class="text-2xl text-primary">Papers Citing this Dataset</h1>
       <div slot="content">
         <Papers {ID} />
       </div>
     </Accordion>
 
-    <!-- features accordion -->
+    <!-- Changelog accordion -->
     <Accordion open>
-      <span slot="title" class="text-2xl text-primary">Changelog</span>
+      <h1 slot="title" class="text-2xl text-primary">Changelog</h1>
       <div slot="content">
         <Changelog {ID} />
       </div>

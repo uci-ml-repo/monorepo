@@ -3,6 +3,8 @@
   import { useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
 
+  import PencilIcon from '$components/Icons/Pencil.svelte'
+
   const keywordQuery = useQuery(
     ['keywords.getDatasetKeywords', ID],
     async () => await trpc(fetch).query('keywords.getDatasetKeywords', ID)
@@ -12,7 +14,12 @@
 </script>
 
 <div class="flex flex-col gap-4">
-  <h1 class="text-primary text-2xl font-semibold">Keywords</h1>
+  <div class="flex gap-4 items-center">
+    <h1 class="text-primary text-2xl font-semibold">Keywords</h1>
+    <button class="btn btn-ghost btn-circle btn-sm fill-accent">
+      <PencilIcon />
+    </button>
+  </div>
   <div class="flex flex-wrap gap-3">
     {#if !keywords.length}
       <p class="text-xl">N/A</p>

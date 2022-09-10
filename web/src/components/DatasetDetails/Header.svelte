@@ -6,6 +6,7 @@
   import DropdownText from '$components/DropdownText.svelte'
 
   import CaretIcon from '$components/Icons/Caret.svelte'
+  import PencilIcon from '$components/Icons/Pencil.svelte'
 
   export let ID = 0
 
@@ -56,7 +57,10 @@
 
 <div class="flex flex-col">
   <!-- top, blue part of the header -->
-  <div class="w-full bg-primary flex p-2 flex items-center gap-4">
+  <div class="w-full bg-primary flex p-2 flex items-center gap-4 relative">
+    <button class="btn btn-sm btn-ghost btn-circle absolute top-2 right-2">
+      <PencilIcon class="fill-white" />
+    </button>
     <!-- avatar to the left of the header -->
     <div class="mask w-16 h-16 flex align-center">
       <img {src} alt="dataset-graphic-large-screen" />
@@ -77,7 +81,6 @@
   </div>
 
   <!-- bottom part of the header, abstract and metadata -->
-  <!-- #TODO: change this into an each/map function-->
   <div class="shadow bg-base-100 p-4 flex flex-col gap-4">
     <div>
       {#if dataset}

@@ -14,12 +14,12 @@ module.exports = {
       'luxury',
       'valentine',
       {
-        // main, custom UCI theme
+        // main, custom UCI theme: https://brand.uci.edu/master-branding/color-palette/
         uci: {
-          primary: '#0064A4',
-          secondary: '#FFD200',
-          accent: '#C149AD',
-          neutral: '#e0f2fe',
+          primary: '#0064A4', // UCI Blue
+          secondary: '#FFD200', // UCI Gold
+          accent: '#f78d2d', // Orange
+          neutral: '#E0F2FE',
           'base-100': '#FFFFFF',
           info: '#93E6FB',
           success: '#80CED1',
