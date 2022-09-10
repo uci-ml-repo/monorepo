@@ -8,12 +8,7 @@
 
   // a spreadsheet can accept a 2D array of values and mutate it during spreadsheet operations
   // the parent component should bind to this value to receive updated spreadsheet data
-  export let value: CellValue[][] = [
-    ['Mazda', 2001, 2000],
-    ['Pegeout', 2010, 5000],
-    ['Honda Fit', 2009, 3000],
-    ['Honda CRV', 2010, 6000],
-  ]
+  export let value: CellValue[][] = []
 
   // bind the JSpreadsheet DOM node to this variable
   // it will have jspreadsheet/jexcel properties that house the spreadsheet functions

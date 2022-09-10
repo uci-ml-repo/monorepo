@@ -26,6 +26,7 @@ interface CollapseParams {
 export default function collapse(node: HTMLElement, params: CollapseParams): ActionReturn {
   // overflow should be hidden for transitions to work
   node.style.overflow = 'hidden'
+  let duration = 0
   /*
    * utility functions to improve readability
    * depending on orientation and open state, set the width or height to
@@ -43,14 +44,30 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
     }
   }
 
-  const setVertical = (open: boolean) => {
-    // height to transition to when collapse closes
-    // e.g. line height = 24px and line clamp = 2 means that it will be 48px when closed
-    const lineHeight = parseInt(window.getComputedStyle(node).getPropertyValue('line-height'))
-    const lineClamp = params.lineClamp ?? 2
-    const baseHeight =
-      params.baseHeight !== undefined ? params.baseHeight : lineClamp * lineHeight
+  let activeTimeout: null | ReturnType<typeof setTimeout>
 
+  // height to transition to when collapse closes
+  // e.g. line height = 24px and line clamp = 2 means that it will be 48px when closed
+  const lineHeight = parseInt(window.getComputedStyle(node).getPropertyValue('line-height'))
+  const lineClamp = params.lineClamp ?? 2
+  let baseHeight =
+    params.baseHeight !== undefined
+      ? params.baseHeight
+      : Math.min(lineClamp * lineHeight, node.scrollHeight)
+
+  const calculateHeight = () => {
+    const oldHeight = node.style.height
+    node.style.height = 'auto'
+    node.getBoundingClientRect()
+    if (node.clientHeight <= lineClamp * lineHeight) {
+      baseHeight = node.clientHeight
+      node.style.height = node.clientHeight + 'px'
+    } else {
+      node.style.height = oldHeight
+    }
+  }
+
+  const setVertical = (open: boolean) => {
     // if orientation is vertical, set most of the line clamp properties
     // the element will successfully implement ellipsis + line clamp when display is set to -webkit-box
     node.style.webkitLineClamp = lineClamp.toString()
@@ -62,13 +79,22 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
     const scrollHeight = node.scrollHeight
 
     if (open) {
-      node.style.height = scrollHeight + 'px'
+      node.style.height = baseHeight + 'px'
+      activeTimeout = setTimeout(() => {
+        node.style.height = scrollHeight + 'px'
+        activeTimeout = setTimeout(() => (node.style.height = 'auto'), duration)
+      })
       node.style.display = 'block'
     } else {
-      node.style.height = baseHeight + 'px'
+      if (duration !== 0) {
+        node.style.height = scrollHeight + 'px'
+      }
       node.style.display = '-webkit-box'
+      setTimeout(() => (node.style.height = baseHeight + 'px'))
     }
   }
+
+  window.addEventListener('resize', calculateHeight)
 
   // controller for setting vertical/horizontal dimensions
   // evaluates the params and calls the appropriate function with the open/closed boolean
@@ -92,7 +118,7 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
   // add transition CSS to the component after the correct starting dimensions are set
   // if the starting dimension is wrong, then wait until it's finished changing to set a transition
   // apply the transition style to both the children and the parent
-  const duration = params.duration ?? getAutoDuration(params)
+  duration = params.duration ?? getAutoDuration(params)
   node.style.transition = `all ${duration}ms`
 
   return {
@@ -112,6 +138,9 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
      * will update if isOpen changes or isHorizontal changes
      */
     update: async (params: CollapseParams) => {
+      if (activeTimeout) {
+        clearTimeout(activeTimeout)
+      }
       setDimensions(params)
     },
   }

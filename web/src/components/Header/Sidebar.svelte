@@ -3,10 +3,10 @@
 </script>
 
 <div class="drawer-side">
-  <label for="sidebar" class="drawer-overlay" />
+  <div class="drawer-overlay" />
   <div class="menu p-4 overflow-y-auto w-80 bg-base-100">
     <label for="sidebar" class="drawer-overlay btn btn-ghost btn-circle ml-auto">
-      <CloseIcon class="fill-red-600" />
+      <CloseIcon class="text-red-600" />
     </label>
     <ul>
       <li><a href="/">Home</a></li>

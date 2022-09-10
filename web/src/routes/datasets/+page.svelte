@@ -109,6 +109,7 @@
           class="btn btn-ghost btn-circle btn-sm"
           on:click={prevPage}
           disabled={currentPage === 0}
+          aria-label="previous"
         >
           <PageLeft />
         </button>
@@ -116,6 +117,7 @@
           class="btn btn-ghost btn-circle btn-sm"
           on:click={nextPage}
           disabled={currentPage === maxPage}
+          aria-label="next"
         >
           <PageRight />
         </button>

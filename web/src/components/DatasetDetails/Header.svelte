@@ -4,6 +4,10 @@
   import { useQuery } from '@sveltestack/svelte-query'
   import type { donated_datasets } from '@prisma/client'
 
+  import DropdownText from '$components/DropdownText.svelte'
+
+  import CaretIcon from '$components/Icons/Caret.svelte'
+
   export let ID = 0
 
   // search results
@@ -51,11 +55,15 @@
   ]
 
   let open = false
+
+  const toggleOpen = () => {
+    open = !open
+  }
 </script>
 
 <div class="flex flex-col">
   <!-- top, blue part of the header -->
-  <div class="w-full base-primary flex p-2 flex items-center gap-4">
+  <div class="w-full bg-primary flex p-2 flex items-center gap-4">
     <!-- avatar to the left of the header -->
     <div class="mask w-16 h-16 flex align-center">
       <img {src} alt="dataset-graphic-large-screen" />
@@ -73,7 +81,20 @@
   <!-- bottom part of the header, abstract and metadata -->
   <!-- #TODO: change this into an each/map function-->
   <div class="shadow bg-base-100 p-4 flex flex-col gap-4">
-    <p use:collapse={{ open }}>{dataset?.Abstract}</p>
+    <div>
+      {#if dataset}
+        <DropdownText>
+          {dataset.Abstract}
+          <button
+            slot="button"
+            class="btn btn-ghost w-full flex justify-center gap-6"
+            let:open
+          >
+            <CaretIcon {open} />
+          </button>
+        </DropdownText>
+      {/if}
+    </div>
 
     <!-- metadata grid -->
     <div class="grid grid-cols-8 md:grid-cols-12 gap-4">
