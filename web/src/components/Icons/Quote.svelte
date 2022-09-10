@@ -1,0 +1,12 @@
+<script lang="ts">
+  let className = ''
+  export { className as class }
+</script>
+
+<svg
+  class="h-5 {className}"
+  focusable="false"
+  aria-hidden="true"
+  viewBox="0 0 24 24"
+  data-testid="FormatQuoteIcon"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z" /></svg
+>

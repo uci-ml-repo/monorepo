@@ -1,9 +1,7 @@
 <script lang="ts">
+  import Pagination from '$components/Pagination.svelte'
   import DatasetFilterSidebar from '$components/DatasetFilterSidebar/index.svelte'
   import SortBy from '$components/SortBy.svelte'
-
-  import PageRight from '$components/Icons/PageRight.svelte'
-  import PageLeft from '$components/Icons/PageLeft.svelte'
 
   import EyeSlash from '$components/Icons/EyeSlash.svelte'
   import Eye from '$components/Icons/Eye.svelte'
@@ -20,22 +18,6 @@
 
   let currentPage = 0
   let rowsPerPage = 10
-
-  const rowsPerPageOptions = [10, 25, 50, 100, 250, 500]
-
-  $: maxPage = data?.datasets?.length / rowsPerPage - 1
-
-  let nextPage = () => {
-    if (currentPage < maxPage) {
-      currentPage += 1
-    }
-  }
-
-  let prevPage = () => {
-    if (currentPage > 0) {
-      currentPage -= 1
-    }
-  }
 </script>
 
 <svelte:head>
@@ -86,42 +68,6 @@
     {/each}
 
     <!-- pagination options -->
-    <div class="flex justify-end gap-4 items-center flex-wrap">
-      <div class="flex justify-evenly items-center gap-6">
-        <label for="select-page">Rows per Page</label>
-        <select
-          id="select-page"
-          class="select select-sm select-bordered w-20"
-          bind:value={rowsPerPage}
-        >
-          {#each rowsPerPageOptions as option}
-            <option>{option}</option>
-          {/each}
-        </select>
-        <span class="text-sm">
-          <span>{currentPage * rowsPerPage + 1}</span>
-          to <span>10</span> of
-          <span>{data.datasets?.length || 0}</span>
-        </span>
-      </div>
-      <div class="btn-group grid grid-cols-2">
-        <button
-          class="btn btn-ghost btn-circle btn-sm"
-          on:click={prevPage}
-          disabled={currentPage === 0}
-          aria-label="previous"
-        >
-          <PageLeft />
-        </button>
-        <button
-          class="btn btn-ghost btn-circle btn-sm"
-          on:click={nextPage}
-          disabled={currentPage === maxPage}
-          aria-label="next"
-        >
-          <PageRight />
-        </button>
-      </div>
-    </div>
+    <Pagination data={data.datasets} bind:rowsPerPage bind:currentPage />
   </div>
 </div>

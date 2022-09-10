@@ -6,7 +6,7 @@
   export let ID = 0
 
   const query = useQuery(
-    'descriptive.getDescriptiveQA',
+    ['descriptive.getDescriptiveQA', ID],
     async () => await trpc(fetch).query('descriptive.getDescriptiveQA', ID)
   )
 

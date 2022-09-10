@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from '@prisma/client'
+import type { attributes } from '@prisma/client'
 import BaseDatabaseService from './base_database_service'
 
 interface getDatasetsProps {
@@ -16,6 +17,44 @@ interface searchDatasetProps {
   subject_area?: string[]
   task?: string
 }
+
+const constants = {
+  OLD_WEBSITE_BASE_URL: 'https:/archive.ics.uci.edu',
+  API_BASE_URL: 'http://localhost:5173',
+}
+
+function getURLForData(
+  ID: number,
+  URLLink: string | null,
+  URLFolder: string | null,
+  Status: string | null
+) {
+  if (URLLink) {
+    if (URLLink.startsWith('http')) {
+      return URLLink
+    } else {
+      return 'http://' + URLLink
+    }
+  } else {
+    if (URLFolder == null) {
+      return ''
+    }
+    if (URLFolder.substring(0, 2) == '..') {
+      return constants.OLD_WEBSITE_BASE_URL + '/ml' + URLFolder.substring(2)
+    }
+    return Status === 'APPROVED'
+      ? constants.API_BASE_URL + '/static/ml/datasets/' + ID
+      : URLFolder.substring(0, 3) == '/ml'
+      ? constants.API_BASE_URL + '/static' + URLFolder
+      : constants.API_BASE_URL + '/static/ml/datasets-donated/' + ID
+  }
+}
+
+const getNumAttributes = (allAttributes: attributes[]) =>
+  allAttributes.reduce((numFeatures, attribute) => {
+    if (attribute.role === 'Feature') numFeatures++
+    return numFeatures
+  }, 0) || 0
 
 class DonatedDatasetsService extends BaseDatabaseService {
   constructor(prisma: PrismaClient) {
@@ -57,11 +96,31 @@ class DonatedDatasetsService extends BaseDatabaseService {
   // given a datasetID, find the corresponding dataset
   ////////////////////////////////////////////
   async getById(ID: number) {
-    return await this.prisma.donated_datasets.findFirst({
+    const dataset = await this.prisma.donated_datasets.findFirst({
       where: {
         ID,
       },
+      include: {
+        evals: true,
+        edits: true,
+        dataset_papers_dataset_papers_datasetIDTodonated_datasets: true,
+        attributes: true,
+      },
     })
+    if (!dataset) {
+      return
+    }
+
+    return {
+      ...dataset,
+      // properties that don't normally exist or are artificially generated
+      DateDonated: dataset.DateDonated?.toLocaleDateString(),
+      NumPapers: dataset.dataset_papers_dataset_papers_datasetIDTodonated_datasets.length,
+      NumEvals: dataset.evals.length,
+      NumAttributes: getNumAttributes(dataset.attributes),
+      NumEdits: dataset.edits.length,
+      href: getURLForData(dataset.ID, dataset.URLLink, dataset.URLFolder, dataset.Status),
+    }
   }
 
   // count the number of approved datasets, e.g. for the home page Hero content
