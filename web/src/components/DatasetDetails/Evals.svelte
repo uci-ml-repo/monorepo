@@ -205,13 +205,17 @@
   ]
 </script>
 
-<div class="overflow-x-auto">
-  <Tabs {options} bind:value={evalType} class="flex justify-center font-bold" />
-  <div class="min-h-[500px] min-w-[500px]">
-    {#if precision?.length > 0 && evalType === 'accuracy'}
-      <Chart type="bubble" data={accuracyData} options={getOptions(accuracy)} />
-    {:else if accuracy?.length > 0 && evalType === 'precision'}
-      <Chart type="bubble" data={precisionData} options={getOptions(precision)} />
-    {/if}
-  </div>
+<div class="overflow-x-auto py-4">
+  {#if accuracy.length || precision.length}
+    <Tabs {options} bind:value={evalType} class="flex justify-center font-bold" />
+    <div class="min-h-[500px] min-w-[500px]">
+      {#if precision?.length > 0 && evalType === 'accuracy'}
+        <Chart type="bubble" data={accuracyData} options={getOptions(accuracy)} />
+      {:else if accuracy?.length > 0 && evalType === 'precision'}
+        <Chart type="bubble" data={precisionData} options={getOptions(precision)} />
+      {/if}
+    </div>
+  {:else}
+    <p class="text-xl">N/A</p>
+  {/if}
 </div>

@@ -82,6 +82,7 @@
             slot="button"
             class="btn btn-ghost w-full flex justify-center gap-6"
             let:open
+            aria-label="show-abstract"
           >
             <CaretIcon {open} />
           </button>

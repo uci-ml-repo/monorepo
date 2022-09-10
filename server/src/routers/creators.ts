@@ -1,0 +1,10 @@
+import * as trpc from '@trpc/server'
+import type { Context } from '../context'
+import { z } from 'zod'
+
+export default trpc.router<Context>().query('getByDatasetId', {
+  input: z.number(),
+  async resolve({ input, ctx: { database_services } }) {
+    return await database_services.creators.getByDatasetId(input)
+  },
+})

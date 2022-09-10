@@ -23,5 +23,13 @@
   let rowsPerPage = 10
 </script>
 
-<Table {headers} {data} />
-<Pagination bind:currentPage bind:rowsPerPage data={originalData} />
+<div class="py-4">
+  {#if !data.length}
+    <p class="text-xl">N/A</p>
+  {:else}
+    <div>
+      <Table {headers} {data} />
+      <Pagination bind:currentPage bind:rowsPerPage data={originalData} />
+    </div>
+  {/if}
+</div>
