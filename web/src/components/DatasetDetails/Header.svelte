@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { collapse } from '$lib/actions'
   import trpc from '$lib/trpc'
   import { useQuery } from '@sveltestack/svelte-query'
   import type { donated_datasets } from '@prisma/client'
@@ -13,7 +12,7 @@
   // search results
   //////////////////////////////////////////
   const query = useQuery(
-    'donated_datasets.byId',
+    ['donated_datasets.byId', ID],
     async () => await trpc(fetch).query('donated_datasets.getById', ID)
   )
 
@@ -23,8 +22,8 @@
   // image src for the dataset avatar
   $: src =
     dataset?.Graphics != null
-      ? '/ml/datasets/' + dataset.ID + '/Graphics/SmallLarge.jpg'
-      : '/ml/datasets/default/SmallLarge.jpg'
+      ? '/ml/datasets/' + dataset.ID + '/Graphics/Large.jpg'
+      : '/ml/datasets/default/Large.jpg'
 
   // assert that dataset is defined and non-null, I'm not sure of a better way to do this
   const metadata: { label: string; key: keyof donated_datasets }[] = [
@@ -53,12 +52,6 @@
       key: 'NumAttributes',
     },
   ]
-
-  let open = false
-
-  const toggleOpen = () => {
-    open = !open
-  }
 </script>
 
 <div class="flex flex-col">
@@ -71,7 +64,12 @@
 
     <!-- title and date donated -->
     <div>
-      <h1 class="text-2xl text-white">{dataset?.Name}</h1>
+      <div class="flex items-center gap-4">
+        <h1 class="text-2xl text-white font-semibold">{dataset?.Name}</h1>
+        {#if dataset?.URLLink}
+          <div class="badge badge-lg badge-secondary">External</div>
+        {/if}
+      </div>
       {#if dataset?.DateDonated != null}
         <h2 class="text-lg text-white">Donated on {date}</h2>
       {/if}
@@ -89,6 +87,7 @@
             slot="button"
             class="btn btn-ghost w-full flex justify-center gap-6"
             let:open
+            aria-label="show-abstract"
           >
             <CaretIcon {open} />
           </button>

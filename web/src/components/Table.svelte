@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let data: string[][] = []
+  export let data: (string | number | boolean)[][] = []
   export let headers: string[] = []
 </script>
 
@@ -9,7 +9,7 @@
     <thead>
       <tr>
         {#each headers as header}
-          <td>{header}</td>
+          <td class="bg-secondary">{header}</td>
         {/each}
       </tr>
     </thead>

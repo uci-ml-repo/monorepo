@@ -8,6 +8,15 @@
   import Descriptive from '$components/DatasetDetails/Descriptive.svelte'
   import Evals from '$components/DatasetDetails/Evals.svelte'
   import Features from '$components/DatasetDetails/Features.svelte'
+  import Papers from '$components/DatasetDetails/Papers.svelte'
+  import Changelog from '$components/DatasetDetails/Changelog.svelte'
+
+  import Interactions from '$components/DatasetDetails/Interactions.svelte'
+  import Keywords from '$components/DatasetDetails/Keywords.svelte'
+  import Creators from '$components/DatasetDetails/Creators.svelte'
+  import DOI from '$components/DatasetDetails/DOI.svelte'
+  import Notes from '$components/DatasetDetails/Notes.svelte'
+  import License from '$components/DatasetDetails/License.svelte'
 
   const { ID } = data
 </script>
@@ -28,7 +37,7 @@
     <Accordion open>
       <span slot="title" class="text-2xl text-primary">Features</span>
       <div slot="content">
-        <Features />
+        <Features {ID} />
       </div>
     </Accordion>
 
@@ -43,26 +52,41 @@
     <!-- features accordion -->
     <Accordion open>
       <span slot="title" class="text-2xl text-primary">Papers Citing this Dataset</span>
-      <div slot="content" class="h-96 bg-red-200" />
+      <div slot="content">
+        <Papers {ID} />
+      </div>
     </Accordion>
 
     <!-- features accordion -->
     <Accordion open>
       <span slot="title" class="text-2xl text-primary">Changelog</span>
-      <div slot="content" class="h-96 bg-red-200" />
+      <div slot="content">
+        <Changelog {ID} />
+      </div>
     </Accordion>
   </div>
-  <div class="shadow col-span-12 col-span-12 md:col-span-4 p-4">
-    <h1 class="text-4xl h-24">Interactions</h1>
+
+  <div class="col-span-12 col-span-12 md:col-span-4 p-4">
+    <Interactions {ID} />
+
     <div class="divider" />
-    <h1 class="text-4xl h-24">Keywords</h1>
+
+    <Keywords {ID} />
+
     <div class="divider" />
-    <h1 class="text-4xl h-24">Creators</h1>
+
+    <Creators {ID} />
+
     <div class="divider" />
-    <h1 class="text-4xl h-24">DOI</h1>
+
+    <DOI {ID} />
+
     <div class="divider" />
-    <h1 class="text-4xl h-24">Notes</h1>
+
+    <Notes {ID} />
+
     <div class="divider" />
-    <h1 class="text-4xl h-24">License</h1>
+
+    <License {ID} />
   </div>
 </div>

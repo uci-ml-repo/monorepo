@@ -8,7 +8,7 @@
   }
 </script>
 
-<div class="shadow">
+<div class="shadow pb-4">
   <div on:click={toggleOpen}>
     <span class="w-full cursor-pointer btn-ghost flex justify-between items-center p-4">
       <slot name="title" {open} />
