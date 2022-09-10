@@ -205,7 +205,7 @@
   ]
 </script>
 
-<div class="overflow-x-auto py-4">
+<div class="overflow-x-auto">
   {#if accuracy.length || precision.length}
     <Tabs {options} bind:value={evalType} class="flex justify-center font-bold" />
     <div class="min-h-[500px] min-w-[500px]">

@@ -9,6 +9,7 @@
   import Evals from '$components/DatasetDetails/Evals.svelte'
   import Features from '$components/DatasetDetails/Features.svelte'
   import Papers from '$components/DatasetDetails/Papers.svelte'
+  import Changelog from '$components/DatasetDetails/Changelog.svelte'
 
   import Interactions from '$components/DatasetDetails/Interactions.svelte'
   import Keywords from '$components/DatasetDetails/Keywords.svelte'
@@ -59,7 +60,9 @@
     <!-- features accordion -->
     <Accordion open>
       <span slot="title" class="text-2xl text-primary">Changelog</span>
-      <div slot="content" class="h-96 bg-red-200" />
+      <div slot="content">
+        <Changelog {ID} />
+      </div>
     </Accordion>
   </div>
 

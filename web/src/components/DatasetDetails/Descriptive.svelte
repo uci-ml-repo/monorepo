@@ -13,7 +13,7 @@
   $: descriptive_qa = $query?.data || []
 </script>
 
-<div class="py-4 flex flex-col gap-6">
+<div class="flex flex-col gap-6">
   {#if descriptive_qa?.length > 0}
     {#each descriptive_qa as [question, answer]}
       <div class="flex flex-col">
@@ -21,5 +21,7 @@
         <DropdownText>{answer}</DropdownText>
       </div>
     {/each}
+  {:else}
+    <p class="text-xl">N/A</p>
   {/if}
 </div>

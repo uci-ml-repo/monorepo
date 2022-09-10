@@ -23,7 +23,7 @@
   let rowsPerPage = 10
 </script>
 
-<div class="py-4">
+<div>
   {#if !data.length}
     <p class="text-xl">N/A</p>
   {:else}
