@@ -64,7 +64,12 @@
 
     <!-- title and date donated -->
     <div>
-      <h1 class="text-2xl text-white font-semibold">{dataset?.Name}</h1>
+      <div class="flex items-center gap-4">
+        <h1 class="text-2xl text-white font-semibold">{dataset?.Name}</h1>
+        {#if dataset?.URLLink}
+          <div class="badge badge-lg badge-secondary">External</div>
+        {/if}
+      </div>
       {#if dataset?.DateDonated != null}
         <h2 class="text-lg text-white">Donated on {date}</h2>
       {/if}

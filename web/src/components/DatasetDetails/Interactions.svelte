@@ -17,29 +17,31 @@
     async () => await trpc(fetch).query('citation.getCitation', ID)
   )
 
-  $: data = $datasetQuery.data
+  $: dataset = $datasetQuery.data
   $: bibtex = $citationQuery?.data?.bibtexText
   $: citation = $citationQuery?.data?.citationText
 </script>
 
 <div class="flex flex-col gap-4">
-  <a href={data?.href} target="_blank" class="btn btn-primary w-full text-white"
-    >View Downloads</a
-  >
-  <label for="my-modal" class="btn btn-secondary w-full text-black">Cite</label>
+  <a href={dataset?.href} target="_blank" class="btn btn-primary w-full text-white">
+    {dataset?.URLLink ? 'Home Page' : 'View Downloads'}
+  </a>
+  {#if dataset?.URLLink == null}
+    <label for="my-modal" class="btn btn-secondary w-full text-black">Cite</label>
+  {/if}
   <div>
-    {#if data?.NumPapers}
+    {#if dataset?.NumPapers}
       <div class="flex gap-3 items-center">
         <QuoteIcon class="fill-primary" />
         <span class="text-primary font-semibold"
-          >{data?.NumPapers + ' citations' || 'N/A'}</span
+          >{dataset?.NumPapers + ' citations' || 'N/A'}</span
         >
       </div>
     {/if}
-    {#if data?.NumHits}
+    {#if dataset?.NumHits}
       <div class="flex gap-3 items-center ">
         <EyeIcon class="fill-primary" />
-        <span class="text-primary font-semibold">{data.NumHits} views</span>
+        <span class="text-primary font-semibold">{dataset.NumHits} views</span>
       </div>
     {/if}
   </div>

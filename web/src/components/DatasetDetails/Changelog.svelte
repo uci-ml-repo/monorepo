@@ -14,5 +14,10 @@
   $: headers = $editQuery.data?.headers || []
 </script>
 
-<h1>Changelog</h1>
-<CustomTable {data} {headers} />
+<div>
+  {#if data.length}
+    <CustomTable {data} {headers} />
+  {:else}
+    <p class="text-xl">N/A</p>
+  {/if}
+</div>
