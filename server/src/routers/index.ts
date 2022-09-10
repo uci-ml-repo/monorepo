@@ -5,6 +5,7 @@ import donatedDatasetsRouter from './donated_datasets'
 import descriptiveRouter from './descriptive'
 import keywordsRouter from './keywords'
 import evalsRouter from './evals'
+import attributesRouter from './attributes'
 
 // setup tRPC router: merge other routers, add middleware and endpoints, etc.
 //////////////////////////////////////////
@@ -26,6 +27,7 @@ const appRouter = trpc
   .merge('keywords.', keywordsRouter)
   .merge('descriptive.', descriptiveRouter)
   .merge('evals.', evalsRouter)
+  .merge('attributes.', attributesRouter)
 
 // the type export is used by the client to check API calls
 export type Router = typeof appRouter

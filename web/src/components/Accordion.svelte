@@ -10,7 +10,7 @@
 
 <div class="shadow">
   <div on:click={toggleOpen}>
-    <span class="w-full cursor-pointer btn-ghost flex justify-between p-4">
+    <span class="w-full cursor-pointer btn-ghost flex justify-between items-center p-4">
       <slot name="title" {open} />
       <CaretIcon {open} />
     </span>

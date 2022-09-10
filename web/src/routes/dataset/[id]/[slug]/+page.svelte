@@ -7,6 +7,7 @@
   import Header from '$components/DatasetDetails/Header.svelte'
   import Descriptive from '$components/DatasetDetails/Descriptive.svelte'
   import Evals from '$components/DatasetDetails/Evals.svelte'
+  import Features from '$components/DatasetDetails/Features.svelte'
 
   const { ID } = data
 </script>
@@ -26,7 +27,9 @@
     <!-- features accordion -->
     <Accordion open>
       <span slot="title" class="text-2xl text-primary">Features</span>
-      <div slot="content" class="h-96 bg-red-200" />
+      <div slot="content">
+        <Features />
+      </div>
     </Accordion>
 
     <!-- evals accordion -->

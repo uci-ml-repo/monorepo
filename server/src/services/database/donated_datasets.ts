@@ -74,11 +74,14 @@ class DonatedDatasetsService extends BaseDatabaseService {
     })
   }
 
+  // given search filters from the donated datasets page,
+  // return a filtered list of datasets
+  ////////////////////////////////////////////
   async searchDatasets(args: searchDatasetProps = {}) {
     return await this.prisma.donated_datasets.findMany({
       where: {
         Status: 'APPROVED',
-        // ...(args.attribute_type ? {AttributeTypes: {contains: args.attribute_type}} : {}),
+        //Attribute Types
         ...(args.attribute_type == 'Categorical'
           ? { AttributeTypes: 'Categorical' }
           : args.attribute_type == 'Numerical'
@@ -92,11 +95,50 @@ class DonatedDatasetsService extends BaseDatabaseService {
               ],
             }
           : {}),
+        //Characteristics
+        ...(args.type ? { Types: { contains: args.type } } : {}),
+        // Num Attributes
+        ...(args.num_attributes == '0-10'
+          ? { NumAttributes: { lte: 10 } }
+          : args.num_attributes == '10-100'
+          ? { AND: [{ NumAttributes: { gte: 10 } }, { NumAttributes: { lte: 100 } }] }
+          : args.num_attributes == '100-inf'
+          ? { NumAttributes: { gte: 100 } }
+          : {}),
+        //Num Instances
+        ...(args.num_instances == '0-100'
+          ? { NumInstances: { lte: 100 } }
+          : args.num_instances == '100-1000'
+          ? { AND: [{ NumInstances: { gte: 100 } }, { NumInstances: { lte: 1000 } }] }
+          : args.num_instances == '1000-inf'
+          ? { NumInstances: { gte: 1000 } }
+          : {}),
+        //Associated Tasks
 
-        // ...(args.type ? {Types: {contains: args.type}} : {}),
-        // ...(args.num_attributes ? {NumAttributes: args.num_attributes} : {}),
-        // ...(args.num_instances ? {NumInstances: args.num_instances} : {}),
-        // ...(args.subject_area ? {Area: {search: args.subject_area.join(' | ')}}: {}),
+        //If the task is other, then only select everything that's either not (Classification or
+        //Regression or Clustering) or is null,
+        ...(args.task
+          ? args.task == 'Other'
+            ? {
+                OR: [
+                  {
+                    NOT: {
+                      OR: [
+                        { Task: { contains: 'Classification' } },
+                        { Task: { contains: 'Regression' } },
+                        { Task: { contains: 'Clustering' } },
+                      ],
+                    },
+                  },
+                  { Task: null },
+                ],
+              }
+            : args.task != 'Other'
+            ? { Task: { contains: args.task } }
+            : {}
+          : {}),
+        //Subject Area
+        //...(args.subject_area ? { Area: { search: args.subject_area.join(' ') } } : {}),
       },
     })
   }
