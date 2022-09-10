@@ -40,7 +40,7 @@
 
 <div class="flex flex-col gap-2">
   {#each CreatorFields as { field, label, required }}
-    <label for="{name}.{field}" class="text-xl">{label}{required ? '*' : ''}</label>
+    <label for="{name}.{field}" class="text-lg">{label}{required ? '*' : ''}</label>
     <input
       id="{name}.{field}"
       name="{name}.{field}"

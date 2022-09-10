@@ -20,7 +20,7 @@
 <div class="tabs {className}">
   {#each options as option}
     <div
-      class="tab tab-bordered tab-lg text-primary"
+      class="tab tab-bordered tab-lg text-primary text-xl"
       on:click={() => updateValue(option.value)}
       class:border-secondary={option.value === value}
     >

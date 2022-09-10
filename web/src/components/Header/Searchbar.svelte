@@ -6,6 +6,7 @@
 
   import SearchIcon from '$components/Icons/Search.svelte'
   import Autocomplete from '$components/Autocomplete.svelte'
+  import Autocompletev2 from '$components/Autocomplete.svelte'
 
   // typed input
   let search = ''
@@ -44,6 +45,8 @@
   $: names = $nameResult.data || []
 </script>
 
+<!-- this is similar to the Autocompletev2, but special enough that
+I don't want to generalize the template just for this usecase -->
 <div
   class={`relative w-full ml-auto lg:max-w-sm input input-sm input-bordered border-primary rounded-full`}
   use:clickOutside

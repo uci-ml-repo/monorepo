@@ -23,11 +23,13 @@
   //////////////////////////////////////////
   const AddCreatorSchema = z.object({
     creators: CreatorSchema.array(),
+    rationale: z.string(),
   })
 
   // convert the string array of creator IDs to numbers
   const RemoveCreatorSchema = z.object({
     creators: z.string().array(),
+    rationale: z.string(),
   })
 
   type AddCreatorFormData = z.TypeOf<typeof AddCreatorSchema>
@@ -58,7 +60,8 @@
     extend: [validator({ schema: RemoveCreatorSchema }), reporter],
     onSubmit: (data) => {
       // felte isn't able to accept transformed data from the schema yet, so transform it here
-      console.log(data.creators.map((creatorID) => parseInt(creatorID)))
+      //console.log(data.creators.map((creatorID) => parseInt(creatorID)))
+      console.log(data)
     },
   })
 
@@ -80,7 +83,7 @@
   )
   $: existingCreators = $creatorQuery.data || []
 
-  // form controls
+  // form and modal controls
   //////////////////////////////////////////
   let formType = 'add'
   const options = [
@@ -133,7 +136,7 @@
     </div>
   </div>
 
-  <div class="modal cursor-pointer" class:modal-open={modalOpen}>
+  <div class="modal" class:modal-open={modalOpen}>
     <div class="modal-box relative" use:clickOutside on:outside_click={closeModal}>
       <!-- bind formType to the selected tabs value -->
       <Tabs {options} bind:value={formType} class="flex justify-center font-bold" />
@@ -186,11 +189,11 @@
       <!-- form for removing creators -->
       {#if formType === 'remove'}
         <form use:removeCreatorForm>
-          <!-- rationale and submit buttons for the remove creators form -->
+          <!-- remove creators checkboxes -->
           {#each existingCreators as creator}
             <div class="form-control">
               <label class="cursor-pointer label">
-                <span class="label-text">{creator.firstName} {creator.lastName}</span>
+                <span class="label-text text-lg">{creator.firstName} {creator.lastName}</span>
                 <input
                   type="checkbox"
                   name="creators"
