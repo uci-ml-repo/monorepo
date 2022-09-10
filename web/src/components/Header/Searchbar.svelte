@@ -6,7 +6,6 @@
 
   import SearchIcon from '$components/Icons/Search.svelte'
   import Autocomplete from '$components/Autocomplete.svelte'
-  import Autocompletev2 from '$components/Autocomplete.svelte'
 
   // typed input
   let search = ''

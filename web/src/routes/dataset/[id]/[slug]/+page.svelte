@@ -25,6 +25,7 @@
 
   // edit modals
   import DescriptiveEdit from '$components/DatasetEdit/Descriptive.svelte'
+  import FeaturesEdit from '$components/DatasetEdit/Features.svelte'
 
   const { ID } = data
 
@@ -84,7 +85,7 @@
       </div>
       <div slot="content">
         {#if descriptiveEditOpen}
-          <DescriptiveEdit>
+          <DescriptiveEdit {ID}>
             <div class="flex gap-4">
               <button type="submit" class="btn btn-primary">Submit</button>
               <button
@@ -122,7 +123,16 @@
       </div>
       <div slot="content">
         {#if featureEditOpen}
-          <h1>edit some features</h1>
+          <FeaturesEdit {ID}>
+            <div class="flex gap-4">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button
+                type="button"
+                class="btn btn-error btn-outline"
+                on:click|preventDefault={closeFeatureEdit}>Cancel</button
+              >
+            </div>
+          </FeaturesEdit>
         {:else}
           <Features {ID} />
         {/if}

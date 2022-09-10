@@ -59,7 +59,7 @@
   <!-- top, blue part of the header -->
   <div class="w-full bg-primary flex p-2 flex items-center gap-4 relative">
     <button class="btn btn-sm btn-ghost btn-circle absolute top-2 right-2">
-      <PencilIcon class="fill-white" />
+      <PencilIcon class="fill-accent" />
     </button>
     <!-- avatar to the left of the header -->
     <div class="mask w-16 h-16 flex align-center">

@@ -8,6 +8,8 @@
 
   import Descriptive from '$components/CustomFormFields/Descriptive.svelte'
 
+  export let ID = 0
+
   const DescriptiveEditSchema = DescriptiveSchema.extend({
     rationale: z.string(),
   })
