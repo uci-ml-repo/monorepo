@@ -128,13 +128,24 @@
     <!-- autocomplete with multiple options if adding a keyword -->
     {#if formType === 'add'}
       <form use:addKeywordForm class="flex flex-col gap-4">
-        <Autocompletev2
-          bind:selectedValues={$addKeywordData.keywords}
-          options={allKeywordOptions}
-          multiple
-          freeSolo
-        />
-        <input type="text" name="rationale" class="input input-bordered w-full" />
+        <label for="keyword-add-autocomplete">
+          <span class="text-lg">Keywords to Add</span>
+          <Autocompletev2
+            bind:selectedValues={$addKeywordData.keywords}
+            options={allKeywordOptions}
+            multiple
+            freeSolo
+          />
+        </label>
+        <label for="keyword-add-rationale">
+          <span class="text-lg">Rationale (optional)</span>
+          <input
+            type="text"
+            name="rationale"
+            class="input input-bordered w-full"
+            placeholder="Rationale (optional)"
+          />
+        </label>
         <div>
           <button type="submit" class="btn btn-primary">Submit</button>
           <button
@@ -148,12 +159,23 @@
 
     {#if formType === 'remove'}
       <form use:removeKeywordForm class="flex flex-col gap-4">
-        <Autocompletev2
-          bind:selectedValues={$removeKeywordData.keywords}
-          options={existingKeywordOptions}
-          multiple
-        />
-        <input type="text" name="rationale" class="input input-bordered w-full" />
+        <label for="keyword-remove-autocomplete">
+          <span class="text-lg">Keywords to Remove</span>
+          <Autocompletev2
+            bind:selectedValues={$removeKeywordData.keywords}
+            options={existingKeywordOptions}
+            multiple
+          />
+        </label>
+        <label for="keyword-remove-rationale">
+          <span class="text-lg">Rationale (optional)</span>
+          <input
+            type="text"
+            name="rationale"
+            class="input input-bordered w-full"
+            placeholder="Rationale (optional)"
+          />
+        </label>
         <div>
           <button type="submit" class="btn btn-primary">Submit</button>
           <button
