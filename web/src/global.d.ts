@@ -9,6 +9,14 @@ declare namespace svelte.JSX {
   }
 }
 
+// custom definition for converting a file to an object
+////////////////////////////////////////////
+interface FileObject {
+  data: string
+  lastModified: number
+  name: string
+}
+
 // allow importing font awesome icons
 declare module '@fortawesome/free-solid-svg-icons/index.es' {
   export * from '@fortawesome/free-solid-svg-icons'

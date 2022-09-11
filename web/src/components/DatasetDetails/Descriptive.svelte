@@ -5,11 +5,14 @@
 
   export let ID = 0
 
+  // get descriptive [question, answer] array
+  //////////////////////////////////////////
   const query = useQuery(
     ['descriptive.getDescriptiveQA', ID],
     async () => await trpc(fetch).query('descriptive.getDescriptiveQA', ID)
   )
 
+  // save the query data in a reactive variable
   $: descriptive_qa = $query?.data || []
 </script>
 

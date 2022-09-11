@@ -1,14 +1,5 @@
 import { z } from 'zod'
 
-// an initially invalid creator that will force user to enter input, e.g. during form validation
-export const nullDefaultCreator = {
-  firstName: null,
-  lastName: null,
-  email: null,
-  address: null,
-  institution: null,
-}
-
 // an initially valid creator, but with empty fields for first name and last name
 export const defaultCreator = {
   firstName: '',

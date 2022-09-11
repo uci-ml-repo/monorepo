@@ -114,7 +114,7 @@ class DonatedDatasetsService extends BaseDatabaseService {
     return {
       ...dataset,
       // properties that don't normally exist or are artificially generated
-      DateDonated: dataset.DateDonated?.toLocaleDateString(),
+      DateDonated: dataset.DateDonated?.toLocaleDateString('en'),
       NumPapers: dataset.dataset_papers_dataset_papers_datasetIDTodonated_datasets.length,
       NumEvals: dataset.evals.length,
       NumAttributes: getNumAttributes(dataset.attributes),

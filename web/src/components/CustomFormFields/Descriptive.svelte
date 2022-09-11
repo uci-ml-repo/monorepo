@@ -1,8 +1,4 @@
 <script lang="ts">
-  // in Felte, the name of each input determines its property in the form data,
-  // by default, all descriptive answers will be under the descriptive property,
-  // e.g. { descriptive: { funding: '' } }
-  // provide a name prop to override this
   export let name = 'descriptive'
 
   import { ValidationMessage } from '@felte/reporter-svelte'

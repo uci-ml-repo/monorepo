@@ -5,12 +5,17 @@
 
   export let ID = 0
 
-  const papersQuery = useQuery(
+  // query for all papers related to this dataset
+  //////////////////////////////////////////
+  const query = useQuery(
     ['papers.getAllSummary', ID],
     async () => await trpc(fetch).query('papers.getAllSummary', ID)
   )
 
-  $: papers = $papersQuery.data || []
+  $: papers = $query.data || []
+
+  // pagination controls
+  //////////////////////////////////////////
   let currentPage = 0
   let rowsPerPage = 5
   const rowsPerPageOptions = [5, 25, 50, 100, 200]
@@ -18,6 +23,7 @@
 
 <div class="py-4">
   {#if papers.length}
+    <!-- each paper is in its own div and stacked with flex-col -->
     <div class="flex flex-col gap-4">
       {#each papers.slice(currentPage * rowsPerPage, (currentPage + 1) * rowsPerPage) as paper}
         <div>
