@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createForm } from 'felte'
-  import { reporter } from '@felte/reporter-svelte'
+  import { reporter, ValidationMessage } from '@felte/reporter-svelte'
   import { validator } from '@felte/validator-zod'
 
   import trpc from '$lib/trpc'
@@ -11,12 +11,14 @@
 
   const MetadataEditSchema = z.object({
     metadata: MetadataSchema,
-    rationale: z.string(),
+    rationale: z.string().optional(),
   })
 
   type MetadataEditFormData = z.TypeOf<typeof MetadataEditSchema>
 
   export let ID = 0
+  export let name = 'metadata'
+  export let onSubmit = (data: MetadataEditFormData) => console.log(data)
 
   // get all keywords from database for autocomplete
   const metadataQuery = useQuery(
@@ -24,20 +26,33 @@
     async () => await trpc(fetch).query('donated_datasets.getById', ID)
   )
 
-  $: data = $metadataQuery.data
+  $: metadata = $metadataQuery.data
 
-  const { form, setData } = createForm<MetadataEditFormData>({
+  const { form, data, isDirty, setData, setInitialValues } = createForm<MetadataEditFormData>({
     initialValues: {
       metadata: {
-        Abstract: data?.Abstract,
-        Types: data?.Types?.split(', ') || [],
-        Area: data?.Area || '',
-        DOI: data?.DOI,
-        Task: data?.Task?.split(', ') || [],
+        Abstract: metadata?.Abstract,
+        Types: metadata?.Types?.split(', ') || [],
+        Area: metadata?.Area || '',
+        DOI: metadata?.DOI,
+        Task: metadata?.Task?.split(', ') || [],
       },
     },
     extend: [validator({ schema: MetadataEditSchema }), reporter],
+    onSubmit,
   })
+
+  $: if (metadata && !$isDirty) {
+    setInitialValues({
+      metadata: {
+        Abstract: metadata?.Abstract,
+        Types: metadata?.Types?.split(', ') || [],
+        Area: metadata?.Area || '',
+        DOI: metadata?.DOI,
+        Task: metadata?.Task?.split(', ') || [],
+      },
+    })
+  }
 
   // enumerated form fields
   //////////////////////////////////////////
@@ -65,7 +80,7 @@
 
   const Tasks = ['Classification', 'Regression', 'Clustering', 'Other']
 
-  let hasDOI = 'No'
+  $: hasDOI = $data.metadata.DOI == null ? 'No' : 'Yes'
 </script>
 
 <form use:form class="flex flex-col gap-4 w-full">
@@ -74,32 +89,19 @@
   </div>
 
   <div class="flex flex-col gap-6">
-    <div class="flex flex-col">
-      <div class="flex items-center gap-3">
-        <label for="dataset-name" class="text-xl">Dataset Name*</label>
-      </div>
-      <input
-        id="dataset-name"
-        name="metadata.Name"
-        type="text"
-        class="input input-bordered mt-2 w-full"
-        placeholder="Dataset Name"
-        required
-      />
-    </div>
-
-    <div class="divider" />
-
     <div class="flex flex-col gap-2">
       <label for="metadata.Abstract" class="text-xl">Abstract*</label>
       <input
-        id="metadata.Abstract"
-        name="metadata.Abstract"
+        id="{name}.Abstract"
+        name="{name}.Abstract"
         type="text"
         class="input input-bordered"
         placeholder="Abstract"
         required
       />
+      <ValidationMessage for="{name}.Abstract" let:messages>
+        <span class="text-error">{messages || ''}</span>
+      </ValidationMessage>
     </div>
 
     <div class="divider" />
@@ -110,15 +112,13 @@
         {#each Areas as Area}
           <label class="label cursor-pointer flex gap-3">
             <span class="label-text text-md">{Area}</span>
-            <input
-              type="radio"
-              name="metadata.Area"
-              value={Area}
-              class="radio radio-primary"
-            />
+            <input type="radio" name="{name}.Area" value={Area} class="radio radio-primary" />
           </label>
         {/each}
       </div>
+      <ValidationMessage for="{name}.Area" let:messages>
+        <span class="text-error">{messages || ''}</span>
+      </ValidationMessage>
     </div>
 
     <div class="divider" />
@@ -131,13 +131,16 @@
             <span class="label-text text-md">{Type}</span>
             <input
               type="checkbox"
-              name="metadata.Types"
+              name="{name}.Types"
               value={Type}
               class="checkbox checkbox-primary"
             />
           </label>
         {/each}
       </div>
+      <ValidationMessage for="{name}.Types" let:messages>
+        <span class="text-error">{messages || ''}</span>
+      </ValidationMessage>
     </div>
 
     <div class="divider" />
@@ -167,8 +170,8 @@
         </label>
       </div>
       <input
-        id="metadata.DOI"
-        name="metadata.DOI"
+        id="{name}.DOI"
+        name="{name}.DOI"
         type="text"
         class="input input-bordered"
         class:hidden={hasDOI === 'No'}
@@ -184,15 +187,19 @@
             <span class="label-text text-md">{Task}</span>
             <input
               type="checkbox"
-              name="metadata.Task"
+              name="{name}.Task"
               value={Task}
               class="checkbox checkbox-primary"
             />
           </label>
         {/each}
       </div>
+      <ValidationMessage for="{name}.Task" let:messages>
+        <span class="text-error">{messages || ''}</span>
+      </ValidationMessage>
     </div>
   </div>
+
   <label for="metadata-edit-rationale" class="flex flex-col gap-4">
     <span class="text-lg">Rationale (optional)</span>
     <input type="text" name="rationale" class="input input-bordered" />

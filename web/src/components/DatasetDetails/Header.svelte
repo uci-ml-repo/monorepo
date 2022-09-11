@@ -11,6 +11,7 @@
   import XIcon from '$components/Icons/X.svelte'
 
   import MetadataEdit from '$components/DatasetEdit/Metadata.svelte'
+  import DatasetEdit from '$components/DatasetEdit/Dataset.svelte'
 
   export let ID = 0
 
@@ -129,7 +130,16 @@
       </button>
     {/if}
     {#if metadataEditOpen}
-      <MetadataEdit />
+      <MetadataEdit {ID}>
+        <div class="flex gap-4">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button
+            type="button"
+            class="btn btn-error btn-outline"
+            on:click|preventDefault={closeMetadataEdit}>Cancel</button
+          >
+        </div>
+      </MetadataEdit>
       <!-- metadata grid; will show editing form if it's open -->
     {:else}
       <div class="pr-2">
@@ -163,6 +173,15 @@
 
 <div class="modal" class:modal-open={datasetEditOpen}>
   <div class="modal-box" use:clickOutside on:outside_click={closeDatasetEdit}>
-    Edit Dataset (delete or graphics)
+    <DatasetEdit>
+      <div class="flex gap-4">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button
+          type="button"
+          class="btn btn-error btn-outline"
+          on:click|preventDefault={closeDatasetEdit}>Cancel</button
+        >
+      </div>
+    </DatasetEdit>
   </div>
 </div>

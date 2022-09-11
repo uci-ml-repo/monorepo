@@ -119,7 +119,7 @@
 
 <div class="modal" class:modal-open={modalOpen}>
   <div
-    class="modal-box relative min-h-[500px] flex flex-col gap-4"
+    class="modal-box overflow-visible flex flex-col gap-4"
     use:clickOutside
     on:outside_click={closeModal}
   >
@@ -137,22 +137,24 @@
             freeSolo
           />
         </label>
-        <label for="keyword-add-rationale">
-          <span class="text-lg">Rationale (optional)</span>
-          <input
-            type="text"
-            name="rationale"
-            class="input input-bordered w-full"
-            placeholder="Rationale (optional)"
-          />
-        </label>
-        <div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <button
-            type="button"
-            class="btn btn-primary btn-error btn-outline"
-            on:click={closeModal}>Cancel</button
-          >
+        <div class="flex flex-col gap-4 mt-auto">
+          <label for="keyword-add-rationale">
+            <span class="text-lg">Rationale (optional)</span>
+            <input
+              type="text"
+              name="rationale"
+              class="input input-bordered w-full"
+              placeholder="Rationale (optional)"
+            />
+          </label>
+          <div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button
+              type="button"
+              class="btn btn-primary btn-error btn-outline"
+              on:click={closeModal}>Cancel</button
+            >
+          </div>
         </div>
       </form>
     {/if}

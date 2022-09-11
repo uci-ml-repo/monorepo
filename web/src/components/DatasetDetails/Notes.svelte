@@ -16,6 +16,17 @@
 
   $: notes = $notesQuery.data
 
+  export let value = ''
+
+  // only update the value with the previous version of notes once
+  $: if (notes && !value) {
+    value = notes
+  }
+
+  const handleSubmit = () => {
+    console.log(value)
+  }
+
   let noteEditOpen = false
 
   const openNoteEdit = () => (noteEditOpen = true)
@@ -43,5 +54,14 @@
 </div>
 
 <div class="modal" class:modal-open={noteEditOpen}>
-  <div class="modal-box" use:clickOutside on:outside_click={closeNoteEdit}>Edit Notes</div>
+  <div class="modal-box flex flex-col gap-4" use:clickOutside on:outside_click={closeNoteEdit}>
+    <label for="notes-text-area" class="flex flex-col gap-4">
+      <span class="text-2xl text-primary">Edit Notes</span>
+      <textarea cols="30" rows="10" class="border p-4" bind:value />
+    </label>
+    <div class="flex gap-4">
+      <button on:click={handleSubmit} class="btn btn-primary">Submit</button>
+      <button class="btn btn-error btn-outline" on:click={closeNoteEdit}>Cancel</button>
+    </div>
+  </div>
 </div>
