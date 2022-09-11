@@ -10,7 +10,7 @@
   import { defaultCreator } from '$lib/schemas/Creator'
   import CreatorSchema from '$lib/schemas/Creator'
 
-  import CreatorFieldArray from '$components/CustomFormFields/CreatorFieldArray.svelte'
+  import CreatorFieldArray from '$components/FormFields/CreatorFieldArray.svelte'
   import PlusIcon from '$components/Icons/Plus.svelte'
   import Tabs from '$components/Tabs.svelte'
 

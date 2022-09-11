@@ -2,7 +2,10 @@
   import type { CreatorType } from '$lib/schemas/Creator'
   import { ValidationMessage } from '@felte/reporter-svelte'
 
-  export let name = ''
+  // a single creator will usually be part of an array under the creators property, e.g.
+  // parentFormData = { creators: [...individual_creators] }
+  export let name = 'creators.'
+
   export let creator: CreatorType
 
   const CreatorFields: {
@@ -40,17 +43,17 @@
 
 <div class="flex flex-col gap-2">
   {#each CreatorFields as { field, label, required }}
-    <label for="{name}.{field}" class="text-lg">{label}{required ? '*' : ''}</label>
+    <label for="{name}{field}" class="text-lg">{label}{required ? '*' : ''}</label>
     <input
-      id="{name}.{field}"
-      name="{name}.{field}"
+      id="{name}{field}"
+      name="{name}{field}"
       type="text"
       class="input input-bordered"
       {required}
       placeholder={label}
       bind:value={creator[field]}
     />
-    <ValidationMessage for="{name}.{field}" let:messages={message}>
+    <ValidationMessage for="{name}{field}" let:messages={message}>
       <span class="text-error">{message || ''}</span>
     </ValidationMessage>
   {/each}

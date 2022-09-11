@@ -1,6 +1,6 @@
 <script lang="ts">
   import Pagination from '$components/Pagination.svelte'
-  import DatasetFilterSidebar from '$components/DatasetFilterSidebar/index.svelte'
+  import DatasetFilterSidebar from '$components/DatasetFilter.svelte'
   import SortBy from '$components/SortBy.svelte'
 
   import EyeSlash from '$components/Icons/EyeSlash.svelte'

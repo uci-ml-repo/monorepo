@@ -1,5 +1,5 @@
 <script lang="ts">
-  import File from '$components/CustomFormFields/File.svelte'
+  import File from '$components/FormFields/File.svelte'
   import { FileSchema } from '$lib/schemas'
   import { z } from 'zod'
 

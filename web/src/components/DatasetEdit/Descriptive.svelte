@@ -7,7 +7,7 @@
   import { validator } from '@felte/validator-zod'
   import { z } from 'zod'
 
-  import Descriptive from '$components/CustomFormFields/Descriptive.svelte'
+  import Descriptive from '$components/FormFields/Descriptive.svelte'
   import { DescriptiveSchema } from '$lib/schemas'
 
   export let ID = 0

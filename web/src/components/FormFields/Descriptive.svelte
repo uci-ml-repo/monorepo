@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let name = 'descriptive'
+  export let name = 'descriptive.'
 
   import { ValidationMessage } from '@felte/reporter-svelte'
 
@@ -35,7 +35,7 @@
       {descriptive_labels[field]}
       <input
         type="text"
-        name="{name}.{field}"
+        name="{name}{field}"
         class="input input-bordered input-primary w-full"
       />
     </label>

@@ -1,15 +1,12 @@
 <script lang="ts">
-  import { useQuery } from '@sveltestack/svelte-query'
-
   import { reporter } from '@felte/reporter-svelte'
   import { validator } from '@felte/validator-zod'
   import { createForm } from 'felte'
   import { z } from 'zod'
 
-  import trpc from '$lib/trpc'
-
-  import Autocompletev2 from '$components/Autocompletev2.svelte'
   import Tabs from '$components/Tabs.svelte'
+  import KeywordFieldArray from '$components/FormFields/AddKeywords.svelte'
+  import RemoveKeywords from '$components/FormFields/RemoveKeywords.svelte'
 
   export let ID = 0
 
@@ -54,30 +51,6 @@
       },
     })
 
-  // setup the existing keywords (displayed in UI and remove keywords form)
-  // and all keywords (add new keywords form)
-  //////////////////////////////////////////
-  const existingKeywordQuery = useQuery(
-    ['keywords.getDatasetKeywords', ID],
-    async () => await trpc(fetch).query('keywords.getDatasetKeywords', ID)
-  )
-
-  const allKeywordQuery = useQuery(
-    ['keywords.getNames'],
-    async () => await trpc(fetch).query('keywords.getNames')
-  )
-
-  // keyword options for autocomplete
-  $: allKeywordOptions = $allKeywordQuery?.data || []
-
-  // existing keywords needs to be array { label, value } objects
-  // where the label is displayed, but the form data collects the value (keyword ID)
-  $: existingKeywordOptions =
-    $existingKeywordQuery?.data?.map((k) => ({
-      label: k.keywords.keyword,
-      value: k.keywordsID,
-    })) || []
-
   // tab controls
   //////////////////////////////////////////
   const options = [
@@ -89,20 +62,16 @@
 </script>
 
 <div>
+  <!-- use tab navigation and allow it to control the form type -->
   <Tabs {options} bind:value={formType} />
 
   <!-- autocomplete with multiple options if adding a keyword -->
   {#if formType === 'add'}
     <form use:addKeywordForm class="flex flex-col gap-4">
-      <label for="keyword-add-autocomplete">
-        <span class="text-lg">Keywords to Add</span>
-        <Autocompletev2
-          bind:selectedValues={$addKeywordData.keywords}
-          options={allKeywordOptions}
-          multiple
-          freeSolo
-        />
-      </label>
+      <!-- collect values from the keyword field array and bind to the form data -->
+      <KeywordFieldArray bind:selectedValues={$addKeywordData.keywords} />
+
+      <!-- rationale -->
       <div class="flex flex-col gap-4 mt-auto">
         <label for="keyword-add-rationale">
           <span class="text-lg">Rationale (optional)</span>
@@ -122,14 +91,10 @@
 
   {#if formType === 'remove'}
     <form use:removeKeywordForm class="flex flex-col gap-4">
-      <label for="keyword-remove-autocomplete">
-        <span class="text-lg">Keywords to Remove</span>
-        <Autocompletev2
-          bind:selectedValues={$removeKeywordData.keywords}
-          options={existingKeywordOptions}
-          multiple
-        />
-      </label>
+      <!-- collect values from the remove keyword select and bind to the form data -->
+      <RemoveKeywords bind:selectedValues={$removeKeywordData.keywords} {ID} />
+
+      <!-- rationale -->
       <label for="keyword-remove-rationale">
         <span class="text-lg">Rationale (optional)</span>
         <input

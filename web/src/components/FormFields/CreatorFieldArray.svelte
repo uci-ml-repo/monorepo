@@ -1,19 +1,21 @@
 <script lang="ts">
   import type { CreatorType } from '$lib/schemas/Creator'
   import SingleCreatorInput from './SingleCreatorInput.svelte'
-  //import PlusIcon from '$components/Icons/Plus.svelte'
   import XIcon from '$components/Icons/X.svelte'
 
+  // index for this creator, e.g. "the nth creator"
   export let index: number
 
-  // a creator object that will be forwarded and bound to the underlying creator field
+  // a creator object from the form data
+  // that will be forwarded and bound to the underlying single creator field
   export let creator: CreatorType
 
   // provide a function to remove a creator from the parent form
   export let removeCreator: (index: number) => void
 
-  // provide a function to add a creator from the form
-  // export let addCreator: (index: number) => void
+  // by default, this form data will be listed under the "creators" property of the parent form,
+  // e.g. parentFormData = { creators: [...] }
+  export let name = 'creators.'
 </script>
 
 <div>
@@ -26,5 +28,5 @@
       <XIcon />
     </button>
   </div>
-  <SingleCreatorInput name="creators.{index}" bind:creator />
+  <SingleCreatorInput name="{name}{index}" bind:creator />
 </div>

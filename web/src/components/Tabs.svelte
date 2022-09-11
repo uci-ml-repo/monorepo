@@ -3,13 +3,13 @@
 
   interface TabOption {
     label: string
-    value: string
+    value: unknown
   }
 
   export let options: TabOption[] = []
-  export let value: string = options?.[0]?.value || ''
+  export let value: unknown = options?.[0]?.value
 
-  const updateValue = (newValue: string) => {
+  const updateValue = (newValue: unknown) => {
     value = newValue
   }
 
