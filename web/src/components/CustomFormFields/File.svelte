@@ -3,9 +3,15 @@
   import UploadIcon from '$components/Icons/Upload.svelte'
   import { FileToObject } from '$lib/utils'
 
+  const defaultFile = {
+    data: '',
+    name: '',
+    lastModified: 69420,
+  }
+
   let files: FileList
 
-  export let value: FileObject
+  export let value: FileObject = { ...defaultFile }
 
   $: data = value?.data
 
@@ -18,11 +24,7 @@
   }
 
   const reset = () => {
-    value = {
-      data: '',
-      name: '',
-      lastModified: 69420,
-    }
+    value = { ...defaultFile }
     data = ''
   }
 </script>

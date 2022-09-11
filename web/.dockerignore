@@ -1,0 +1,13 @@
+# dev environment 
+node_modules/
+.svelte-kit/
+build/
+.turbo/
+stats.html
+
+# private
+.env
+
+# OS file system configs
+.DS_Store
+desktop.ini

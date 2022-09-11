@@ -4,7 +4,7 @@
   import trpc from '$lib/trpc'
   import { useQuery } from '@sveltestack/svelte-query'
 
-  // search results
+  // query the dataset to figure out what license statement to display
   //////////////////////////////////////////
   const query = useQuery(
     ['donated_datasets.byId', ID],

@@ -1,15 +1,18 @@
 <script lang="ts">
-  export let ID = 0
-
   import { useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
 
-  const datasetQuery = useQuery(
+  export let ID = 0
+
+  // query the dataset to get the DOI
+  //////////////////////////////////////////
+  const query = useQuery(
     ['donated_datasets.getById', ID],
     async () => await trpc(fetch).query('donated_datasets.getById', ID)
   )
 
-  $: DOI = $datasetQuery.data?.DOI
+  // save the DOI in a reactive variable
+  $: DOI = $query.data?.DOI
 </script>
 
 <div class="">

@@ -2,31 +2,34 @@
   import { createForm } from 'felte'
   import { reporter, ValidationMessage } from '@felte/reporter-svelte'
   import { validator } from '@felte/validator-zod'
+  import { z } from 'zod'
 
   import trpc from '$lib/trpc'
   import { useQuery } from '@sveltestack/svelte-query'
 
   import { MetadataSchema } from '$lib/schemas'
-  import { z } from 'zod'
-
-  const MetadataEditSchema = z.object({
-    metadata: MetadataSchema,
-    rationale: z.string().optional(),
-  })
-
-  type MetadataEditFormData = z.TypeOf<typeof MetadataEditSchema>
 
   export let ID = 0
   export let name = 'metadata'
   export let onSubmit = (data: MetadataEditFormData) => console.log(data)
 
-  // get all keywords from database for autocomplete
+  // get existing metadata for dataset
+  //////////////////////////////////////////
   const metadataQuery = useQuery(
     ['donated_datasets.getById', ID],
     async () => await trpc(fetch).query('donated_datasets.getById', ID)
   )
 
   $: metadata = $metadataQuery.data
+
+  // initialize form
+  //////////////////////////////////////////
+  const MetadataEditSchema = z.object({
+    metadata: MetadataSchema,
+    rationale: z.string().optional(),
+  })
+
+  type MetadataEditFormData = z.TypeOf<typeof MetadataEditSchema>
 
   const { form, data, isDirty, setData, setInitialValues } = createForm<MetadataEditFormData>({
     initialValues: {
@@ -42,6 +45,7 @@
     onSubmit,
   })
 
+  // if form hasn't been touched and metadata has been updated, reset the initial values
   $: if (metadata && !$isDirty) {
     setInitialValues({
       metadata: {
@@ -53,6 +57,9 @@
       },
     })
   }
+
+  // whether to show the DOI text input or not
+  $: hasDOI = $data.metadata.DOI == null ? 'No' : 'Yes'
 
   // enumerated form fields
   //////////////////////////////////////////
@@ -79,15 +86,15 @@
   ]
 
   const Tasks = ['Classification', 'Regression', 'Clustering', 'Other']
-
-  $: hasDOI = $data.metadata.DOI == null ? 'No' : 'Yes'
 </script>
 
 <form use:form class="flex flex-col gap-4 w-full">
+  <!-- header -->
   <div class="flex items-center gap-2px-0">
     <h1 class="text-primary text-3xl">Metadata*</h1>
   </div>
 
+  <!-- abstract text input -->
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
       <label for="metadata.Abstract" class="text-xl">Abstract*</label>
@@ -106,6 +113,7 @@
 
     <div class="divider" />
 
+    <!-- area radio buttons -->
     <div class="flex flex-col gap-2">
       <label for="area-radio" class="text-xl">Areas*</label>
       <div id="area-radio" class="form-control flex gap-4 max-w-sm">
@@ -123,6 +131,7 @@
 
     <div class="divider" />
 
+    <!-- types checkboxes -->
     <div class="flex flex-col gap-2">
       <label for="types-checkbox" class="text-xl">Types*</label>
       <div id="types-checkbox" class="flex gap-2 form-control max-w-sm">
@@ -145,7 +154,9 @@
 
     <div class="divider" />
 
+    <!-- DOI radio buttons and text input -->
     <div class="flex flex-col gap-2">
+      <!-- hasDOI radio buttons-->
       <label for="metadata.DOI" class="text-xl">DOI*</label>
       <div id="DOI-radio" class="flex gap-2 form-control max-w-sm">
         <label class="label cursor-pointer">
@@ -169,6 +180,8 @@
           />
         </label>
       </div>
+
+      <!-- DOI text input if hasDOI is true -->
       <input
         id="{name}.DOI"
         name="{name}.DOI"
@@ -179,6 +192,8 @@
     </div>
 
     <div class="divider" />
+
+    <!-- task checkboxes -->
     <div class="flex flex-col gap-2">
       <label for="task-checkbox" class="text-xl">Task*</label>
       <div id="task-checkbox" class="flex gap-2 form-control max-w-sm">
@@ -200,6 +215,7 @@
     </div>
   </div>
 
+  <!-- rationale -->
   <label for="metadata-edit-rationale" class="flex flex-col gap-4">
     <span class="text-lg">Rationale (optional)</span>
     <input type="text" name="rationale" class="input input-bordered" />

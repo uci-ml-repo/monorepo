@@ -6,4 +6,5 @@ const FileSchema = z.object({
   lastModified: z.number(),
 })
 
+export type FileType = z.TypeOf<typeof FileSchema>
 export default FileSchema

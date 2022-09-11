@@ -15,7 +15,7 @@
 
   export let ID = 0
 
-  // search results
+  // query for existing dataset
   //////////////////////////////////////////
   const query = useQuery(
     ['donated_datasets.byId', ID],
@@ -23,7 +23,6 @@
   )
 
   $: dataset = $query.data
-  $: date = new Date(dataset?.DateDonated || '').toLocaleDateString('en')
 
   // image src for the dataset avatar
   $: src =
@@ -31,7 +30,7 @@
       ? '/ml/datasets/' + dataset.ID + '/Graphics/Large.jpg'
       : '/ml/datasets/default/Large.jpg'
 
-  // assert that dataset is defined and non-null, I'm not sure of a better way to do this
+  // map metadata properties to a grid layout
   const metadata: { label: string; key: keyof donated_datasets }[] = [
     {
       label: 'Dataset Characteristics',
@@ -77,6 +76,7 @@
 <div class="flex flex-col">
   <!-- top, blue part of the header -->
   <div class="w-full bg-primary flex p-2 flex items-center gap-4 relative">
+    <!-- buttons to control the dataset edit, e.g. edit graphics/delete dataset modal -->
     {#if datasetEditOpen}
       <button
         class="btn btn-sm btn-error btn-circle absolute top-2 right-2"
@@ -106,7 +106,7 @@
         {/if}
       </div>
       {#if dataset?.DateDonated != null}
-        <h2 class="text-lg text-white">Donated on {date}</h2>
+        <h2 class="text-lg text-white">Donated on {dataset.DateDonated}</h2>
       {/if}
     </div>
   </div>
@@ -130,6 +130,7 @@
       </button>
     {/if}
     {#if metadataEditOpen}
+      <!-- will show metadata edit instead of abstract and metadata if edit is open -->
       <MetadataEdit {ID}>
         <div class="flex gap-4">
           <button type="submit" class="btn btn-primary">Submit</button>
@@ -140,7 +141,6 @@
           >
         </div>
       </MetadataEdit>
-      <!-- metadata grid; will show editing form if it's open -->
     {:else}
       <div class="pr-2">
         <!-- abstract -->
@@ -159,6 +159,7 @@
         {/if}
       </div>
 
+      <!-- metadata grid -->
       <div class="grid grid-cols-8 md:grid-cols-12 gap-4">
         {#each metadata as { label, key }}
           <div class="col-span-4">
@@ -171,6 +172,7 @@
   </div>
 </div>
 
+<!-- modal for editing the graphics or deleting the dataset -->
 <div class="modal" class:modal-open={datasetEditOpen}>
   <div class="modal-box" use:clickOutside on:outside_click={closeDatasetEdit}>
     <DatasetEdit>
