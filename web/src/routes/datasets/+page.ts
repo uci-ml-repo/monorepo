@@ -8,7 +8,6 @@ export const load: Load = async ({ fetch }) => {
     async () =>
       await trpcClient(fetch).query('donated_datasets.getDatasets', {
         order: 'NumHits',
-        limit: 20,
         sort: 'desc',
       })
   )

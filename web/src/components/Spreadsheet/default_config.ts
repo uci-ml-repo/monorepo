@@ -1,30 +1,31 @@
 import type { Options } from 'jspreadsheet-ce'
 
-const columns: Options['columns'] = [
-  { title: 'Names', width: 120 },
+export const columns: Options['columns'] = [
+  { title: 'ID', width: 50, readOnly: true },
+  { title: 'Names', width: 100 },
   {
     title: 'Role',
     type: 'dropdown',
     source: ['ID', 'Target', 'Other', 'Feature'],
-    width: 120,
+    width: 100,
   },
   {
     title: 'Variable Type',
     type: 'dropdown',
-    width: 240,
-    source: ['Numerical - Continuous', 'Numerical - Discrete', 'Categorical', 'Date'],
+    width: 150,
+    source: ['Continuous', 'Discrete', 'Categorical', 'Date'],
   },
-  { title: 'Units', width: 70 },
-  { title: 'Description', width: 140 },
+  { title: 'Description', width: 150 },
+  { title: 'Units', width: 69 },
   {
     title: 'Missing Values',
-    type: 'dropdown',
-    width: 140,
-    source: ['No', 'Yes'],
+    type: 'checkbox',
+    width: 120,
+    source: ['false', 'true'],
   },
 ]
 
-const minDimensions: Options['minDimensions'] = [6, 10]
+export const minDimensions: Options['minDimensions'] = [6, 10]
 
 const default_config: Options = {
   columns,

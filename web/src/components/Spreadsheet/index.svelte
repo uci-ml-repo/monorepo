@@ -1,7 +1,7 @@
 <script lang="ts">
   import './jexcel.css'
   import './jsuites.css'
-  import default_config from './default_config'
+  import { columns, minDimensions } from './default_config'
 
   import { onMount } from 'svelte'
   import type { CellValue, Options, JSpreadsheetElement } from 'jspreadsheet-ce'
@@ -35,13 +35,21 @@
 
     jspreadsheet(div, {
       data: value,
-      onchange: () => {
-        // whenver the spreadsheet changes, update the value with the new data
-        value = node.jspreadsheet.getData()
+      onchange: (
+        _instance: HTMLElement,
+        _cell: HTMLTableCellElement,
+        _columnIndex: string,
+        rowIndex: string
+      ) => {
+        // whenver the spreadsheet changes, update the value with the new data of the row
+        value[parseInt(rowIndex)] = node.jspreadsheet.getRowData(parseInt(rowIndex))
       },
 
       // load default configuration first
-      ...default_config,
+      columns,
+
+      // if there are values, don't set min dimensions
+      ...(value.length ? {} : minDimensions),
 
       // and then prioritize options from props
       ...options,

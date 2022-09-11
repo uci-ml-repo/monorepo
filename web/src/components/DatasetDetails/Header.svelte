@@ -1,11 +1,16 @@
 <script lang="ts">
   import trpc from '$lib/trpc'
+  import { clickOutside } from '$lib/actions'
   import { useQuery } from '@sveltestack/svelte-query'
   import type { donated_datasets } from '@prisma/client'
 
   import DropdownText from '$components/DropdownText.svelte'
 
   import CaretIcon from '$components/Icons/Caret.svelte'
+  import PencilIcon from '$components/Icons/Pencil.svelte'
+  import XIcon from '$components/Icons/X.svelte'
+
+  import MetadataEdit from '$components/DatasetEdit/Metadata.svelte'
 
   export let ID = 0
 
@@ -52,11 +57,40 @@
       key: 'NumAttributes',
     },
   ]
+
+  // dataset edit controls (e.g. change graphics and delete)
+  //////////////////////////////////////////
+  let datasetEditOpen = false
+
+  const closeDatasetEdit = () => (datasetEditOpen = false)
+  const openDatasetEdit = () => (datasetEditOpen = true)
+
+  // metadata edit controls (e.g. abstract, types)
+  //////////////////////////////////////////
+  let metadataEditOpen = false
+
+  const closeMetadataEdit = () => (metadataEditOpen = false)
+  const openMetadataEdit = () => (metadataEditOpen = true)
 </script>
 
 <div class="flex flex-col">
   <!-- top, blue part of the header -->
-  <div class="w-full bg-primary flex p-2 flex items-center gap-4">
+  <div class="w-full bg-primary flex p-2 flex items-center gap-4 relative">
+    {#if datasetEditOpen}
+      <button
+        class="btn btn-sm btn-error btn-circle absolute top-2 right-2"
+        on:click={closeDatasetEdit}
+      >
+        <XIcon />
+      </button>
+    {:else}
+      <button
+        class="btn btn-sm btn-ghost btn-circle absolute top-2 right-2"
+        on:click={openDatasetEdit}
+      >
+        <PencilIcon class="fill-accent" />
+      </button>
+    {/if}
     <!-- avatar to the left of the header -->
     <div class="mask w-16 h-16 flex align-center">
       <img {src} alt="dataset-graphic-large-screen" />
@@ -77,32 +111,58 @@
   </div>
 
   <!-- bottom part of the header, abstract and metadata -->
-  <!-- #TODO: change this into an each/map function-->
-  <div class="shadow bg-base-100 p-4 flex flex-col gap-4">
-    <div>
-      {#if dataset}
-        <DropdownText>
-          {dataset.Abstract}
-          <button
-            slot="button"
-            class="btn btn-ghost w-full flex justify-center gap-6"
-            let:open
-            aria-label="show-abstract"
-          >
-            <CaretIcon {open} />
-          </button>
-        </DropdownText>
-      {/if}
-    </div>
+  <div class="shadow bg-base-100 p-4 flex flex-col gap-4 relative">
+    <!-- metadata editing pencil to the top right of the abstract -->
+    {#if metadataEditOpen}
+      <button
+        class="btn btn-sm btn-error btn-outline btn-circle absolute top-2 right-2"
+        on:click={closeMetadataEdit}
+      >
+        <XIcon />
+      </button>
+    {:else}
+      <button
+        class="btn btn-sm btn-ghost btn-circle absolute top-2 right-2"
+        on:click={openMetadataEdit}
+      >
+        <PencilIcon class="fill-accent" />
+      </button>
+    {/if}
+    {#if metadataEditOpen}
+      <MetadataEdit />
+      <!-- metadata grid; will show editing form if it's open -->
+    {:else}
+      <div class="pr-2">
+        <!-- abstract -->
+        {#if dataset}
+          <DropdownText>
+            {dataset.Abstract}
+            <button
+              slot="button"
+              class="btn btn-ghost w-full flex justify-center gap-6"
+              let:open
+              aria-label="show-abstract"
+            >
+              <CaretIcon {open} />
+            </button>
+          </DropdownText>
+        {/if}
+      </div>
 
-    <!-- metadata grid -->
-    <div class="grid grid-cols-8 md:grid-cols-12 gap-4">
-      {#each metadata as { label, key }}
-        <div class="col-span-4">
-          <h1 class="text-primary text-lg font-semibold">{label}</h1>
-          <p class="text-md">{dataset?.[key] || 'N/A'}</p>
-        </div>
-      {/each}
-    </div>
+      <div class="grid grid-cols-8 md:grid-cols-12 gap-4">
+        {#each metadata as { label, key }}
+          <div class="col-span-4">
+            <h1 class="text-primary text-lg font-semibold">{label}</h1>
+            <p class="text-md">{dataset?.[key] || 'N/A'}</p>
+          </div>
+        {/each}
+      </div>
+    {/if}
+  </div>
+</div>
+
+<div class="modal" class:modal-open={datasetEditOpen}>
+  <div class="modal-box" use:clickOutside on:outside_click={closeDatasetEdit}>
+    Edit Dataset (delete or graphics)
   </div>
 </div>
