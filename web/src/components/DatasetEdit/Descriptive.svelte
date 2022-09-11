@@ -30,7 +30,10 @@
 <form use:form>
   <!-- form fields for the data, -->
   <Descriptive />
-  <input type="text" name="rationale" />
+  <label for="descriptive-edit-rationale" class="flex flex-col gap-4">
+    <span class="text-lg">Rationale (optional)</span>
+    <input type="text" name="rationale" class="input input-bordered" />
+  </label>
 
   <!-- allow props from parent component to control the submission/cancel process -->
   <slot />

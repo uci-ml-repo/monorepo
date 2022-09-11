@@ -10,6 +10,8 @@
   import PencilIcon from '$components/Icons/Pencil.svelte'
   import XIcon from '$components/Icons/X.svelte'
 
+  import MetadataEdit from '$components/DatasetEdit/Metadata.svelte'
+
   export let ID = 0
 
   // search results
@@ -127,10 +129,10 @@
       </button>
     {/if}
     {#if metadataEditOpen}
-      <h1>editing</h1>
+      <MetadataEdit />
       <!-- metadata grid; will show editing form if it's open -->
     {:else}
-      <div>
+      <div class="pr-2">
         <!-- abstract -->
         {#if dataset}
           <DropdownText>
