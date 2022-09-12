@@ -10,7 +10,7 @@
   import { MetadataSchema } from '$lib/schemas'
 
   export let ID = 0
-  export let name = 'metadata'
+  export let name = 'metadata.'
   export let onSubmit = (data: MetadataEditFormData) => console.log(data)
 
   // get existing metadata for dataset
@@ -47,6 +47,7 @@
 
   // if form hasn't been touched and metadata has been updated, reset the initial values
   $: if (metadata && !$isDirty) {
+    console.log(metadata)
     setInitialValues({
       metadata: {
         Abstract: metadata?.Abstract,
@@ -99,14 +100,14 @@
     <div class="flex flex-col gap-2">
       <label for="metadata.Abstract" class="text-xl">Abstract*</label>
       <input
-        id="{name}.Abstract"
-        name="{name}.Abstract"
+        id="{name}Abstract"
+        name="{name}Abstract"
         type="text"
         class="input input-bordered"
         placeholder="Abstract"
         required
       />
-      <ValidationMessage for="{name}.Abstract" let:messages>
+      <ValidationMessage for="{name}Abstract" let:messages>
         <span class="text-error">{messages || ''}</span>
       </ValidationMessage>
     </div>
@@ -120,11 +121,11 @@
         {#each Areas as Area}
           <label class="label cursor-pointer flex gap-3">
             <span class="label-text text-md">{Area}</span>
-            <input type="radio" name="{name}.Area" value={Area} class="radio radio-primary" />
+            <input type="radio" name="{name}Area" value={Area} class="radio radio-primary" />
           </label>
         {/each}
       </div>
-      <ValidationMessage for="{name}.Area" let:messages>
+      <ValidationMessage for="{name}Area" let:messages>
         <span class="text-error">{messages || ''}</span>
       </ValidationMessage>
     </div>
@@ -140,14 +141,14 @@
             <span class="label-text text-md">{Type}</span>
             <input
               type="checkbox"
-              name="{name}.Types"
+              name="{name}Types"
               value={Type}
               class="checkbox checkbox-primary"
             />
           </label>
         {/each}
       </div>
-      <ValidationMessage for="{name}.Types" let:messages>
+      <ValidationMessage for="{name}Types" let:messages>
         <span class="text-error">{messages || ''}</span>
       </ValidationMessage>
     </div>
@@ -183,8 +184,8 @@
 
       <!-- DOI text input if hasDOI is true -->
       <input
-        id="{name}.DOI"
-        name="{name}.DOI"
+        id="{name}DOI"
+        name="{name}DOI"
         type="text"
         class="input input-bordered"
         class:hidden={hasDOI === 'No'}
@@ -202,14 +203,14 @@
             <span class="label-text text-md">{Task}</span>
             <input
               type="checkbox"
-              name="{name}.Task"
+              name="{name}Task"
               value={Task}
               class="checkbox checkbox-primary"
             />
           </label>
         {/each}
       </div>
-      <ValidationMessage for="{name}.Task" let:messages>
+      <ValidationMessage for="{name}Task" let:messages>
         <span class="text-error">{messages || ''}</span>
       </ValidationMessage>
     </div>
