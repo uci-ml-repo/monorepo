@@ -1,5 +1,5 @@
 <script lang="ts">
-  let extra_classes = ''
+  let extra_classes = 'h-6'
   export { extra_classes as class }
 </script>
 
@@ -7,7 +7,7 @@
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 24 24"
   fill="currentColor"
-  class={`w-6 h-6 ${extra_classes}`}
+  class={extra_classes}
 >
   <path
     fill-rule="evenodd"
