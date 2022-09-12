@@ -71,10 +71,8 @@
   }
 </script>
 
-<form use:form class="flex flex-col gap-6 px-8 py-4 mx-auto min-w-[50vw] max-w-4xl my-16">
+<form use:form class="flex flex-col gap-6 px-8 py-4 mx-auto min-w-[50vw] max-w-4xl">
   <h1 class="text-3xl text-primary">File and Tabular Data Upload</h1>
-
-  <div class="divider" />
 
   <!-- prompt if uploading tabular data -->
   <div class="flex gap-2 max-w-sm form-control">
@@ -88,8 +86,6 @@
       <input type="radio" class="radio radio-primary" value="other" bind:group={format} />
     </label>
   </div>
-
-  <div class="divider" />
 
   <!-- if uploading tabular data, show some more questions -->
   {#if format === 'tabular'}
@@ -113,8 +109,6 @@
         <input type="radio" class="radio radio-primary" value="No" bind:group={hasHeaderRow} />
       </label>
     </div>
-
-    <div class="divider" />
 
     <!-- missing values -->
 
@@ -140,18 +134,13 @@
       </label>
     </div>
 
-    <div class="divider" />
-
     <!-- upload a CSV -->
 
     <div class="flex flex-col gap-6">
       <h1 class="text-xl">Upload Test data here*</h1>
       <FileInput bind:value={$data.files.testData} />
     </div>
-
-    <div class="divider" />
-
-    <div class="flex flex-col gap-6 max-w-full">
+    <div class="flex flex-col gap-6 p-4 max-w-full">
       <h1 class="text-xl">Upload CSV data here*</h1>
       <!-- the spreadsheet will manage attributes and the CSV file-->
       <!-- internally, it binds the csv file to the custom file input form field -->

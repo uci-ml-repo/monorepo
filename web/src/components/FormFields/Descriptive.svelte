@@ -42,5 +42,6 @@
     <ValidationMessage for="{name}.field" let:messages>
       <span class="text-error">{messages || ''}</span>
     </ValidationMessage>
+    <div class="divider" />
   </div>
 {/each}

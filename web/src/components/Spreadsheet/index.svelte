@@ -146,7 +146,8 @@
 
   $: if (node?.jspreadsheet && !file?.data) {
     // after jspreadsheet has been initialized, whenever file form data becomes empty (reset),
-    // reset spreadsheet data to the min dimensions
+    // reset spreadsheet data to the min dimensions and reset the spreadsheet value
+    value = []
     node.jspreadsheet.setData(
       Array(minDimensions?.[1]).fill(Array(minDimensions?.[0]).fill([]))
     )
