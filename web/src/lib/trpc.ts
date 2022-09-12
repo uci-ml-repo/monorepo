@@ -15,7 +15,7 @@ export default (loadFetch?: LoadEvent['fetch']) =>
 type Query = keyof Router['_def']['queries']
 type Mutation = keyof Router['_def']['mutations']
 
-// Useful types
+// Useful type definitions
 export type InferQueryOutput<RouteKey extends Query> = inferProcedureOutput<
   Router['_def']['queries'][RouteKey]
 >

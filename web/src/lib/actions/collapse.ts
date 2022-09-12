@@ -25,8 +25,10 @@ interface CollapseParams {
 
 export default function collapse(node: HTMLElement, params: CollapseParams): ActionReturn {
   // overflow should be hidden for transitions to work
+
   node.style.overflow = 'hidden'
   let duration = 0
+
   /*
    * utility functions to improve readability
    * depending on orientation and open state, set the width or height to
@@ -55,10 +57,18 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
       ? params.baseHeight
       : Math.min(lineClamp * lineHeight, node.scrollHeight)
 
+  // recalculate the open/closed sizes of the element
   const calculateHeight = () => {
+    // get the current height of the element
     const oldHeight = node.style.height
+
+    // set the height to auto so the true max height can be calculated
     node.style.height = 'auto'
+
+    // force a reflow so the element doesen't actually open
     node.getBoundingClientRect()
+
+    // if the client height is smaller than the line clamp * line height, then set the base height to the client height
     if (node.clientHeight <= lineClamp * lineHeight) {
       baseHeight = node.clientHeight
       node.style.height = node.clientHeight + 'px'
@@ -79,17 +89,28 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
     const scrollHeight = node.scrollHeight
 
     if (open) {
+      // explicitly set the starting height, so there's a CSS transition to the end height
       node.style.height = baseHeight + 'px'
+
+      // set the height to the end height with a setTimeout so the CSS transition happens
       activeTimeout = setTimeout(() => {
         node.style.height = scrollHeight + 'px'
+
+        // once the transition is done, set the height to auto, so it fits all the content
         activeTimeout = setTimeout(() => (node.style.height = 'auto'), duration)
       })
+
+      // set the display to block when the element is open
       node.style.display = 'block'
     } else {
+      // set the height to the open height so there's a starting point CSS transition
       if (duration !== 0) {
         node.style.height = scrollHeight + 'px'
       }
+      // set the display to webkit box so there's ellipsis and line clamp
       node.style.display = '-webkit-box'
+
+      // set the height to the closed height and let the CSS transition happen
       setTimeout(() => (node.style.height = baseHeight + 'px'))
     }
   }

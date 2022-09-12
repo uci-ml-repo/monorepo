@@ -2,6 +2,7 @@
   import { clickOutside } from '$lib/actions'
   import VirtualList from './VirtualList.svelte'
   import XIcon from '$components/Icons/X.svelte'
+  import CaretIcon from '$components/Icons/Caret.svelte'
 
   // pre-determined options for the dropdown autocomplete
   // can either provide an array of strings or an array of label/value objects
@@ -41,13 +42,9 @@
   //////////////////////////////////////////
   let autocompleteOpen = false
 
-  const openAutocomplete = () => {
-    autocompleteOpen = true
-  }
-
-  const closeAutocomplete = () => {
-    autocompleteOpen = false
-  }
+  const openAutocomplete = () => (autocompleteOpen = true)
+  const closeAutocomplete = () => (autocompleteOpen = false)
+  const toggleAutocomplete = () => (autocompleteOpen = !autocompleteOpen)
 
   // utilities, really helpful
   //////////////////////////////////////////
@@ -104,85 +101,97 @@
 
 <!-- this entire component looks like a searchbar, but has an autocomplete and many subcomponents -->
 <!-- borders wrap around certain divs to give the illusion that it's the real text input -->
-<div
-  class={`relative w-full px-0 border border-primary rounded-sm px-4`}
-  use:clickOutside
-  on:outside_click={closeAutocomplete}
->
-  <div class="relative w-full h-full overflow-visible">
-    <label
-      for="keyword-add-dropdown"
-      class="p-2 w-full h-full flex gap-1 flex-wrap max-h-[120px] overflow-y-auto cursor-text"
-      on:click={openAutocomplete}
-    >
-      <!-- if can select multiple, show each selected option as a chip -->
-      {#if multiple}
-        {#each selected as option}
-          <!-- can replace the chips/badges with a different UI component to represent selected -->
-          <slot name="indicator" {option}>
-            <!-- by default, badge/chip with an X to represent multiple selected options-->
-            <div class="badge badge-xs badge-primary h-8 flex items-center">
-              <button
-                class="btn btn-ghost btn-xs btn-circle"
-                on:click={() => removeSelected(option)}
-              >
-                <XIcon class="h-full fill-red-500" />
-              </button>
-              <span class="text-white">
-                {getLabel(option)}
-              </span>
-            </div>
-          </slot>
-        {/each}
-      {/if}
+<!-- remount the component if the options change -->
+{#key options}
+  <div
+    class={`relative w-full px-0 border border-primary rounded-sm px-4`}
+    use:clickOutside
+    on:outside_click={closeAutocomplete}
+  >
+    <div class="relative w-full h-full overflow-visible">
+      <label
+        for="keyword-add-dropdown"
+        class="p-4 w-full h-full flex gap-1 flex-wrap max-h-[120px] overflow-y-auto cursor-text"
+        on:click={openAutocomplete}
+      >
+        <!-- if can select multiple, show each selected option as a chip -->
+        {#if multiple}
+          {#each selected as option}
+            <!-- can replace the chips/badges with a different UI component to represent selected -->
+            <slot name="indicator" {option}>
+              <!-- by default, badge/chip with an X to represent multiple selected options-->
+              <div class="badge badge-xs badge-primary h-8 flex items-center">
+                <button
+                  class="btn btn-ghost btn-xs btn-circle"
+                  on:click={() => removeSelected(option)}
+                >
+                  <XIcon class="h-full fill-red-500" />
+                </button>
+                <span class="text-white">
+                  {getLabel(option)}
+                </span>
+              </div>
+            </slot>
+          {/each}
+        {/if}
 
-      <!-- text input to filter the autocomplete -->
-      <input
-        id="keyword-add-dropdown"
-        type="text"
-        class="w-full h-full outline-none bg-transparent"
-        aria-label="search-input"
-        bind:value={searchValue}
-      />
-    </label>
+        <!-- text input to filter the autocomplete -->
+        <input
+          id="keyword-add-dropdown"
+          type="text"
+          class="w-11/12 h-full outline-none bg-transparent"
+          aria-label="search-input"
+          bind:value={searchValue}
+        />
 
-    <!-- autocomplete options displayed in a virtual list to improve performance -->
-    <div
-      tabindex="0"
-      class="w-full top-full collapse border-base-300 bg-base-100 absolute"
-      class:collapse-open={autocompleteOpen}
-      class:border={autocompleteOpen}
-    >
-      <div class="collapse-content p-0">
-        <!-- can insert components directly above the actual autocomplete dropdown -->
-        <!-- e.g. the radio buttons on the main searchbar -->
-        <slot name="above" />
+        <!-- caret button that can toggle the autocomplete, absolutely positioned to bottom right of this box-->
+        <button
+          class="btn btn-sm btn-circle btn-ghost absolute right-0 bottom-1/4 right-1"
+          type="button"
+          on:click|preventDefault|stopPropagation={toggleAutocomplete}
+        >
+          <CaretIcon open={autocompleteOpen} />
+        </button>
+      </label>
 
-        <!-- default slot allows you to wrap the virtual list -->
-        <VirtualList height="240px" items={filteredOptions} let:item>
-          <!-- list item slot displays every autocomplete option -->
-          <slot name="list-item" {item} {toggleSelected}>
-            <!-- default child for selecting multiple is a span -->
-            <!-- that can toggle optiOns in the selected list-->
-            {#if multiple}
-              <span
-                tabindex="0"
-                class="hover:bg-base-200"
-                on:click|preventDefault={() => toggleSelected(item)}
-                class:bg-base-200={isSelected(item)}
-              >
-                {getLabel(item)}
-              </span>
+      <!-- autocomplete options displayed in a virtual list to improve performance -->
+      <div
+        tabindex="0"
+        class="w-full top-full collapse border-base-300 bg-base-100 absolute"
+        class:collapse-open={autocompleteOpen}
+        class:border={autocompleteOpen}
+      >
+        <div class="collapse-content p-0">
+          <!-- can insert components directly above the actual autocomplete dropdown -->
+          <!-- e.g. the radio buttons on the main searchbar -->
+          <slot name="above" />
 
-              <!-- otherwise, just a span that darkens on hover -->
-            {:else}
-              <span class="hover:bg-base-200" tabindex="0">
-                {getLabel(item)}
-              </span>
-            {/if}
-          </slot>
-        </VirtualList>
+          <!-- default slot allows you to wrap the virtual list -->
+          <VirtualList height="240px" items={filteredOptions} let:item>
+            <!-- list item slot displays every autocomplete option -->
+            <slot name="list-item" {item} {toggleSelected}>
+              <!-- default child for selecting multiple is a span -->
+              <!-- that can toggle optiOns in the selected list-->
+              {#if multiple}
+                <span
+                  tabindex="0"
+                  class="hover:bg-base-200"
+                  on:click|preventDefault={() => toggleSelected(item)}
+                  class:bg-base-200={isSelected(item)}
+                >
+                  {getLabel(item)}
+                </span>
+
+                <!-- otherwise, just a span that darkens on hover -->
+              {:else}
+                <span class="hover:bg-base-200" tabindex="0">
+                  {getLabel(item)}
+                </span>
+              {/if}
+            </slot>
+          </VirtualList>
+        </div>
       </div>
     </div>
   </div>
-</div>
+{/key}

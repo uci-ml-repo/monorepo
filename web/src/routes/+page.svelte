@@ -27,10 +27,10 @@
         </p>
         <div class="flex justify-center gap-5 flex-wrap">
           <a href="/datasets" class="btn btn-primary">
-            <span class="text-white"> View Datasets </span>
+            <span class="text-white">View Datasets</span>
           </a>
           <a href="/" class="btn btn-secondary">
-            <span class="text-black"> Contribute a Dataset </span>
+            <span class="text-black">Contribute a Dataset</span>
           </a>
         </div>
       </div>

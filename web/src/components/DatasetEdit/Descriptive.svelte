@@ -37,17 +37,25 @@
     onSubmit,
   })
 
+  $: descriptive = $query.data
+
+  // will be false until the form has been updated with the previous values
+  let hasInitialized = false
+
   // if the query data updates and the form hasn't been touched, reset the initial values
-  $: if (!$isDirty && $query.data) {
+  // redundant descriptive check is a null type guard for TypeScript
+  $: if (!$isDirty && descriptive) {
     setInitialValues({
-      descriptive: $query.data,
+      descriptive,
       rationale: '',
     })
+    hasInitialized = true
   }
 </script>
 
-{#key $query.data}
-  <form use:form>
+<!-- re-mount the component if hasInitialized changes -->
+{#key hasInitialized}
+  <form use:form class="flex flex-col gap-4">
     <!-- form fields for the data, -->
     <Descriptive />
 

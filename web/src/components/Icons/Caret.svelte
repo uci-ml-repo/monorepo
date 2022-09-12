@@ -1,13 +1,13 @@
 <script lang="ts">
-  let extra_classes = ''
+  let className = ''
   export let open = false
-  export { extra_classes as class }
+  export { className as class }
 </script>
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 320 512"
-  class="fill-current h-5 transition-all text-primary {extra_classes}"
+  class="fill-current h-5 transition-all text-primary {className}"
   class:-rotate-180={open}
 >
   <path

@@ -11,7 +11,7 @@
 </script>
 
 <QueryClientProvider client={queryClient}>
-  <!-- the header wraps around the entire app because of the drawer -->
+  <!-- the header wraps around the entire app because of the side drawer -->
   <Header>
     <!-- add the body of the page and the footer to the default slot -->
     <div>

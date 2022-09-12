@@ -6,7 +6,7 @@
   import { collapse } from '$lib/actions'
   import Dropdown from '$components/DropdownButton.svelte'
 
-  import { useMutation, useQuery } from '@sveltestack/svelte-query'
+  import { useMutation } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
 
   // Schema for form validation/submission, not really necessary for this form

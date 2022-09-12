@@ -3,6 +3,8 @@
 
   import { ValidationMessage } from '@felte/reporter-svelte'
 
+  import TextArea from '$components/TextArea.svelte'
+
   const descriptive_fields = [
     'purpose',
     'funding',
@@ -31,13 +33,11 @@
 
 {#each descriptive_fields as field}
   <div class="flex flex-col gap-2">
-    <label for="">
-      {descriptive_labels[field]}
-      <input
-        type="text"
-        name="{name}{field}"
-        class="input input-bordered input-primary w-full"
-      />
+    <label for="{name}{field}">
+      <span class="text-lg">
+        {descriptive_labels[field]}
+      </span>
+      <TextArea name="{name}{field}" />
     </label>
     <ValidationMessage for="{name}.field" let:messages>
       <span class="text-error">{messages || ''}</span>

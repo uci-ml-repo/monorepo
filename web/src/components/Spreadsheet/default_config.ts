@@ -13,7 +13,7 @@ export const columns: Options['columns'] = [
     title: 'Variable Type',
     type: 'dropdown',
     width: 150,
-    source: ['Continuous', 'Discrete', 'Categorical', 'Date'],
+    source: ['Numerical - Continuous', 'Numerical - Discrete', 'Categorical', 'Date'],
   },
   { title: 'Description', width: 150 },
   { title: 'Units', width: 69 },

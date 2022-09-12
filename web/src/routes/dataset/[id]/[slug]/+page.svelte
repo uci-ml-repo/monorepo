@@ -10,8 +10,8 @@
   // center stage
   import Header from '$components/DatasetDetails/Header.svelte'
   import Descriptive from '$components/DatasetDetails/Descriptive.svelte'
-  import Evals from '$components/DatasetDetails/Evals.svelte'
   import Features from '$components/DatasetDetails/Features.svelte'
+  import Evals from '$components/DatasetDetails/Evals.svelte'
   import Papers from '$components/DatasetDetails/Papers.svelte'
   import Changelog from '$components/DatasetDetails/Changelog.svelte'
 
@@ -29,7 +29,6 @@
 
   const { ID } = data
 
-  //////////////////////////////////////////
   // editing controls on this page: Descriptive Edit, Features Edit
   // all other editing modals/popups, etc. are handled by the children components
   ////////////////////////////////////////
@@ -38,33 +37,24 @@
   //////////////////////////////////////////
   let descriptiveEditOpen = false
 
-  const openDescriptiveEdit = () => {
-    descriptiveEditOpen = true
-  }
-
-  const closeDescriptiveEdit = () => {
-    descriptiveEditOpen = false
-  }
+  const openDescriptiveEdit = () => (descriptiveEditOpen = true)
+  const closeDescriptiveEdit = () => (descriptiveEditOpen = false)
 
   // features edit controls
   //////////////////////////////////////////
   let featureEditOpen = false
 
-  const openFeatureEdit = () => {
-    featureEditOpen = true
-  }
-
-  const closeFeatureEdit = () => {
-    featureEditOpen = false
-  }
+  const openFeatureEdit = () => (featureEditOpen = true)
+  const closeFeatureEdit = () => (featureEditOpen = false)
 </script>
 
-<div class="grid grid-cols-12 gap-4 max-w-screen-xl mx-auto my-12 p-4">
+<div class="grid grid-cols-12 gap-8 max-w-screen-xl mx-auto my-12 p-4">
   <div class="col-span-12 md:col-span-8 flex flex-col gap-8">
     <Header {ID} />
 
     <!-- Descriptive Information accordion -->
     <Accordion open>
+      <!-- accordion title for descriptive information and edit buttons -->
       <div slot="title" class="flex gap-4 items-center">
         <h1 class="text-2xl text-primary">Information</h1>
         {#if descriptiveEditOpen}
@@ -83,6 +73,9 @@
           </button>
         {/if}
       </div>
+
+      <!-- accordion content for descriptive information -->
+      <!-- either descriptive questions/answers, or the editing form -->
       <div slot="content">
         {#if descriptiveEditOpen}
           <DescriptiveEdit {ID}>
@@ -103,6 +96,7 @@
 
     <!-- Features accordion -->
     <Accordion open>
+      <!-- accordion title for features and edit buttons -->
       <div slot="title" class="flex gap-4 items-center">
         <h1 class="text-2xl text-primary">Features</h1>
         {#if featureEditOpen}
@@ -121,6 +115,8 @@
           </button>
         {/if}
       </div>
+
+      <!-- accordion content for features table; either table or editing spreadsheet -->
       <div slot="content">
         {#if featureEditOpen}
           <FeaturesEdit {ID}>
@@ -164,7 +160,8 @@
     </Accordion>
   </div>
 
-  <div class="col-span-12 col-span-12 md:col-span-4 p-4">
+  <!-- right sidebar -->
+  <div class="col-span-12 col-span-12 md:col-span-4">
     <Interactions {ID} />
 
     <div class="divider" />

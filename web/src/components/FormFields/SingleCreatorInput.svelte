@@ -3,8 +3,8 @@
   import { ValidationMessage } from '@felte/reporter-svelte'
 
   // a single creator will usually be part of an array under the creators property, e.g.
-  // parentFormData = { creators: [...individual_creators] }
-  export let name = 'creators.'
+  // parentFormData = { creators: [...individual_creators] }, e.g.
+  export let name = 'creators.0.'
 
   export let creator: CreatorType
 

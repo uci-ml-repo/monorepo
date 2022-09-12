@@ -5,6 +5,7 @@
   import type { donated_datasets } from '@prisma/client'
 
   import DropdownText from '$components/DropdownText.svelte'
+  import Graphics from '$components/Graphics.svelte'
 
   import CaretIcon from '$components/Icons/Caret.svelte'
   import PencilIcon from '$components/Icons/Pencil.svelte'
@@ -94,7 +95,11 @@
     {/if}
     <!-- avatar to the left of the header -->
     <div class="mask w-16 h-16 flex align-center">
-      <img {src} alt="dataset-graphic-large-screen" />
+      <Graphics
+        {src}
+        alt="dataset-graphic-large-screen"
+        fallbackSrc="/ml/datasets/default/Large.jpg"
+      />
     </div>
 
     <!-- title and date donated -->

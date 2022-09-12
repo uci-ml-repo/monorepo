@@ -1,10 +1,19 @@
 <script lang="ts">
+  /*
+     given a dataset ID, a keyword remove field uses a multi-select autocomplete
+     form to collect the ID of keywords to remove for a dataset
+     the parent form should bind to the "selectedValues" to view the IDs selected
+   */
+
   import { useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
 
   import Autocompletev2 from '$components/Autocompletev2.svelte'
 
   export let ID = 0
+
+  // bind to this value to select multiple options
+  export let selectedValues: number[] = []
 
   // get existing keywords for the dataset for autocomplete
   const existingKeywordQuery = useQuery(
@@ -19,12 +28,9 @@
       label: k.keywords.keyword,
       value: k.keywordsID,
     })) || []
-
-  // bind to this value to select multiple options
-  export let selectedValues: number[] = []
 </script>
 
-<label for="keyword-remove-autocomplete">
+<label for="keyword-remove-autocomplete" class="flex flex-col gap-4">
   <span class="text-lg">Keywords to Remove</span>
   <Autocompletev2 bind:selectedValues options={existingKeywordOptions} multiple />
 </label>

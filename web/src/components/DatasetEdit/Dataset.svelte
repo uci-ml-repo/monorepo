@@ -1,5 +1,5 @@
 <script lang="ts">
-  import File from '$components/FormFields/File.svelte'
+  import FileInput from '$components/FormFields/File.svelte'
   import { FileSchema } from '$lib/schemas'
   import { z } from 'zod'
 
@@ -24,19 +24,16 @@
   <!-- graphic edit title -->
   <h1 class="text-2xl text-primary text-center">Edit Image</h1>
 
-  <!-- graphic uploaded image -->
-  {#if $data?.Graphics?.data}
-    <div class="w-full flex justify-center">
-      <img src={$data.Graphics.data} alt="dataset-graphic" class="h-64 p-2 border" />
-    </div>
-  {/if}
-
   <!-- form data for graphic -->
   <form use:form class="flex flex-col gap-4">
     <!-- a box around the file upload will have a height of 64 when there's no file, -->
     <!-- and undefined (0ish) height when there is a file -->
     <div class:h-64={!$data?.Graphics?.data}>
-      <File bind:value={$data.Graphics} />
+      <FileInput bind:value={$data.Graphics}>
+        <div class="w-full flex justify-center p-2">
+          <img src={$data.Graphics.data} alt="dataset-graphic" class="h-64" />
+        </div>
+      </FileInput>
     </div>
 
     <!-- rationale for updating graphic -->

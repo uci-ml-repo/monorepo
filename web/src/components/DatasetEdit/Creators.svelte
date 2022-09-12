@@ -1,4 +1,14 @@
 <script lang="ts">
+  /*
+     the creator edit form uses the creator field array and a checkbox list
+     to collect form data about creators to add/remove
+     it appends rationale to the form data, and provides a slot for the parent
+     component to add controls
+
+     there are no bind-able props, but the parent can pass a custom onSubmit prop
+     to override the form submission behavior
+   */
+
   import { reporter } from '@felte/reporter-svelte'
   import { validator } from '@felte/validator-zod'
   import { createForm } from 'felte'
@@ -11,7 +21,6 @@
   import CreatorSchema from '$lib/schemas/Creator'
 
   import CreatorFieldArray from '$components/FormFields/CreatorFieldArray.svelte'
-  import PlusIcon from '$components/Icons/Plus.svelte'
   import Tabs from '$components/Tabs.svelte'
 
   export let ID = 0
@@ -80,7 +89,7 @@
   }
 
   // add a new creator at the bottom of the field array
-  export function addNewCreator() {
+  function addNewCreator() {
     addField('creators', defaultCreator, newCreators.length || 0)
   }
 
@@ -101,19 +110,12 @@
   {#if formType === 'add'}
     <form use:addCreatorForm>
       <div class="flex flex-col gap-0">
-        {#each newCreators as creator, index}
-          <CreatorFieldArray {index} bind:creator {removeCreator} />
-          <div class="divider" />
-        {/each}
-        <button
-          class="btn btn-primary w-50 mx-auto flex gap-2"
-          on:click|preventDefault={addNewCreator}
-        >
-          <span>
-            {newCreators?.length ? 'Add More Creators' : 'Begin Adding Creators'}
-          </span>
-          <PlusIcon class="fill-white" />
-        </button>
+        <!-- let the creator field array bind to the creators property in the form data -->
+        <CreatorFieldArray
+          bind:creators={$addCreatorData.creators}
+          {removeCreator}
+          {addNewCreator}
+        />
       </div>
 
       <!-- actions area -->
