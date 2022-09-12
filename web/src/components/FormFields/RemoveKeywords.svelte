@@ -30,7 +30,9 @@
     })) || []
 </script>
 
-<label for="keyword-remove-autocomplete" class="flex flex-col gap-4">
-  <span class="text-lg">Keywords to Remove</span>
-  <Autocompletev2 bind:selectedValues options={existingKeywordOptions} multiple />
-</label>
+{#key existingKeywordOptions}
+  <label for="keyword-remove-autocomplete" class="flex flex-col gap-4">
+    <span class="text-lg">Keywords to Remove</span>
+    <Autocompletev2 bind:selectedValues options={existingKeywordOptions} multiple />
+  </label>
+{/key}

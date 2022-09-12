@@ -3,11 +3,11 @@ declare module '*.md'
 declare module '*.svx'
 
 // declare custom use:actions here
-//declare namespace svelte.JSX {
-//  interface HTMLAttributes {
-//    onoutside_click?: () => void
-//  }
-//}
+declare namespace svelte.JSX {
+  interface HTMLAttributes {
+    onoutside_click?: () => void
+  }
+}
 
 // custom definition for converting a file to an object
 ////////////////////////////////////////////

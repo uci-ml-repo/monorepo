@@ -11,6 +11,10 @@
      which can be overridden with a prop (both share the same onSubmit prop for now)
    */
 
+  import { queryClient } from '$lib/query'
+  import { useMutation } from '@sveltestack/svelte-query'
+  import trpc from '$lib/trpc'
+
   import { reporter } from '@felte/reporter-svelte'
   import { validator } from '@felte/validator-zod'
   import { createForm } from 'felte'
@@ -37,31 +41,77 @@
   type AddKeywordFormData = z.TypeOf<typeof AddKeywordSchema>
   type RemoveKeywordFormData = z.TypeOf<typeof RemoveKeywordSchema>
 
+  // mutation requests
+  //////////////////////////////////////////
+
+  // accept an edit if the person has authority
+  const acceptMutation = useMutation(
+    async (ID: number) => {
+      return await trpc(fetch).mutation('edits.accept', ID)
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['keywords.getDatasetKeywords', ID])
+        queryClient.invalidateQueries(['keywords.getNames'])
+      },
+    }
+  )
+
+  // insert an edit
+  const insertMutation = useMutation(
+    async (data: AddKeywordFormData | RemoveKeywordFormData) => {
+      return await trpc(fetch).mutation('edits.insert', {
+        datasetID: ID,
+        userID: 631,
+        recordID: undefined,
+        actionID: formType === 'add' ? 1 : 2,
+        tableID: 3,
+        data: data.keywords,
+        oldData: '',
+        rationale: data.rationale,
+      })
+    },
+    {
+      onSuccess: (data) => {
+        addReset()
+        removeReset()
+        $acceptMutation.mutate(data.ID)
+      },
+    }
+  )
+
   // initialize forms
   //////////////////////////////////////////
 
   // add keyword by string form
-  const { form: addKeywordForm, data: addKeywordData } = createForm<AddKeywordFormData>({
+  const {
+    form: addKeywordForm,
+    data: addKeywordData,
+    reset: addReset,
+  } = createForm<AddKeywordFormData>({
     initialValues: {
       keywords: [],
     },
     extend: [validator({ schema: AddKeywordSchema }), reporter],
     onSubmit: (data) => {
-      console.log(data)
+      $insertMutation.mutate(data)
     },
   })
 
   // remove keyword by ID form
-  const { form: removeKeywordForm, data: removeKeywordData } =
-    createForm<RemoveKeywordFormData>({
-      initialValues: {
-        keywords: [],
-      },
-      extend: [validator({ schema: RemoveKeywordSchema }), reporter],
-      onSubmit: (data) => {
-        console.log(data)
-      },
-    })
+  const {
+    form: removeKeywordForm,
+    data: removeKeywordData,
+    reset: removeReset,
+  } = createForm<RemoveKeywordFormData>({
+    initialValues: {
+      keywords: [],
+    },
+    extend: [validator({ schema: RemoveKeywordSchema }), reporter],
+    onSubmit: (data) => {
+      $insertMutation.mutate(data)
+    },
+  })
 
   // tab controls
   //////////////////////////////////////////

@@ -23,7 +23,9 @@
   $: allKeywordOptions = $allKeywordQuery?.data || []
 </script>
 
-<label for="keyword-add-autocomplete" class="flex flex-col gap-4">
-  <span class="text-lg">Keywords to Add</span>
-  <Autocompletev2 bind:selectedValues options={allKeywordOptions} multiple freeSolo />
-</label>
+{#key allKeywordOptions}
+  <label for="keyword-add-autocomplete" class="flex flex-col gap-4">
+    <span class="text-lg">Keywords to Add</span>
+    <Autocompletev2 bind:selectedValues options={allKeywordOptions} multiple freeSolo />
+  </label>
+{/key}

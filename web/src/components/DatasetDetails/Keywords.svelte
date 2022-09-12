@@ -60,7 +60,7 @@
   >
     <KeywordsEdit {ID}>
       <div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" on:click={closeModal}>Submit</button>
         <button
           type="button"
           class="btn btn-primary btn-error btn-outline"
