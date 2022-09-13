@@ -1,54 +1,33 @@
 <script lang="ts">
+  // props from parent form component
+  //////////////////////////////////////////
+  export let onSubmit: (formData: any) => void = (data: FormData) => console.log(data)
+  export let onBack: null | ((formData: any) => void) = null
+
+  // imports
+  //////////////////////////////////////////
   import Spreadsheet from '$components/Spreadsheet/index.svelte'
   import FileInput from '$components/FormFields/File.svelte'
-  //import { FileSchema } from '$lib/schemas';
-  import type { FileType } from '$lib/schemas/File'
-
-  export let initialValues = {
-    tabular: {
-      missingValues: null,
-    },
-
-    files: {
-      supplemental: null,
-      testData: null,
-      csv: null,
-    },
-
-    Graphics: null,
-
-    attributes: [],
-  }
-
-  //export let onSubmit: (formData: any) => void
-  //export let onBack: null | ((formData: any) => void) = null
-
   import { createForm } from 'felte'
 
-  interface Tabular {
-    missingValues: null | string | number
-  }
+  import { donationFormData } from '$lib/stores'
 
-  interface TabularFormData {
-    tabular: Tabular | null
-  }
+  import type { TabularFormData } from '$lib/schemas/Donation'
 
-  interface AttributeFormData {
-    attributes: string[][]
-  }
-
-  interface FormData extends TabularFormData, AttributeFormData {
-    files: {
-      csv: FileType | null
-      testData: FileType | null
-      supplemental: FileType | null
-    }
-  }
-
-  const { form, data, setData } = createForm<FormData>({
-    initialValues,
-    onSubmit: (data: FormData) => console.log(data),
+  // initialize form
+  //////////////////////////////////////////
+  const { form, data, setData } = createForm<TabularFormData>({
+    initialValues: {
+      tabular: $donationFormData.tabular,
+      files: $donationFormData.files,
+      Graphics: $donationFormData.Graphics,
+      attributes: $donationFormData.attributes,
+    },
+    onSubmit,
   })
+
+  // other state stuff
+  //////////////////////////////////////////
 
   // prop for the spreadsheet parser
   let hasHeaderRow = 'No'
@@ -59,7 +38,7 @@
 
   // whenever format changes to other, reset the tabular data
   $: if (format !== 'tabular') {
-    setData('tabular', null)
+    setData('tabular', {})
     setData('files.csv', null)
     setData('files.testData', null)
     setData('files.supplemental', null)
@@ -160,5 +139,13 @@
     <FileInput bind:value={$data.files.supplemental} />
   </div>
 
-  <button class="btn btn-primary">Submit</button>
+  <div class="flex gap-3">
+    {#if onBack != null}
+      <button
+        class="btn btn-error w-32"
+        on:click|preventDefault={() => onBack && onBack($data)}>Back</button
+      >
+    {/if}
+    <button class="btn btn-primary w-32" type="submit">Next</button>
+  </div>
 </form>

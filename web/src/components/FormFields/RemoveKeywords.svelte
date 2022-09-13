@@ -3,6 +3,8 @@
      given a dataset ID, a keyword remove field uses a multi-select autocomplete
      form to collect the ID of keywords to remove for a dataset
      the parent form should bind to the "selectedValues" to view the IDs selected
+
+     ** there is not yet a way for this component to persist its values
    */
 
   import { useQuery } from '@sveltestack/svelte-query'
