@@ -17,6 +17,7 @@
   function onSubmit(values: BasicInfoFormData | TabularFormData | DescriptiveFormData) {
     // update the parent state
     donationFormData.update(values)
+    console.log($donationFormData)
 
     // if at end of form, make request, otherwise increment page counter
     if (page === pages.length - 1) {
@@ -29,6 +30,7 @@
 
   function onBack(values: BasicInfoFormData | TabularFormData | DescriptiveFormData) {
     donationFormData.update(values)
+    console.log($donationFormData)
     if (page !== 0) {
       page -= 1
     }

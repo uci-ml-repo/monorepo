@@ -97,21 +97,28 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
         node.style.height = scrollHeight + 'px'
 
         // once the transition is done, set the height to auto, so it fits all the content
-        activeTimeout = setTimeout(() => (node.style.height = 'auto'), duration)
+        activeTimeout = setTimeout(() => {
+          node.style.height = 'auto'
+          node.style.webkitLineClamp = ''
+        }, duration)
       })
 
       // set the display to block when the element is open
-      node.style.display = 'block'
     } else {
       // set the height to the open height so there's a starting point CSS transition
       if (duration !== 0) {
         node.style.height = scrollHeight + 'px'
       }
+
       // set the display to webkit box so there's ellipsis and line clamp
-      node.style.display = '-webkit-box'
+      if (lineClamp > 0) {
+        node.style.display = '-webkit-box'
+      }
 
       // set the height to the closed height and let the CSS transition happen
-      setTimeout(() => (node.style.height = baseHeight + 'px'))
+      setTimeout(() => {
+        node.style.height = baseHeight + 'px'
+      })
     }
   }
 

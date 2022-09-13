@@ -6,7 +6,6 @@ import type {
   DescriptiveFormData,
   DonationFormData,
 } from '$lib/schemas/Donation'
-import {} from '$lib/schemas/Donation'
 
 const currentUser = {
   firstName: 'Elysia',

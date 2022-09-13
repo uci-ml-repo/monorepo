@@ -11,6 +11,7 @@ import citationRouter from './citation'
 import creatorsRouter from './creators'
 import editsRouter from './edits'
 import notesRouter from './notes'
+import usersRouter from './users'
 
 // setup tRPC router: merge other routers, add middleware and endpoints, etc.
 //////////////////////////////////////////
@@ -38,6 +39,7 @@ const appRouter = trpc
   .merge('creators.', creatorsRouter)
   .merge('edits.', editsRouter)
   .merge('notes.', notesRouter)
+  .merge('users.', usersRouter)
 
 // the type export is used by the client to check API calls
 export type Router = typeof appRouter

@@ -13,6 +13,24 @@ export default trpc
       return await database_services.edits.getByDatasetId(input)
     },
   })
+
+  // find edits matching parameters, e.g. find all if no parameters given
+  .query('getAll', {
+    async resolve({ ctx: { database_services } }) {
+      return await database_services.edits.getAll()
+    },
+  })
+
+  .query('find', {
+    input: z
+      .object({
+        status: z.enum(['ACCEPTED', 'FAILED', 'REJECTED', 'SUBMITTED']).optional(),
+      })
+      .optional(),
+    async resolve({ input, ctx: { database_services } }) {
+      return await database_services.edits.find(input)
+    },
+  })
   // insert an edit into the edits table, effectively preserving a CRUD operation
   // that will be performed during the accept step
   .mutation('insert', {

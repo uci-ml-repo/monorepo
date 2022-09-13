@@ -1,9 +1,51 @@
 import { PrismaClient } from '@prisma/client'
+import type { edits_status } from '@prisma/client'
 import BaseDatabaseService from './base_database_service'
+
+interface findArgs {
+  status?: edits_status
+}
 
 class EditsService extends BaseDatabaseService {
   constructor(prisma: PrismaClient) {
     super(prisma)
+  }
+
+  async getAll() {
+    return await this.prisma.edits.findMany({
+      include: {
+        donated_datasets: true,
+        edit_actions: true,
+        tables: true,
+        users: {
+          select: {
+            firstName: true,
+            lastName: true,
+            user: true,
+          },
+        },
+      },
+    })
+  }
+
+  async find(args: findArgs = {}) {
+    return await this.prisma.edits.findMany({
+      where: {
+        status: args.status,
+      },
+      include: {
+        donated_datasets: true,
+        edit_actions: true,
+        tables: true,
+        users: {
+          select: {
+            firstName: true,
+            lastName: true,
+            user: true,
+          },
+        },
+      },
+    })
   }
 
   async getByDatasetId(datasetID: number) {

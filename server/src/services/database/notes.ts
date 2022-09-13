@@ -19,6 +19,20 @@ class NotesService extends BaseDatabaseService {
     })
     return notes?.notes
   }
+
+  // return all the dataset notes in the database
+  async findAll() {
+    return await this.prisma.dataset_notes.findMany({
+      where: {
+        notes: {
+          not: 'null',
+        },
+      },
+      include: {
+        donated_datasets: true,
+      },
+    })
+  }
 }
 
 export default NotesService
