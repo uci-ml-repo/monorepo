@@ -4,6 +4,12 @@
   import { z } from 'zod'
 
   import { createForm } from 'felte'
+  import { useMutation } from '@sveltestack/svelte-query'
+  import trpc from '$lib/trpc'
+  import { queryClient } from '$lib/query'
+
+  export let ID = 0
+  export let handleClose: () => void
 
   const GraphicEditSchema = z.object({
     Graphics: FileSchema,
@@ -15,8 +21,51 @@
   export let onSubmit = (data: GraphicFormData) => console.log(data)
   export let onDelete = () => console.log('deleted!')
 
-  const { form, data } = createForm<GraphicFormData>({
-    onSubmit,
+  // mutation requests
+  //////////////////////////////////////////
+
+  // accept an edit if the person has authority
+  const acceptMutation = useMutation(
+    async (ID: number) => {
+      return await trpc(fetch).mutation('edits.accept', ID)
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['donated_datasets.getById', ID])
+      },
+    }
+  )
+
+  // insert an edit
+  const insertMutation = useMutation(
+    async (data: GraphicFormData) => {
+      return await trpc(fetch).mutation('edits.insert', {
+        datasetID: ID,
+        userID: 631,
+        recordID: undefined,
+        actionID: 1,
+        tableID: 3,
+        data: data.Graphics,
+        oldData: '',
+        rationale: data.rationale,
+      })
+    },
+    {
+      onSuccess: (data) => {
+        reset()
+        $acceptMutation.mutate(data.ID, {
+          onSuccess: () => {
+            handleClose()
+          },
+        })
+      },
+    }
+  )
+
+  const { form, data, reset } = createForm<GraphicFormData>({
+    onSubmit: (data) => {
+      $insertMutation.mutate(data)
+    },
   })
 </script>
 

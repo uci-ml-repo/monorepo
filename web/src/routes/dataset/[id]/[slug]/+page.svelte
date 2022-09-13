@@ -78,7 +78,7 @@
       <!-- either descriptive questions/answers, or the editing form -->
       <div slot="content">
         {#if descriptiveEditOpen}
-          <DescriptiveEdit {ID}>
+          <DescriptiveEdit {ID} handleClose={closeDescriptiveEdit}>
             <div class="flex gap-4">
               <button type="submit" class="btn btn-primary">Submit</button>
               <button
@@ -119,7 +119,7 @@
       <!-- accordion content for features table; either table or editing spreadsheet -->
       <div slot="content">
         {#if featureEditOpen}
-          <FeaturesEdit {ID}>
+          <FeaturesEdit {ID} handleClose={closeFeatureEdit}>
             <div class="flex gap-4">
               <button type="submit" class="btn btn-primary">Submit</button>
               <button
