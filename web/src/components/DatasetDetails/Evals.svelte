@@ -46,7 +46,9 @@
 
 <div class="overflow-x-auto">
   {#if accuracy.length || precision.length}
-    <Tabs {options} bind:value={evalType} class="flex justify-center font-bold" />
+    <div class="flex justify-center">
+      <Tabs {options} bind:value={evalType} />
+    </div>
     <div class="min-h-[500px] min-w-[500px]">
       {#if precision?.length > 0 && evalType === 'accuracy'}
         <Chart type="bubble" data={accuracyData} options={getOptions(accuracy)} />

@@ -68,4 +68,5 @@ function createDonationFormData() {
   }
 }
 
-export const donationFormData = createDonationFormData()
+const donationFormData = createDonationFormData()
+export default donationFormData

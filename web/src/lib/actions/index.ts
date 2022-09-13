@@ -1,4 +1,5 @@
-import { clickOutside } from './clickOutside'
+import clickOutside from './clickOutside'
 import collapse from './collapse'
+import tabs from './tabs'
 
-export { clickOutside, collapse }
+export { clickOutside, collapse, tabs }

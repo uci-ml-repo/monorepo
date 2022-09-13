@@ -12,6 +12,9 @@ import creatorsRouter from './creators'
 import editsRouter from './edits'
 import notesRouter from './notes'
 import usersRouter from './users'
+import authRouter from './auth'
+
+import { z } from 'zod'
 
 // setup tRPC router: merge other routers, add middleware and endpoints, etc.
 //////////////////////////////////////////
@@ -40,6 +43,13 @@ const appRouter = trpc
   .merge('edits.', editsRouter)
   .merge('notes.', notesRouter)
   .merge('users.', usersRouter)
+  .merge('auth.', authRouter)
+  .mutation('login.google', {
+    input: z.string(),
+    async resolve({ input }) {
+      return input
+    },
+  })
 
 // the type export is used by the client to check API calls
 export type Router = typeof appRouter

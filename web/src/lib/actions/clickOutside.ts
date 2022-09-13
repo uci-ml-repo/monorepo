@@ -1,4 +1,4 @@
-export function clickOutside(node: HTMLElement) {
+export default function clickOutside(node: HTMLElement) {
   const handleClick = (event: KeyboardEvent) => {
     if (!node.contains(event.target as HTMLInputElement)) {
       node.dispatchEvent(new CustomEvent('outside_click'))

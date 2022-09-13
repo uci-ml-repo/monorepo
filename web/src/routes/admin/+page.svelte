@@ -24,8 +24,8 @@
   let value = 'donated_datasets'
 </script>
 
-<div class="mx-auto my-8 overflow-auto">
-  <Tabs {options} class="flex justify-center" bind:value />
+<div class="w-full flex justify-center my-8 overflow-auto">
+  <Tabs {options} bind:value />
 </div>
 
 {#if value === 'donated_datasets'}

@@ -147,7 +147,7 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
   // if the starting dimension is wrong, then wait until it's finished changing to set a transition
   // apply the transition style to both the children and the parent
   duration = params.duration ?? getAutoDuration(params)
-  node.style.transition = `all ${duration}ms`
+  node.style.transition = `height ${duration}ms, width ${duration}ms`
 
   return {
     /* whenever a parameter changes, e.g. open, this function is run with all the new parameters

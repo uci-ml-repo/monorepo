@@ -7,7 +7,7 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 320 512"
-  class="fill-current h-5 transition-all text-primary {className}"
+  class="fill-current h-5 transition-transform text-primary {className}"
   class:-rotate-180={open}
 >
   <path

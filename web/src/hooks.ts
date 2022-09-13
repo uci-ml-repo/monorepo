@@ -5,6 +5,9 @@ import { createTRPCHandle } from 'trpc-sveltekit'
 import router from 'server/src/routers'
 import createContext from 'server/src/context'
 
+// server side Sveltekit loads the environment variables
+import 'dotenv/config'
+
 // intercept requests from the application that start with the "url" parameter, e.g. /trpc and direct it to the tRPC resolver
 // if it doesn't start with the url, then it'll be passed to Sveltekit normally
 export const handle: Handle = async ({ event, resolve }) => {
