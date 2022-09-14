@@ -29,7 +29,7 @@
           <a href="/datasets" class="btn btn-primary">
             <span class="text-white">View Datasets</span>
           </a>
-          <a href="/" class="btn btn-secondary">
+          <a href="/donation" class="btn btn-secondary">
             <span class="text-black">Contribute a Dataset</span>
           </a>
         </div>
