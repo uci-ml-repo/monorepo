@@ -18,7 +18,9 @@ const donatedDatasetsRouter = trpc
   .query('getDatasets', {
     input: z
       .object({
-        order: z.enum(['NumHits', 'DateDonated']).optional(),
+        order: z
+          .enum(['NumHits', 'DateDonated', 'NumInstances', 'Name', 'NumAttributes'])
+          .optional(),
         sort: z.enum(['asc', 'desc']).optional(),
         limit: z.number().optional(),
         status: z.string().optional(),
