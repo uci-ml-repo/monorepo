@@ -9,6 +9,14 @@
   import { useMutation } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
 
+  import type { donated_datasets } from '@prisma/client'
+
+  import { createEventDispatcher } from 'svelte'
+
+  const dispatch = createEventDispatcher()
+
+  export let datasets: donated_datasets[] = []
+
   // Schema for form validation/submission, not really necessary for this form
   //////////////////////////////////////////
   const FilterSchema = z.object({
@@ -24,9 +32,18 @@
 
   const filterMutation = useMutation(
     'donated_datasets.searchDatasets',
-    async (data: FilterFormData) =>
-      await trpc(fetch).mutation('donated_datasets.searchDatasets', data)
+    async (data: FilterFormData) => {
+      const newDatasets = await trpc(fetch).mutation('donated_datasets.searchDatasets', data)
+      dispatch('update', {
+        datasets: newDatasets,
+      })
+    }
   )
+
+  const clearFilters = () => {
+    reset()
+    $filterMutation.mutate({})
+  }
   // form initialization
   //////////////////////////////////////////
   const { form, data, setData, reset } = createForm<FilterFormData>({
@@ -247,7 +264,7 @@
         <button
           type="button"
           class="btn btn-error btn-sm btn-outline btn-circle"
-          on:click|preventDefault={reset}
+          on:click|preventDefault={clearFilters}
         >
           <X />
         </button>

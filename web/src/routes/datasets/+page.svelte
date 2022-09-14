@@ -14,10 +14,17 @@
     count: InferQueryOutput<'donated_datasets.getCount'>
   }
 
+  $: datasets = data.datasets || []
+
   let showAll = false
 
   let currentPage = 0
   let rowsPerPage = 10
+
+  const updateDatasets = (e: CustomEvent) => {
+    const newDatasets = e.detail.datasets
+    datasets = newDatasets
+  }
 </script>
 
 <svelte:head>
@@ -27,7 +34,7 @@
 <div class="flex flex-col md:flex-row">
   <!-- filters will appear as a sidebar will show up on the left if the screen is large -->
   <div class="hidden lg:block w-96">
-    <DatasetFilterSidebar />
+    <DatasetFilterSidebar on:update={updateDatasets} />
   </div>
   <div class="flex flex-col col-span-1 gap-1 p-4 w-full">
     <!-- filters will appear as dropdown button under the header if screen is small-->
@@ -46,7 +53,7 @@
             tabindex="0"
             class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-72"
           >
-            <DatasetFilterSidebar />
+            <DatasetFilterSidebar on:update(updateDatasets) />
           </div>
         </div>
 
@@ -62,12 +69,12 @@
     </div>
 
     <!-- all of the datasets mapped to rows -->
-    {#each data.datasets.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage) || [] as dataset}
+    {#each datasets.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage) || [] as dataset}
       <DatasetGridRow {dataset} extraInfo {showAll} />
       <div class="divider my-0" />
     {/each}
 
     <!-- pagination options -->
-    <Pagination data={data.datasets} bind:rowsPerPage bind:currentPage />
+    <Pagination data={datasets} bind:rowsPerPage bind:currentPage />
   </div>
 </div>

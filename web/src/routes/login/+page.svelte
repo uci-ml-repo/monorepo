@@ -45,6 +45,13 @@
   let message = ''
 </script>
 
+<svelte:head>
+  <title>Login - UC Irvine Machine Learning Repository</title>
+</svelte:head>
+
+<Google />
+<Github />
+
 <div class="max-w-xl mx-auto my-16 flex flex-col gap-4">
   {#if error}
     <div class="alert alert-error shadow-lg">

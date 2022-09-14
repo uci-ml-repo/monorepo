@@ -1,33 +1,53 @@
 <script lang="ts">
   import { collapse } from '$lib/actions'
   import SortIcon from '$components/Icons/Sort.svelte'
+  import { useMutation, useQuery } from '@sveltestack/svelte-query'
+  import trpc from '$lib/trpc'
+  import { z } from 'zod'
 
-  let value = ''
+  let value = {}
 
-  const handleClick = (newValue: string) => {
-    value = newValue === value ? '' : newValue
+  const SortSchema = z.object({
+    order: z
+      .enum(['NumHits', 'DateDonated', 'NumInstances', 'Name', 'NumAttributes'])
+      .optional(),
+    sort: z.enum(['asc', 'desc']).optional(),
+    limit: z.number().optional(),
+    status: z.string().optional(),
+  })
+
+  type SortFormData = z.TypeOf<typeof SortSchema>
+
+  const sortQuery = useQuery(
+    ['donated_datasets.getDatasets'],
+    async (data: SortFormData) => async () =>
+      await trpc(fetch).query('donated_datasets.getDatasets', data)
+  )
+
+  const handleClick = (newValue: SortFormData) => {
+    value = newValue
   }
 
   const options = [
     {
       label: 'Name',
-      value: 'Name',
+      value: { order: 'Name', sort: 'desc' },
     },
     {
       label: '# Instances',
-      value: 'Instances',
+      value: { order: 'NumInstances', sort: 'desc' },
     },
     {
       label: '# Views',
-      value: 'Views',
+      value: { order: 'NumHits', sort: 'desc' },
     },
     {
       label: '# Attributes',
-      value: 'Attributes',
+      value: { order: 'NumAttributes', sort: 'desc' },
     },
     {
       label: 'Date Donated',
-      value: 'Date',
+      value: { order: 'DateDonated', sort: 'desc' },
     },
   ]
 

@@ -38,9 +38,17 @@
     }
   }
 
+  <!-- choose the component to render by binding it to a component in the array 
+  all components are given props to handle submission, going back,
+  and their initial/stored values -->
+
   let agree = false
   const consent = () => (agree = true)
 </script>
+
+<svelte:head>
+  <title>Donation - UC Irvine Machine Learning Repository</title>
+</svelte:head>
 
 <div class="my-16">
   <div class="flex flex-col items-center gap-4">

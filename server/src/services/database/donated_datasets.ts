@@ -147,6 +147,9 @@ class DonatedDatasetsService extends BaseDatabaseService {
   ////////////////////////////////////////////
   async searchDatasets(args: searchDatasetProps = {}) {
     return await this.prisma.donated_datasets.findMany({
+      orderBy: {
+        NumHits: 'desc',
+      },
       where: {
         Status: 'APPROVED',
         //Attribute Types
