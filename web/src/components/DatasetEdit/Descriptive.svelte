@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useQuery } from '@sveltestack/svelte-query'
+  import { useMutation, useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
 
   import { createForm } from 'felte'
@@ -9,7 +9,9 @@
 
   import Descriptive from '$components/FormFields/Descriptive.svelte'
   import { DescriptiveSchema } from '$lib/schemas'
+  import { queryClient } from '$lib/query'
 
+  export let handleClose: () => void
   export let ID = 0
 
   // query all existing creators for this dataset
@@ -23,6 +25,47 @@
     console.log(data)
   }
 
+  // mutation requests
+  //////////////////////////////////////////
+
+  // accept an edit if the person has authority
+  const acceptMutation = useMutation(
+    async (ID: number) => {
+      return await trpc(fetch).mutation('edits.accept', ID)
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['descriptive.getDescriptiveQA', ID])
+      },
+    }
+  )
+
+  // insert an edit
+  const insertMutation = useMutation(
+    async (data: DescriptiveEditFormData) => {
+      return await trpc(fetch).mutation('edits.insert', {
+        datasetID: ID,
+        userID: 631,
+        recordID: ID,
+        actionID: 1,
+        tableID: 4,
+        data: data.descriptive,
+        oldData: '',
+        rationale: data.rationale,
+      })
+    },
+    {
+      onSuccess: (data) => {
+        reset()
+        $acceptMutation.mutate(data.ID, {
+          onSuccess: () => {
+            handleClose()
+          },
+        })
+      },
+    }
+  )
+
   // initialize form
   ////////////////////////////////////////////
   const DescriptiveEditSchema = z.object({
@@ -32,9 +75,11 @@
 
   type DescriptiveEditFormData = z.TypeOf<typeof DescriptiveEditSchema>
 
-  const { form, isDirty, setInitialValues } = createForm<DescriptiveEditFormData>({
+  const { form, isDirty, setInitialValues, reset } = createForm<DescriptiveEditFormData>({
     extend: [validator({ schema: DescriptiveEditSchema }), reporter],
-    onSubmit,
+    onSubmit: (data) => {
+      $insertMutation.mutate(data)
+    },
   })
 
   $: descriptive = $query.data

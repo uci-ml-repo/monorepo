@@ -14,7 +14,7 @@
   import { createForm } from 'felte'
   import { z } from 'zod'
 
-  import { useQuery } from '@sveltestack/svelte-query'
+  import { useMutation, useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
 
   import { defaultCreator } from '$lib/schemas/Creator'
@@ -22,6 +22,7 @@
 
   import CreatorFieldArray from '$components/FormFields/CreatorFieldArray.svelte'
   import Tabs from '$components/Tabs.svelte'
+  import { queryClient } from '$lib/query'
 
   export let ID = 0
 
@@ -29,6 +30,44 @@
   const creatorQuery = useQuery(
     ['creators.getByDatasetId', ID],
     async () => await trpc(fetch).query('creators.getByDatasetId', ID)
+  )
+
+  // mutation requests
+  //////////////////////////////////////////
+
+  // accept an edit if the person has authority
+  const acceptMutation = useMutation(
+    async (ID: number) => {
+      return await trpc(fetch).mutation('edits.accept', ID)
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['creators.getByDatasetId', ID])
+      },
+    }
+  )
+
+  // insert an edit
+  const insertMutation = useMutation(
+    async (data: AddCreatorFormData | RemoveCreatorFormData) => {
+      return await trpc(fetch).mutation('edits.insert', {
+        datasetID: ID,
+        userID: 631,
+        recordID: undefined,
+        actionID: formType === 'add' ? 1 : 2,
+        tableID: 2,
+        data: data.creators,
+        oldData: '',
+        rationale: data.rationale,
+      })
+    },
+    {
+      onSuccess: (data) => {
+        addReset()
+        removeReset()
+        $acceptMutation.mutate(data.ID)
+      },
+    }
   )
 
   // initialize form schemas and types
@@ -39,7 +78,10 @@
   })
 
   const RemoveCreatorSchema = z.object({
-    creators: z.string().array(),
+    creators: z
+      .string()
+      .array()
+      .transform((creators) => creators.map((c) => parseInt(c))),
     rationale: z.string(),
   })
 
@@ -53,6 +95,7 @@
   const {
     form: addCreatorForm,
     data: addCreatorData,
+    reset: addReset,
     addField,
     unsetField,
   } = createForm<AddCreatorFormData>({
@@ -60,11 +103,11 @@
       creators: [defaultCreator],
     },
     extend: [validator({ schema: AddCreatorSchema }), reporter],
-    onSubmit: (data) => console.log(data),
+    onSubmit: (data) => $insertMutation.mutate(data),
   })
 
   // remove creator by ID form
-  const { form: removeCreatorForm } = createForm<RemoveCreatorFormData>({
+  const { form: removeCreatorForm, reset: removeReset } = createForm<RemoveCreatorFormData>({
     initialValues: {
       creators: [],
     },
@@ -72,7 +115,9 @@
     onSubmit: (data) => {
       // felte isn't able to accept transformed data from the schema yet, so transform it here
       //console.log(data.creators.map((creatorID) => parseInt(creatorID)))
-      console.log(data)
+      const creatorIDs = data.creators.map((c) => parseInt(c.toString()))
+      const newData = { creators: creatorIDs, rationale: data.rationale }
+      $insertMutation.mutate(newData)
     },
   })
 

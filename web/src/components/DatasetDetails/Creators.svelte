@@ -66,7 +66,7 @@
     <div class="modal-box relative" use:clickOutside on:outside_click={closeModal}>
       <CreatorsEdit {ID}>
         <div class="flex gap-4">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary" on:click={closeModal}>Submit</button>
           <button type="button" class="btn btn-error btn-outline" on:click={closeModal}
             >Cancel</button
           >

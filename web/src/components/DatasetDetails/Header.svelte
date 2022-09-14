@@ -19,7 +19,7 @@
   // query for existing dataset
   //////////////////////////////////////////
   const query = useQuery(
-    ['donated_datasets.byId', ID],
+    ['donated_datasets.getById', ID],
     async () => await trpc(fetch).query('donated_datasets.getById', ID)
   )
 
@@ -138,7 +138,7 @@
     {/if}
     {#if metadataEditOpen}
       <!-- will show metadata edit instead of abstract and metadata if edit is open -->
-      <MetadataEdit {ID}>
+      <MetadataEdit {ID} handleClose={closeMetadataEdit}>
         <div class="flex gap-4">
           <button type="submit" class="btn btn-primary">Submit</button>
           <button
@@ -182,7 +182,7 @@
 <!-- modal for editing the graphics or deleting the dataset -->
 <div class="modal" class:modal-open={datasetEditOpen}>
   <div class="modal-box" use:clickOutside on:outside_click={closeDatasetEdit}>
-    <DatasetEdit>
+    <DatasetEdit {ID} handleClose={closeDatasetEdit}>
       <div class="flex gap-4">
         <button type="submit" class="btn btn-primary">Submit</button>
         <button
