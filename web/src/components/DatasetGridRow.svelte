@@ -68,7 +68,7 @@
           <h1 class="text-primary break-word underline">
             <a
               href="/dataset/{dataset.ID}/{dataset.slug}"
-              class="btn btn-ghost text-xl -ml-4"
+              class="btn btn-ghost h-full text-xl -ml-4"
               on:click|stopPropagation
             >
               {dataset.Name}

@@ -31,14 +31,13 @@
   ]
 </script>
 
-<footer
-  class="grid grid-cols-1 gap-4 justify-items-center md:grid-cols-2 bg-primary text-white p-4"
->
-  <div class="col-span-1">
+<footer class="grid grid-cols-1 gap-4 md:grid-cols-2 bg-primary text-white py-8 px-4">
+  <div class="col-span-1 md:justify-self-start">
     <div class="text-center">
       <h1 class="text-2xl font-semibold">UC Irvine</h1>
       <h1 class="text-2xl font-semibold">Machine Learning Repository</h1>
     </div>
+    <div class="divider before:bg-white after:bg-white" />
     <div>
       <span class="text-lg font-semibold">Contact: </span>
       <a href="mailto:ml-repository@ics.uci.edu" class="hover:underline"
@@ -58,8 +57,9 @@
         class="text-lg font-semibold hover:underline">Make a Feature Request or Bug Report</a
       >
     </div>
+    <div class="divider before:bg-white after:bg-white md:hidden" />
   </div>
-  <div class="col-span-1 flex flex-wrap items-center gap-4">
+  <div class="col-span-1 flex flex-wrap justify-evenly items-center gap-4">
     {#each FooterLinks as link}
       <a target="_blank" href={link.href} class="hover:underline">{link.link}</a>
     {/each}

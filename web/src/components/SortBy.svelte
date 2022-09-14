@@ -1,57 +1,69 @@
 <script lang="ts">
   import { collapse } from '$lib/actions'
   import SortIcon from '$components/Icons/Sort.svelte'
-  import { useMutation, useQuery } from '@sveltestack/svelte-query'
+  import { useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
-  import { z } from 'zod'
 
-  let value = {}
+  let sort: 'asc' | 'desc' = 'asc'
 
-  const SortSchema = z.object({
-    order: z
-      .enum(['NumHits', 'DateDonated', 'NumInstances', 'Name', 'NumAttributes'])
-      .optional(),
-    sort: z.enum(['asc', 'desc']).optional(),
-    limit: z.number().optional(),
-    status: z.string().optional(),
-  })
+  type OrderOption =
+    | 'NumHits'
+    | 'DateDonated'
+    | 'NumInstances'
+    | 'Name'
+    | 'NumAttributes'
+    | undefined
 
-  type SortFormData = z.TypeOf<typeof SortSchema>
-
-  const sortQuery = useQuery(
-    ['donated_datasets.getDatasets'],
-    async (data: SortFormData) => async () =>
-      await trpc(fetch).query('donated_datasets.getDatasets', data)
-  )
-
-  const handleClick = (newValue: SortFormData) => {
-    value = newValue
+  interface SortOption {
+    label: string
+    value: OrderOption
   }
 
-  const options = [
+  let label = ''
+  let order: OrderOption
+
+  const query = useQuery(
+    ['donated_datasets.getDatasets'],
+    async () =>
+      await trpc(fetch).query('donated_datasets.getDatasets', {
+        order,
+        sort,
+      })
+  )
+
+  const handleClick = (newSort: SortOption) => {
+    label = label === newSort.label ? '' : newSort.label
+
+    if (Boolean(newSort.value)) {
+      order = order === newSort.value ? undefined : newSort.value
+      $query.refetch()
+    }
+  }
+
+  $: console.log($query.data)
+
+  const options: SortOption[] = [
     {
       label: 'Name',
-      value: { order: 'Name', sort: 'desc' },
+      value: 'Name',
     },
     {
       label: '# Instances',
-      value: { order: 'NumInstances', sort: 'desc' },
+      value: 'NumInstances',
     },
     {
       label: '# Views',
-      value: { order: 'NumHits', sort: 'desc' },
+      value: 'NumHits',
     },
     {
       label: '# Attributes',
-      value: { order: 'NumAttributes', sort: 'desc' },
+      value: 'NumAttributes',
     },
     {
       label: 'Date Donated',
-      value: { order: 'DateDonated', sort: 'desc' },
+      value: 'DateDonated',
     },
   ]
-
-  $: console.log(value)
 </script>
 
 <div class="dropdown">
@@ -62,11 +74,11 @@
       <span>Sort By </span>
     </div>
     <div
-      use:collapse={{ open: value !== '', horizontal: true }}
+      use:collapse={{ open: Boolean(label), horizontal: true }}
       class="overflow-hidden flex transition-all"
     >
-      <span>
-        {value}
+      <span class="whitespace-nowrap">
+        {label || ''}
       </span>
     </div>
   </label>
@@ -78,10 +90,10 @@
   >
     {#each options as option}
       <li
-        on:click|preventDefault|stopPropagation={() => handleClick(option.value)}
+        on:click|preventDefault|stopPropagation={() => handleClick(option)}
         class="btn cursor-pointer btn-sm rounded-none text-left"
-        class:btn-ghost={option.value !== value}
-        class:btn-secondary={option.value === value}
+        class:btn-ghost={option.value !== order}
+        class:btn-secondary={option.value === order}
       >
         {option.label}
       </li>
