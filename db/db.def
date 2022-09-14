@@ -1,0 +1,13 @@
+Bootstrap: docker
+From: mysql:5.7
+
+%environment
+	export MYSQL_DATABASE=mlrepo
+	export MYSQL_HOST=%
+	export MYSQL_ROOT_PASSWORD=root
+
+% files
+	mlrepo.sql /docker-entrypoint-initdb.d/
+
+% runscript
+	mysqld_safe

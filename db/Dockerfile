@@ -1,7 +1,8 @@
 FROM mysql:5.7
 # Add a database
-ENV MYSQL_ALLOW_EMPTY_PASSWORD=yes
 ENV MYSQL_DATABASE=mlrepo
+ENV MYSQL_HOST=%
+ENV MYSQL_ROOT_PASSWORD=root
 # Add copy of ucimlrepo's database to the image
 # All scripts in docker-entrypoint-initdb.d/ are automatically
 # executed during container startup
