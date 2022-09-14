@@ -7,7 +7,6 @@
   "scripts": {
     "start": "./dist/trpc-server",
     "dev": "nodemon -r tsconfig-paths/register src/index.ts",
-    "build": "ts-node ./scripts/esbuild.ts && pkg .",
     "format": "prettier --write .",
     "lint": "eslint --fix ."
   },

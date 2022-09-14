@@ -1,0 +1,90 @@
+--DROP TABLE columns;
+--
+--CREATE TABLE columns (
+--  ID INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+--  tableID INT(10) UNSIGNED NOT NULL, 
+--  name VARCHAR(25)
+--);
+--
+--
+--INSERT INTO columns (name, tableID)
+--VALUES
+--('Abstract', 1),
+--('Area', 1),
+--('Task', 1),
+--('Types', 1),
+--('DOI', 1),
+--('purpose', 4),
+--('funding', 4),
+--('represent', 4),
+--('dataSplits', 4),
+--('sensitiveInfo', 4),
+--('preprocessingDescription', 4),
+--('softwareAvailable', 4),
+--('used', 4),
+--('otherInfo', 4),
+--('datasetCitation', 4),
+--('missingValues', 5),
+--('numAttributes', 5),
+--('keyword', 3),
+--('title', 8),
+--('authors', 8),
+--('year', 8),
+--('venue', 8),
+--('journal', 8),
+--('DOI', 8),
+--('graphics', 1);
+--
+---- delete statements
+--DELETE FROM graphics WHERE datasetID NOT IN (SELECT ID FROM donated_datasets WHERE graphics.datasetID = donated_datasets.ID);
+--DELETE FROM dataset_notes WHERE datasetID NOT IN (SELECT id FROM donated_datasets);
+--DELETE FROM slugs WHERE datasetID NOT IN (SELECT id FROM donated_datasets);
+--
+---- foreign keys
+--ALTER TABLE columns ADD FOREIGN KEY (tableID) REFERENCES tables(id);
+--
+--ALTER TABLE donated_datasets MODIFY userID INT(10) UNSIGNED NOT NULL;
+--ALTER TABLE donated_datasets ADD FOREIGN KEY (userID) REFERENCES users(id);
+--ALTER TABLE donated_datasets MODIFY introPaperID INT(10) UNSIGNED;
+--ALTER TABLE donated_datasets ADD FOREIGN KEY (introPaperID) REFERENCES dataset_papers(datasetPapersID);
+--
+--ALTER TABLE edits ADD FOREIGN KEY (columnID) REFERENCES columns(id);
+--ALTER TABLE edits ADD FOREIGN KEY (actionID) REFERENCES edit_actions(id);
+--ALTER TABLE edits ADD FOREIGN KEY (tableID) REFERENCES tables(id);
+--ALTER TABLE edits ADD FOREIGN KEY (userID) REFERENCES users(id);
+--
+--ALTER TABLE graphics ADD FOREIGN KEY (datasetID) references donated_datasets(id);
+--
+--ALTER TABLE dataset_notes ADD FOREIGN KEY (datasetID) references donated_datasets(id);
+--
+--ALTER TABLE tabular ADD FOREIGN KEY (datasetID) references donated_datasets(id);
+--
+--ALTER TABLE descriptive_questions ADD FOREIGN KEY (datasetID) references donated_datasets(id);
+--
+--ALTER TABLE attributes ADD FOREIGN KEY (datasetID) references donated_datasets(id);
+--
+--ALTER TABLE slugs MODIFY datasetID INT(10) UNSIGNED;
+--ALTER TABLE slugs ADD FOREIGN KEY (datasetID) references donated_datasets(id);
+--
+---- primary keys
+--ALTER TABLE graphics ADD PRIMARY KEY (datasetID);
+--ALTER TABLE slugs ADD PRIMARY KEY (datasetID);
+--ALTER TABLE hits ADD PRIMARY KEY (ID);
+--ALTER TABLE news add PRIMARY KEY (ID);
+
+--ALTER TABLE native_papers ADD COLUMN type VARCHAR(45) NOT NULL AFTER ID;
+--UPDATE native_papers SET type='NATIVE';
+--ALTER TABLE foreign_papers ADD UNIQUE(ID);
+--ALTER TABLE native_papers ADD UNIQUE(ID);
+--ALTER TABLE dataset_papers ADD COLUMN nativePaperID INT(10) UNSIGNED NULL REFERENCES native_papers(ID);
+--ALTER TABLE dataset_papers ADD COLUMN foreignPaperID INT(10) UNSIGNED NULL REFERENCES foreign_papers(ID);
+--UPDATE dataset_papers SET nativePaperID=paperID where type='NATIVE';
+--UPDATE dataset_papers SET foreignPaperID=paperID where type!='NATIVE';
+
+--DELETE FROM dataset_keywords where keywordsID=8;
+--DELETE FROM keywords where ID=8;
+--DELETE FROM dataset_keywords where keywordsID=43;
+--DELETE FROM keywords where ID=43;
+--DELETE FROM dataset_keywords where keywordsID=44;
+--DELETE FROM keywords where ID=44;
+--ALTER TABLE keywords MODIFY keyword VARCHAR(45) NOT NULL UNIQUE;
