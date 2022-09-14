@@ -17,3 +17,8 @@
 ::-webkit-scrollbar-corner {
   @apply bg-accent;
 }
+
+/* please just wrap the words on the tables */
+.table :where(th, td) {
+  @apply whitespace-normal;
+}

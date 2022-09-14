@@ -111,7 +111,9 @@
         {/if}
       </div>
       {#if dataset?.DateDonated != null}
-        <h2 class="text-lg text-white">Donated on {dataset.DateDonated}</h2>
+        <h2 class="text-lg text-white">
+          Donated on {new Date(dataset.DateDonated).toLocaleDateString('en')}
+        </h2>
       {/if}
     </div>
   </div>

@@ -4,9 +4,10 @@ import BaseDatabaseService from './base_database_service'
 
 interface getDatasetsProps {
   // the controller can request a sort by any valid key
-  order?: keyof Prisma.donated_datasetsOrderByWithRelationInput
+  order?: keyof Prisma.donated_datasetsOrderByWithAggregationInput
   limit?: number
   sort?: Prisma.SortOrder
+  status?: string
 }
 
 interface searchDatasetProps {
@@ -79,17 +80,26 @@ class DonatedDatasetsService extends BaseDatabaseService {
   // sort: ascending or descending
   //////////////////////////////////////////
   async getDatasets(args: getDatasetsProps = {}) {
-    const { order, sort, limit } = args
-
-    const sortBy = sort ?? 'desc'
-    const orderBy = order ? { [order]: sortBy } : {}
+    const sortBy = args?.sort ?? 'desc'
+    const orderBy = args?.order ? { [args.order]: sortBy } : {}
+    const take = args?.limit
+    const Status = args?.status ?? 'APPROVED'
 
     return await this.prisma.donated_datasets.findMany({
       where: {
-        Status: 'APPROVED',
+        Status,
       },
       orderBy,
-      take: limit,
+      take,
+      include: {
+        users: {
+          select: {
+            firstName: true,
+            lastName: true,
+            user: true,
+          },
+        },
+      },
     })
   }
 
@@ -114,7 +124,6 @@ class DonatedDatasetsService extends BaseDatabaseService {
     return {
       ...dataset,
       // properties that don't normally exist or are artificially generated
-      DateDonated: dataset.DateDonated?.toLocaleDateString('en'),
       NumPapers: dataset.dataset_papers_dataset_papers_datasetIDTodonated_datasets.length,
       NumEvals: dataset.evals.length,
       NumAttributes: getNumAttributes(dataset.attributes),
