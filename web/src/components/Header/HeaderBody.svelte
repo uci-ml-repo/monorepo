@@ -3,10 +3,13 @@
   import NavLinks from './NavLinks.svelte'
   import Profile from './Profile.svelte'
 
+  import ProfileIcon from '$components/Icons/Profile.svelte'
   import SearchIcon from '$components/Icons/Search.svelte'
   import HamburgerIcon from '$components/Icons/Hamburger.svelte'
   import CloseIcon from '$components/Icons/X.svelte'
   import Logo from '$components/Icons/Logo.svelte'
+
+  import { user } from '$lib/stores'
 
   let searchOpen = false
 
@@ -53,8 +56,18 @@
       </div>
     </div>
 
-    <!-- profile icon and dropdown menu -->
-    <Profile />
+    {#if $user.ID != null}
+      <!-- profile icon and dropdown menu if logged in, otherwise login link-->
+      <Profile />
+    {:else}
+      <a
+        href="/login"
+        class="text-xl text-primary font-semibold flex gap-2 items-center hover:underline"
+      >
+        <ProfileIcon />
+        <span> Login </span>
+      </a>
+    {/if}
 
     <!-- sidebar/drawer toggle -->
     <label

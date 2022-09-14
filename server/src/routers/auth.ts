@@ -146,9 +146,11 @@ export default trpc
       // using the authorization code provided by the callback route, get a token
       const { tokens } = await oauth2Client.getToken(input)
 
+      const access_token = tokens.access_token
+
       oauth2Client.setCredentials(tokens)
 
-      if (!tokens.id_token) {
+      if (!tokens.id_token || !access_token) {
         throw new Error('Error')
       }
 
@@ -172,15 +174,21 @@ export default trpc
 
       // if user is already registered, just update and return user
       if (existing_user) {
-        return await prisma.users.update({
+        const updated_user = await prisma.users.update({
           where: {
             user: existing_user.user,
           },
           data: {
-            accessToken: tokens.access_token,
+            accessToken: access_token,
             google: tokens.refresh_token,
           },
         })
+
+        return {
+          ...updated_user,
+          accessToken: access_token,
+          accountManager: 'Google' as const,
+        }
       }
 
       //// else, register a new user
@@ -191,7 +199,7 @@ export default trpc
       //// email             | user
       //// sub               | google
 
-      return await prisma.users.create({
+      const new_user = await prisma.users.create({
         data: {
           firstName: user.given_name,
           lastName: user.family_name,
@@ -199,9 +207,15 @@ export default trpc
 
           // use refresh token for Google
           google: tokens.refresh_token,
-          accessToken: tokens.access_token,
+          accessToken: access_token,
         },
       })
+
+      return {
+        ...new_user,
+        accessToken: access_token,
+        accountManager: 'Google' as const,
+      }
     },
   })
 
