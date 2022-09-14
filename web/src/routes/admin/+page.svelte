@@ -45,3 +45,7 @@
 {:else if value === 'keywords'}
   <Keyword />
 {/if}
+
+<svelte:head>
+  <title>Admin - UC Irvine Machine Learning Repository</title>
+</svelte:head>

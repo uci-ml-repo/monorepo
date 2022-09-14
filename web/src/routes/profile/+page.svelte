@@ -11,6 +11,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Profile - UC Irvine Machine Learning Repository</title>
+</svelte:head>
+
 <div class="grid grid-cols-2 gap-12 mx-auto w-3/4 my-16">
   <div class="flex flex-col gap-8 p-4 rounded-lg bg-white border shadow">
     <div class="flex justify-start gap-6 items-center">

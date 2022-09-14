@@ -37,6 +37,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Donation - UC Irvine Machine Learning Repository</title>
+</svelte:head>
+
 <!-- choose the component to render by binding it to a component in the array 
 all components are given props to handle submission, going back,
 and their initial/stored values -->
