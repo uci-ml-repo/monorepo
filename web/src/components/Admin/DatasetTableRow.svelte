@@ -68,7 +68,7 @@
 
       <div class="divider my-2" />
 
-      <table>
+      <table class="w-full">
         <tr>
           <th width="25%">Task</th>
           <th width="25%">Types</th>

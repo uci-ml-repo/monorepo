@@ -3,6 +3,8 @@
   import Descriptive from './Descriptive.svelte'
   import Tabular from './Tabular.svelte'
 
+  import DonationPolicy from '$markdown/DonationPolicy.md'
+
   import type {
     BasicInfoFormData,
     TabularFormData,
@@ -35,12 +37,24 @@
       page -= 1
     }
   }
+
+  let agree = false
+  const consent = () => (agree = true)
 </script>
 
-<!-- choose the component to render by binding it to a component in the array 
-all components are given props to handle submission, going back,
-and their initial/stored values -->
-
 <div class="my-16">
-  <svelte:component this={pages[page]} {onSubmit} onBack={page === 0 ? null : onBack} />
+  <div class="flex flex-col items-center gap-4">
+    <DonationPolicy />
+    {#if !agree}
+      <button class="btn btn-primary w-1/2 max-w-lg" on:click={consent}>I agree</button>
+    {:else}
+      <div class="divider mx-auto w-1/2" />
+      <div class="w-full">
+        <!-- choose the component to render by binding it to a component in the array 
+      all components are given props to handle submission, going back,
+      and their initial/stored values -->
+        <svelte:component this={pages[page]} {onSubmit} onBack={page === 0 ? null : onBack} />
+      </div>
+    {/if}
+  </div>
 </div>
