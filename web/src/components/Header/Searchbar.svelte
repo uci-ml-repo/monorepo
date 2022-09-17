@@ -1,11 +1,12 @@
 <script lang="ts">
   import { clickOutside } from '$lib/actions'
-  import trpc from '$lib/trpc'
 
+  import trpc from '$lib/trpc'
   import { useQuery } from '@sveltestack/svelte-query'
 
   import SearchIcon from '$components/Icons/Search.svelte'
-  import Autocomplete from '$components/Autocomplete.svelte'
+
+  import VirtualList from '$components/VirtualList.svelte'
 
   // typed input
   let search = ''
@@ -44,14 +45,14 @@
   $: names = $nameResult.data || []
 </script>
 
-<!-- this is similar to the Autocompletev2, but special enough that
-I don't want to generalize the template just for this usecase -->
 <div
-  class={`relative w-full ml-auto lg:max-w-sm input input-sm input-bordered border-primary rounded-full`}
+  class={`w-full ml-auto lg:max-w-sm input input-sm input-bordered border-primary rounded-full`}
   use:clickOutside
   on:outside_click={closeSearch}
 >
+  <!-- this div is slightly smaller than the outer div -->
   <div class="relative w-full h-full flex justify-end my-auto">
+    <!-- search input -->
     <input
       type="text"
       class="w-full outline-none bg-transparent"
@@ -59,37 +60,37 @@ I don't want to generalize the template just for this usecase -->
       on:click={openSearch}
       aria-label="search-input"
     />
-    <div on:click>
-      <button class="btn btn-ghost btn-circle btn-sm" aria-label="toggle sidebar">
-        <SearchIcon />
-      </button>
-    </div>
+    <!-- search icon button -->
+    <button class="btn btn-ghost btn-circle btn-sm" aria-label="toggle sidebar">
+      <SearchIcon class="h-5" />
+    </button>
 
-    <!-- expose the item prop for the slot that renders each item -->
-    <Autocomplete options={autocompleteOptions} isOpen={open} searchValue={search}>
-      <!-- use the "above" named slot to add in the two radio buttons that control search type -->
-      <!-- if this radio button is selected, show dataset names -->
-      <div class="p-2 flex justify-evenly flex-wrap" slot="above">
-        <div class="form-control">
+    <!-- dropdown menu -->
+    <div
+      tabindex="0"
+      class="absolute w-full top-full collapse border-base-300 border-t-primary bg-base-100"
+      class:collapse-open={open}
+      class:border={open}
+    >
+      <!-- radio buttons to search by name or keyword -->
+      <div class="collapse-content p-0">
+        <div class="p-2 flex justify-evenly flex-wrap">
+          <!-- name radio button -->
           <label class="label cursor-pointer flex gap-3">
             <span class="label-text">Name</span>
             <input
               type="radio"
-              name="radio-6"
               class="radio checked:bg-primary"
               bind:group={searchType}
               value="names"
             />
           </label>
-        </div>
 
-        <!-- if this radio button is selected, show keyword names -->
-        <div class="form-control">
+          <!-- keywords radio button -->
           <label class="label cursor-pointer flex gap-3">
             <span class="label-text">Keyword</span>
             <input
               type="radio"
-              name="radio-6"
               class="radio checked:bg-primary"
               bind:group={searchType}
               value="keywords"
@@ -98,12 +99,14 @@ I don't want to generalize the template just for this usecase -->
         </div>
 
         <div class="divider m-0" />
-      </div>
 
-      <!-- use the list item slot to render each item forwarded from the virtual list -->
-      <a slot="list-item" href="/" let:item on:click={() => (search = item)}>
-        {item}
-      </a>
-    </Autocomplete>
+        <!-- virtual list that displays all the matching options -->
+        <VirtualList height="240px" items={autocompleteOptions} let:item>
+          <a href="/" on:click={() => (search = item)}>
+            {item}
+          </a>
+        </VirtualList>
+      </div>
+    </div>
   </div>
 </div>

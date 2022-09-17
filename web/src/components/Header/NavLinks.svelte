@@ -11,7 +11,7 @@
     <a href="/">
       <a href="/donation" class="hidden lg:block"> Donate a Dataset </a>
       <a href="/donation" class="lg:hidden"> Contribute a Dataset </a>
-      <CaretIcon class="block lg:hidden" />
+      <CaretIcon class="block lg:hidden h-5" />
     </a>
 
     <!-- show a dropdown for screens smaller than lg -->

@@ -70,16 +70,14 @@
   <label for="" tabindex="0" class="btn btn-sm btn-primary flex gap-2 flex-wrap h-fit">
     <!-- label for the sort button-->
     <div class="flex items-center gap-2">
-      <SortIcon />
+      <SortIcon class="fill-primary-content" />
       <span>Sort By </span>
     </div>
     <div
       use:collapse={{ open: Boolean(label), horizontal: true }}
-      class="overflow-hidden flex transition-all"
+      class="overflow-hidden flex transition-all whitespace-nowrap"
     >
-      <span class="whitespace-nowrap">
-        {label || ''}
-      </span>
+      {label || ''}
     </div>
   </label>
 

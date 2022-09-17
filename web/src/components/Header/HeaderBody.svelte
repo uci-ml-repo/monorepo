@@ -27,7 +27,7 @@
   {:else}
     <div class="navbar-start">
       <a href="/" class="btn btn-ghost" aria-label="Home">
-        <Logo />
+        <Logo class="h-full fill-primary" />
       </a>
     </div>
   {/if}

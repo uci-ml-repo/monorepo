@@ -11,7 +11,7 @@
 
   import { useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
-  import Autocompletev2 from '$components/Autocompletev2.svelte'
+  import Autocomplete from '$components/Inputs/Autocomplete.svelte'
 
   // get all keywords for the dataset for autocomplete
   const allKeywordQuery = useQuery(
@@ -26,9 +26,8 @@
 {#key allKeywordOptions}
   <label for="keyword-add-autocomplete" class="flex flex-col gap-4">
     <span class="text-lg">Keywords to Add</span>
-    <Autocompletev2
+    <Autocomplete
       bind:selected={selectedValues}
-      bind:selectedValues
       options={allKeywordOptions}
       multiple
       freeSolo

@@ -37,8 +37,7 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
   const setHorizontal = (open: boolean) => {
     // width will transition between 0 and the original width
     const baseWidth = 0
-    const scrollWidth =
-      node?.children?.[0]?.tagName === 'SPAN' ? node.children[0].scrollWidth : node.scrollWidth
+    const scrollWidth = node.scrollWidth
     if (open) {
       node.style.width = scrollWidth + 'px'
     } else {
@@ -106,6 +105,7 @@ export default function collapse(node: HTMLElement, params: CollapseParams): Act
       // set the display to block when the element is open
     } else {
       // set the height to the open height so there's a starting point CSS transition
+      // if duration is 0, e.g. on page load, don't make it expand
       if (duration !== 0) {
         node.style.height = scrollHeight + 'px'
       }

@@ -9,8 +9,7 @@
 
   import { useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
-
-  import Autocompletev2 from '$components/Autocompletev2.svelte'
+  import Autocomplete from '$components/Inputs/Autocomplete.svelte'
 
   export let ID = 0
 
@@ -35,6 +34,6 @@
 {#key existingKeywordOptions}
   <label for="keyword-remove-autocomplete" class="flex flex-col gap-4">
     <span class="text-lg">Keywords to Remove</span>
-    <Autocompletev2 bind:selectedValues options={existingKeywordOptions} multiple />
+    <Autocomplete bind:selectedValues options={existingKeywordOptions} multiple />
   </label>
 {/key}

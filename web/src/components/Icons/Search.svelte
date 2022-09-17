@@ -1,13 +1,9 @@
-<script lang="ts">
-  let extra_classes = ''
-  export { extra_classes as class }
-</script>
-
 <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 24 24"
   fill="currentColor"
-  class={`w-5 h-5 ${extra_classes}`}
+  class="w-5 h-5"
+  {...$$props}
 >
   <path
     fill-rule="evenodd"
