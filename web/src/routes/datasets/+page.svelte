@@ -58,7 +58,7 @@
         </div>
 
         <!-- sort by button -->
-        <SortBy />
+        <SortBy on:update={updateDatasets} />
         <!-- eye icons for triggering show all -->
         <label class="swap">
           <input type="checkbox" aria-label="show-all-toggle" bind:checked={showAll} />

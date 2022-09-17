@@ -1,48 +1,52 @@
 <script lang="ts">
   import { collapse } from '$lib/actions'
   import SortIcon from '$components/Icons/Sort.svelte'
-  import { useQuery } from '@sveltestack/svelte-query'
+  import { useMutation, useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
+  import { z, type TypeOf } from 'zod'
+  import { queryClient } from '$lib/query'
+  import { createEventDispatcher } from 'svelte'
 
-  let sort: 'asc' | 'desc' = 'asc'
+  const SortSchema = z.enum([
+    'NumHits',
+    'DateDonated',
+    'NumInstances',
+    'Name',
+    'NumAttributes',
+  ])
+  const SortOptionSchema = z.enum(['asc', 'desc']).optional()
+  type SortData = z.TypeOf<typeof SortSchema>
+  type SortOptions = z.TypeOf<typeof SortOptionSchema>
 
-  type OrderOption =
-    | 'NumHits'
-    | 'DateDonated'
-    | 'NumInstances'
-    | 'Name'
-    | 'NumAttributes'
-    | undefined
-
-  interface SortOption {
-    label: string
-    value: OrderOption
-  }
-
+  let value: SortData
   let label = ''
-  let order: OrderOption
+  let sort: SortOptions
 
-  const query = useQuery(
-    ['donated_datasets.getDatasets'],
-    async () =>
-      await trpc(fetch).query('donated_datasets.getDatasets', {
-        order,
-        sort,
-      })
-  )
+  value = 'NumHits'
+  sort = 'desc'
 
-  const handleClick = (newSort: SortOption) => {
-    label = label === newSort.label ? '' : newSort.label
+  const dispatch = createEventDispatcher()
 
-    if (Boolean(newSort.value)) {
-      order = order === newSort.value ? undefined : newSort.value
-      $query.refetch()
-    }
+  const sortMutation = useMutation('donated_datasets.grabDatasets', async (data: SortData) => {
+    const newDatasets = await trpc(fetch).mutation('donated_datasets.grabDatasets', {
+      order: data,
+      sort,
+    })
+    dispatch('update', {
+      datasets: newDatasets,
+    })
+  })
+
+  const handleClick = (option: OptionType) => {
+    sort = option.value === value && sort === 'desc' ? 'asc' : 'desc'
+    value = option.value
+    label = option.label
+    $sortMutation.mutate(option.value)
   }
 
-  $: console.log($query.data)
+  type OptionType = { label: string; value: SortData }
 
-  const options: SortOption[] = [
+  const options: OptionType[] = [
     {
       label: 'Name',
       value: 'Name',
@@ -70,14 +74,16 @@
   <label for="" tabindex="0" class="btn btn-sm btn-primary flex gap-2 flex-wrap h-fit">
     <!-- label for the sort button-->
     <div class="flex items-center gap-2">
-      <SortIcon class="fill-primary-content" />
+      <SortIcon />
       <span>Sort By </span>
     </div>
     <div
-      use:collapse={{ open: Boolean(label), horizontal: true }}
-      class="overflow-hidden flex transition-all whitespace-nowrap"
+      use:collapse={{ open: label !== '', horizontal: true }}
+      class="overflow-hidden flex transition-all"
     >
-      {label || ''}
+      <span>
+        {label}
+      </span>
     </div>
   </label>
 
@@ -90,8 +96,8 @@
       <li
         on:click|preventDefault|stopPropagation={() => handleClick(option)}
         class="btn cursor-pointer btn-sm rounded-none text-left"
-        class:btn-ghost={option.value !== order}
-        class:btn-secondary={option.value === order}
+        class:btn-ghost={option.value !== value}
+        class:btn-secondary={option.value === value}
       >
         {option.label}
       </li>

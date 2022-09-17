@@ -31,6 +31,22 @@ const donatedDatasetsRouter = trpc
     },
   })
 
+  .mutation('grabDatasets', {
+    input: z
+      .object({
+        order: z
+          .enum(['NumHits', 'DateDonated', 'NumInstances', 'Name', 'NumAttributes'])
+          .optional(),
+        sort: z.enum(['asc', 'desc']).optional(),
+        limit: z.number().optional(),
+        status: z.string().optional(),
+      })
+      .optional(),
+    async resolve({ input, ctx: { database_services } }) {
+      return await database_services.donated_datasets.getDatasets(input)
+    },
+  })
+
   // return the number of approved datasets
   ////////////////////////////////////////////
   .query('getCount', {
