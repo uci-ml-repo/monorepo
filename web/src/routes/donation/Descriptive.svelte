@@ -11,7 +11,7 @@
 
   import { donationFormData } from '$lib/stores'
 
-  import DescriptiveFields from '$components/FormFields/Descriptive.svelte'
+  import DescriptiveFields from '$components/Fields/Descriptive.svelte'
 
   import { createForm } from 'felte'
   import { reporter } from '@felte/reporter-svelte'

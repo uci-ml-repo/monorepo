@@ -20,8 +20,8 @@
   import { defaultCreator } from '$lib/schemas/Creator'
   import CreatorSchema from '$lib/schemas/Creator'
 
-  import CreatorFieldArray from '$components/FormFields/CreatorFieldArray.svelte'
-  import Tabs from '$components/Tabs.svelte'
+  import CreatorFieldArray from '$components/Fields/CreatorFieldArray.svelte'
+  import Tabs from '$components/UI/Tabs.svelte'
   import { queryClient } from '$lib/query'
 
   export let ID = 0
@@ -149,7 +149,7 @@
 
 <div class="flex flex-col gap-8">
   <!-- bind formType to the selected tabs value -->
-  <Tabs {options} bind:value={formType} class="flex justify-center font-bold" />
+  <Tabs {options} bind:value={formType} />
 
   <!-- form for adding creators -->
   {#if formType === 'add'}

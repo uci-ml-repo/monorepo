@@ -9,12 +9,12 @@
 
   import { MetadataSchema } from '$lib/schemas'
 
-  import MetadataFields from '$components/FormFields/Metadata.svelte'
+  import MetadataFields from '$components/Fields/Metadata.svelte'
   import { queryClient } from '$lib/query'
 
   export let ID = 0
   export let name = 'metadata.'
-  export let onSubmit = (data: MetadataEditFormData) => console.log(data)
+  // export let onSubmit = (data: MetadataEditFormData) => console.log(data)
   export let handleClose: () => void
 
   // get existing metadata for dataset

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FileInput from '$components/FormFields/File.svelte'
+  import FileInput from '$components/Fields/File.svelte'
   import { FileSchema } from '$lib/schemas'
   import { z } from 'zod'
 
@@ -18,7 +18,7 @@
 
   type GraphicFormData = z.TypeOf<typeof GraphicEditSchema>
 
-  export let onSubmit = (data: GraphicFormData) => console.log(data)
+  // export let onSubmit = (data: GraphicFormData) => console.log(data)
   export let onDelete = () => console.log('deleted!')
 
   // mutation requests

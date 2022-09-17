@@ -6,8 +6,8 @@
 
   // imports
   //////////////////////////////////////////
-  import Spreadsheet from '$components/Spreadsheet/index.svelte'
-  import FileInput from '$components/FormFields/File.svelte'
+  import Spreadsheet from '$components/Inputs/Spreadsheet/index.svelte'
+  import FileInput from '$components/Fields/File.svelte'
   import { createForm } from 'felte'
 
   import { donationFormData } from '$lib/stores'

@@ -6,7 +6,7 @@
 
   import PencilIcon from '$components/Icons/Pencil.svelte'
 
-  import KeywordsEdit from '$components/DatasetEdit/Keywords.svelte'
+  import KeywordsEdit from '$components/Forms/Keywords.svelte'
 
   export let ID = 0
 

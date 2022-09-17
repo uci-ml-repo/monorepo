@@ -2,7 +2,7 @@
   import type { PageData } from './$types'
   export let data: PageData
 
-  import Accordion from '$components/Accordion.svelte'
+  import Accordion from '$components/UI/Accordion.svelte'
 
   import PencilIcon from '$components/Icons/Pencil.svelte'
   import XIcon from '$components/Icons/X.svelte'
@@ -24,8 +24,8 @@
   import License from '$components/DatasetDetails/License.svelte'
 
   // edit modals
-  import DescriptiveEdit from '$components/DatasetEdit/Descriptive.svelte'
-  import FeaturesEdit from '$components/DatasetEdit/Features.svelte'
+  import DescriptiveEdit from '$components/Forms/Descriptive.svelte'
+  import FeaturesEdit from '$components/Forms/Features.svelte'
 
   const { ID } = data
 

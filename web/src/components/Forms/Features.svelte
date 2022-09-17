@@ -7,11 +7,11 @@
   import { useMutation, useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
 
-  import Spreadsheet from '$components/Spreadsheet/index.svelte'
+  import Spreadsheet from '$components/Inputs/Spreadsheet/index.svelte'
   import { queryClient } from '$lib/query'
 
   export let ID = 0
-  export let onSubmit = (data: AttributeEditFormData) => console.log(data)
+  // export let onSubmit = (data: AttributeEditFormData) => console.log(data)
   export let handleClose: () => void
 
   // fetch existing attribute data

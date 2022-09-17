@@ -2,7 +2,7 @@
   import { useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
 
-  import Pagination from '$components/Pagination.svelte'
+  import Pagination from '$components/UI/Pagination.svelte'
 
   import User from '$components/Admin/User.svelte'
 

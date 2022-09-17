@@ -1,5 +1,5 @@
 <script lang="ts">
-  import CaretIcon from './Icons/Caret.svelte'
+  import CaretIcon from '$components/Icons/Caret.svelte'
   import { collapse } from '$lib/actions'
   export let open = false
 

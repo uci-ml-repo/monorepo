@@ -20,9 +20,9 @@
   import { createForm } from 'felte'
   import { z } from 'zod'
 
-  import Tabs from '$components/Tabs.svelte'
-  import KeywordFieldArray from '$components/FormFields/AddKeywords.svelte'
-  import RemoveKeywords from '$components/FormFields/RemoveKeywords.svelte'
+  import Tabs from '$components/UI/Tabs.svelte'
+  import KeywordFieldArray from '$components/Fields/AddKeywords.svelte'
+  import RemoveKeywords from '$components/Fields/RemoveKeywords.svelte'
 
   export let ID = 0
 

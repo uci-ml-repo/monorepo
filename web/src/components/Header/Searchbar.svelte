@@ -6,7 +6,7 @@
 
   import SearchIcon from '$components/Icons/Search.svelte'
 
-  import VirtualList from '$components/VirtualList.svelte'
+  import VirtualList from '$components/UI/VirtualList.svelte'
 
   // typed input
   let search = ''

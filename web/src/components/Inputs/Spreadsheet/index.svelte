@@ -8,7 +8,7 @@
   import { onMount } from 'svelte'
   import type { CellValue, Options, JSpreadsheetElement } from 'jspreadsheet-ce'
 
-  import FileInput from '$components/FormFields/File.svelte'
+  import FileInput from '$components/Fields/File.svelte'
   import { parse } from 'papaparse'
 
   // props provided by the parent form component

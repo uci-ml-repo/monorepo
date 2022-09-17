@@ -3,7 +3,7 @@
   import { useQuery } from '@sveltestack/svelte-query'
 
   import Chart from '$components/Chart/index.svelte'
-  import Tabs from '$components/Tabs.svelte'
+  import Tabs from '$components/UI/Tabs.svelte'
 
   import { getOptions, setEvalsData } from '$components/Chart/helpers'
 

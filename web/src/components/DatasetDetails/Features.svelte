@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Table from '$components/Table.svelte'
+  import Table from '$components/UI/GenericTable.svelte'
   import trpc from '$lib/trpc'
   import { useQuery } from '@sveltestack/svelte-query'
-  import Pagination from '$components/Pagination.svelte'
+  import Pagination from '$components/UI/Pagination.svelte'
 
   export let ID = 0
 

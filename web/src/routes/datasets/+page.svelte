@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Pagination from '$components/Pagination.svelte'
+  import Pagination from '$components/UI/Pagination.svelte'
   import DatasetFilterSidebar from '$components/DatasetFilter.svelte'
   import SortBy from '$components/SortBy.svelte'
 
@@ -7,7 +7,7 @@
   import Eye from '$components/Icons/Eye.svelte'
 
   import type { InferQueryOutput } from '$lib/trpc'
-  import DatasetGridRow from '$components/DatasetGridRow.svelte'
+  import DatasetGridRow from '$components/DatasetPreview.svelte'
 
   export let data: {
     datasets: InferQueryOutput<'donated_datasets.getDatasets'>

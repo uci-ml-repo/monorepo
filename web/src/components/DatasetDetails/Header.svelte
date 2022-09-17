@@ -5,14 +5,14 @@
   import type { donated_datasets } from '@prisma/client'
 
   import DropdownText from '$components/DropdownText.svelte'
-  import Graphics from '$components/Graphics.svelte'
+  import Avatar from '$components/UI/Avatar.svelte'
 
   import CaretIcon from '$components/Icons/Caret.svelte'
   import PencilIcon from '$components/Icons/Pencil.svelte'
   import XIcon from '$components/Icons/X.svelte'
 
-  import MetadataEdit from '$components/DatasetEdit/Metadata.svelte'
-  import DatasetEdit from '$components/DatasetEdit/Dataset.svelte'
+  import MetadataEdit from '$components/Forms/Metadata.svelte'
+  import DatasetEdit from '$components/Forms/Dataset.svelte'
 
   export let ID = 0
 
@@ -95,7 +95,7 @@
     {/if}
     <!-- avatar to the left of the header -->
     <div class="mask w-16 h-16 flex align-center">
-      <Graphics
+      <Avatar
         {src}
         alt="dataset-graphic-large-screen"
         fallbackSrc="/ml/datasets/default/Large.jpg"

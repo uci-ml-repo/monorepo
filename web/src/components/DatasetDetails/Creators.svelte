@@ -7,7 +7,7 @@
   import PersonIcon from '$components/Icons/Person.svelte'
   import PencilIcon from '$components/Icons/Pencil.svelte'
 
-  import CreatorsEdit from '$components/DatasetEdit/Creators.svelte'
+  import CreatorsEdit from '$components/Forms/Creators.svelte'
 
   export let ID = 0
 

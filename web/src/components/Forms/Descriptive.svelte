@@ -7,7 +7,7 @@
   import { validator } from '@felte/validator-zod'
   import { z } from 'zod'
 
-  import Descriptive from '$components/FormFields/Descriptive.svelte'
+  import Descriptive from '$components/Fields/Descriptive.svelte'
   import { DescriptiveSchema } from '$lib/schemas'
   import { queryClient } from '$lib/query'
 

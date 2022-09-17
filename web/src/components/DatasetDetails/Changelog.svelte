@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useQuery } from '@sveltestack/svelte-query'
   import trpc from '$lib/trpc'
-  import CustomTable from '$components/CustomTable.svelte'
+  import DataTable from '$components/UI/DataTable.svelte'
 
   export let ID = 0
 
@@ -20,7 +20,7 @@
 
 <div>
   {#if data.length}
-    <CustomTable {data} {headers} />
+    <DataTable {data} {headers} />
   {:else}
     <p class="text-xl">N/A</p>
   {/if}

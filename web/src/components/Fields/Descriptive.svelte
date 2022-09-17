@@ -3,7 +3,7 @@
 
   import { ValidationMessage } from '@felte/reporter-svelte'
 
-  import TextArea from '$components/TextArea.svelte'
+  import TextArea from '$components/Inputs/TextArea.svelte'
 
   const descriptive_fields = [
     'purpose',

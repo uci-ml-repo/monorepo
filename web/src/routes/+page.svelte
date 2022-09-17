@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { InferQueryOutput } from '$lib/trpc'
-  import DatasetGridRow from '$components/DatasetGridRow.svelte'
+  import DatasetGridRow from '$components/DatasetPreview.svelte'
 
   export let data: {
     newDatasets: InferQueryOutput<'donated_datasets.getDatasets'>

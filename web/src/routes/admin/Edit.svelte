@@ -6,7 +6,7 @@
   import Eye from '$components/Icons/Eye.svelte'
   import EyeSlash from '$components/Icons/EyeSlash.svelte'
 
-  import Pagination from '$components/Pagination.svelte'
+  import Pagination from '$components/UI/Pagination.svelte'
 
   import Edit from '$components/Admin/Edit.svelte'
 

@@ -5,7 +5,7 @@
   import ColumnsIcon from '$components/Icons/Columns.svelte'
   import RowsIcon from '$components/Icons/Rows.svelte'
 
-  import Graphics from '$components/Graphics.svelte'
+  import Avatar from '$components/UI/Avatar.svelte'
 
   // subset of a dataset object needed to initialize this component
   interface Dataset {
@@ -58,7 +58,7 @@
     <div class="grid grid-cols-12 items-center">
       <div class="hidden sm:flex avatar col-span-1 self-center justify-self-center">
         <div class="mask mask-squircle w-12 h-12 flex align-center">
-          <Graphics {src} alt="dataset-graphic-small-screen" />
+          <Avatar {src} alt="dataset-graphic-small-screen" />
         </div>
       </div>
 
@@ -79,7 +79,7 @@
           <!-- in a flex container with the name to account for long names/overflowing -->
           <div class="sm:hidden avatar col-span-1 w-full my-2 self-center justify-center">
             <div class="mask mask-squircle w-12 h-12 flex align-center">
-              <Graphics {src} alt="dataset-graphic-small-screen" />
+              <Avatar {src} alt="dataset-graphic-small-screen" />
             </div>
           </div>
         </div>

@@ -16,10 +16,10 @@
   import { BasicInfoFormSchema } from '$lib/schemas/Donation'
   import type { BasicInfoFormData } from '$lib/schemas/Donation'
 
-  import MetadataFields from '$components/FormFields/Metadata.svelte'
-  import SingleCreatorInput from '$components/FormFields/SingleCreatorInput.svelte'
-  import CreatorFieldArray from '$components/FormFields/CreatorFieldArray.svelte'
-  import AddKeywords from '$components/FormFields/AddKeywords.svelte'
+  import MetadataFields from '$components/Fields/Metadata.svelte'
+  import SingleCreatorInput from '$components/Fields/SingleCreatorInput.svelte'
+  import CreatorFieldArray from '$components/Fields/CreatorFieldArray.svelte'
+  import AddKeywords from '$components/Fields/AddKeywords.svelte'
 
   // initialize form
   //////////////////////////////////////////

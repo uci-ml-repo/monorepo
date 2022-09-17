@@ -4,7 +4,7 @@
 
   import Keyword from '$components/Admin/Keyword.svelte'
 
-  import Pagination from '$components/Pagination.svelte'
+  import Pagination from '$components/UI/Pagination.svelte'
 
   const query = useQuery(
     'keywords.getNames',

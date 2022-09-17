@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Tabs from '$components/Tabs.svelte'
+  import Tabs from '$components/UI/Tabs.svelte'
 
   import Dataset from './Dataset.svelte'
   import Edit from './Edit.svelte'
